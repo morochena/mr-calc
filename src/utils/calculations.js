@@ -9,9 +9,7 @@ export const calcStatBonus = (stat) => {
 };
 
 export const calcTotalSkillBonus = (stat, skill) => {
-  const skillValue = skill * 2;
-  const statValue = stat - 5;
-  const value = Math.floor(statValue + skillValue);
+  const value = calcRawSkillBonus(stat, skill);
   if (value > 0) {
     return "+" + value;
   }
@@ -49,7 +47,7 @@ export const calcMind = (monster) => {
 
 export const calcDodge = (monster) => {
   const skillBonus = calcRawSkillBonus(monster.dex, monster.stealth);
-  const specialityBonus = (monster.specialties.Dodge || 0) * 3;
+  const specialityBonus = (monster.specialties.Dodge.value || 0) * 3;
   const combined = skillBonus + specialityBonus;
 
   const value = Math.floor(combined / 2) + 7;
@@ -79,7 +77,7 @@ export const calcPerception = (monster) => {
 
 export const calcConsider = (monster) => {
   const skillBonus = calcRawSkillBonus(monster.int, monster.reasoning);
-  const specialityBonus = (monster.specialties.Consider || 0) * 3;
+  const specialityBonus = (monster.specialties.Consider?.value || 0) * 3;
   const combined = skillBonus + specialityBonus;
   return Math.floor(combined / 2) + 7;
 };
@@ -91,7 +89,7 @@ export const calcMove = (monster) => {
 export const calcRun = (monster) => {
   const baseRun = calcMove(monster) * 2 + 10;
   const skillBonus = calcRawSkillBonus(monster.str, monster.athletics);
-  const specialityBonus = (monster.specialties.Running || 0) * 3;
+  const specialityBonus = (monster.specialties.Running?.value || 0) * 3;
 
   const combined = skillBonus + specialityBonus;
 
@@ -127,3 +125,21 @@ export const calcLevel = (monster) => {
 
   return level;
 };
+
+export const calcRawSpecialtyBonus = (monster, specialty) => {
+  const skill = specialty.skill;
+  const skillStat = emptySkillPool().find(s => s.name === skill)?.stat || 0;
+  const totalSkillBonus = calcRawSkillBonus(monster[skillStat], monster[skill]);
+
+  const specialtyBonus = specialty.value * 3;
+
+  return totalSkillBonus + specialtyBonus;
+}
+
+export const calcSpecialtyBonus = (monster, specialty) => {
+  const value = calcRawSpecialtyBonus(monster, specialty);
+  if (value > 0) {
+    return "+" + value;
+  }
+  return value;
+}
