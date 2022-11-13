@@ -25,11 +25,17 @@
 <Table striped={true}>
 	<TableHead>
 		<TableHeadCell>Name</TableHeadCell>
+		<TableHeadCell>SP</TableHeadCell>
+		<TableHeadCell>Domain</TableHeadCell>
+		<TableBodyCell>Tags</TableBodyCell>
 	</TableHead>
 	<TableBody class="divide-y">
-		{#each tableData as { id, name }}
+		{#each tableData as { id, name, spell_data: { domain, description } }}
 			<TableBodyRow>
-				<TableBodyCell><a href={`/equipment/${id}`}>{name}</a></TableBodyCell>
+				<TableBodyCell><a href={`/spells/${id}`}>{name}</a></TableBodyCell>
+				<TableBodyCell>10</TableBodyCell>
+				<TableBodyCell>{domain}</TableBodyCell>
+				<TableBodyCell />
 			</TableBodyRow>
 		{/each}
 		<TableBodyRow />
