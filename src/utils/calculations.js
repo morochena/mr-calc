@@ -143,3 +143,10 @@ export const calcSpecialtyBonus = (monster, specialty) => {
   }
   return value;
 }
+
+export const formattedValue = (value) => {
+  if (value > 0) {
+    return "+" + value;
+  }
+  return value;
+}

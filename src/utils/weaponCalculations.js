@@ -1,6 +1,13 @@
-import { calcRawSkillBonus, calcRawSpecialtyBonus } from "./calculations";
+import { calcRawSkillBonus, calcRawSpecialtyBonus, formattedValue } from "./calculations";
 import skillPool from "./data/skills";
 
+export const formattedToHit = toHitValue => {
+  return formattedValue(toHitValue);
+}
+
+export const formattedDamage = damageValue => {
+  return formattedValue(damageValue);
+}
 
 export const toHit = (monster, roll_bonus, specialties, skills) => {
   let toHit = roll_bonus;
@@ -14,19 +21,21 @@ export const toHit = (monster, roll_bonus, specialties, skills) => {
     });
 
     if (Math.max(bonuses) > 0) {
-      return roll_bonus + Math.max(bonuses)
+      return roll_bonus + Math.max(...bonuses)
     }
   }
 
   if (skills) {
     const bonuses = skills.map((skill) => {
       const skillValue = monster[skill];
-      const stat = skillPool().find((s) => s.name == skill).stat;
-      const statValue = monster[stat];
+      const skillPoolz = skillPool();
+      const stat = skillPoolz.filter((s) => s.name == skill);
+      if (stat.length === 0) return 0;
+      const statValue = monster[stat[0].stat];
       return calcRawSkillBonus(statValue, skillValue);
     });
 
-    return roll_bonus + Math.max(bonuses);
+    return roll_bonus + Math.max(...bonuses);
   }
 
   return toHit;
@@ -41,11 +50,11 @@ export const damageCalculation = (monster, damage_formula) => {
     // replace the stats with the monster's values
     const formula = stats.reduce((acc, stat) => {
       const statName = stat.replace(/[\[\]]/g, '');
-      const statValue = monster[statName] - 5;
+      const statValue = formattedValue(monster[statName] - 5);
       return acc.replace(stat, statValue);
     }, damage_formula);
 
-    return `1d10 + ${formula}`;
+    return `1d10 ${formula}`;
   } catch (e) {
     return 'error';
   }

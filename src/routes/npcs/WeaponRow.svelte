@@ -1,6 +1,6 @@
 <script>
 	import { TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import { damageCalculation, toHit } from '../../utils/weaponCalculations';
+	import { damageCalculation, formattedToHit, toHit } from '../../utils/weaponCalculations';
 
 	export let monster;
 	export let id;
@@ -13,6 +13,8 @@
 
 <TableBodyRow>
 	<TableBodyCell><a href={`/equipment/${id}`} target="_blank">{name}</a></TableBodyCell>
-	<TableBodyCell>To Hit: +{toHit(monster, roll_bonus, specialties, skills)}</TableBodyCell>
+	<TableBodyCell
+		>To Hit: {formattedToHit(toHit(monster, roll_bonus, specialties, skills))}</TableBodyCell
+	>
 	<TableBodyCell>Damage: {damageCalculation(monster, damage_formula)}</TableBodyCell>
 </TableBodyRow>

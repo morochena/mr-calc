@@ -11,7 +11,8 @@
 		calcRawSpecialtyBonus,
 		calcRun,
 		calcStatBonus,
-		calcTotalSkillBonus
+		calcTotalSkillBonus,
+		formattedValue
 	} from '../../../../utils/calculations';
 	import skillPool from '../../../../utils/data/skills';
 
@@ -99,11 +100,8 @@
 	const printEquipment = () => {
 		return monster.equipment
 			.map((item) => {
-				return `${item.name} (${item.type}) Hit: +${toHit(
-					monster,
-					item.roll_bonus,
-					item.specialties,
-					item.skills
+				return `${item.name} (${item.type}) Hit: ${formattedValue(
+					toHit(monster, item.roll_bonus, item.specialties, item.skills)
 				)} DMG: (${damageCalculation(monster, item.damage_formula)})`;
 			})
 			.join('\n');
