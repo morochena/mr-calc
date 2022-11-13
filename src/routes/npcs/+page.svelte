@@ -1,4 +1,6 @@
 <script>
+	import WeaponRow from './WeaponRow.svelte';
+
 	import {
 		Table,
 		TableBody,
@@ -15,9 +17,11 @@
 		ButtonGroup,
 		Select
 	} from 'flowbite-svelte';
+	import { supabaseClient } from '$lib/db';
 
 	import StatInput from '../../components/statInput.svelte';
 	import SpecialtyInput from '../../components/specialtyInput.svelte';
+	import SSelect from 'svelte-select';
 
 	import {
 		calcBody,
@@ -66,12 +70,57 @@
 		lore: 0,
 		resourcefulness: 0,
 		specialties: {
-			'Long blades': { value: 3, skill: 'accuracy' },
+			'long blades': { value: 3, skill: 'accuracy' },
 			Dodge: { value: 1, skill: 'stealth' }
 		},
 		size: 'medium',
 		difficulty: 'average',
-		is_public: false
+		is_public: false,
+		equipment: []
+	};
+
+	let selectedEquipmentId;
+
+	const addEquipment = async () => {
+		if (!selectedEquipmentId) return;
+		const { data } = await supabaseClient
+			.from('equipment')
+			.select('*')
+			.eq('id', selectedEquipmentId.value)
+			.single();
+
+		monster = {
+			...monster,
+			equipment: [...monster.equipment, data]
+		};
+	};
+
+	const fetchEquipment = async (filterText) => {
+		const { data } = await supabaseClient
+			.from('equipment')
+			.select('id, name, type')
+			.ilike('name', `%${filterText}%`)
+			.limit(20);
+
+		return data?.map((e) => ({ value: e.id, label: e.name, group: e.type })) || [];
+	};
+
+	let specialtyName = '';
+	let specialtySkill = '';
+	const addSpecialty = () => {
+		const value = {
+			value: 1,
+			skill: specialtySkill
+		};
+
+		monster.specialties[specialtyName] = value;
+		specialtyName = '';
+		specialtySkill = '';
+	};
+	const removeSpeciality = (specialtyName) => {
+		const newSpecialties = { ...monster.specialties };
+		delete newSpecialties[specialtyName];
+		monster.specialties = newSpecialties;
 	};
 </script>
 
@@ -299,20 +348,26 @@
 						statSkill={monster.specialties[specialty].skill}
 						bind:statValue={monster.specialties[specialty].value}
 						statBonus={calcSpecialtyBonus(monster, monster.specialties[specialty])}
+						removeSpeciality={() => removeSpeciality(specialty)}
 					/>
 				{/each}
 			</TableBody>
 		</Table>
 
-		<form class="mt-4">
+		<form class="mt-4" on:submit|preventDefault={addSpecialty}>
 			<div class="grid gap-6 mb-6 md:grid-cols-2">
 				<Label class="space-y-2">
 					<span>New Specialty</span>
-					<Input type="text" required />
+					<Input name="name" type="text" bind:value={specialtyName} required />
 				</Label>
 				<Label class="space-y-2">
 					<span>Skill</span>
-					<Select items={skillPool().map((e) => ({ name: e.name, value: e.name }))} required />
+					<Select
+						name="skill"
+						items={skillPool().map((e) => ({ name: e.name, value: e.name }))}
+						required
+						bind:value={specialtySkill}
+					/>
 				</Label>
 			</div>
 			<Button type="submit">Add</Button>
@@ -321,40 +376,30 @@
 	<div>
 		<h1 class="text-4xl dark:text-white pb-8">Equipment</h1>
 
-		<form class="mt-4">
-			<Label class="space-y-2">
-				<span>Type</span>
-				<Select items={equipmentTypes} bind:value={selectedNewEquipmentType} required />
-			</Label>
-			<div class="grid gap-6 mb-6 md:grid-cols-2 mt-4">
-				<Label class="space-y-2">
-					<span>Name</span>
-					<Input type="text" required />
-				</Label>
-				<Label class="space-y-2">
-					<span>Roll Bonus</span>
-					<Input type="number" required value="0" />
-				</Label>
-				<Label class="space-y-2">
-					<span>Skill</span>
-					<Select items={skillPool().map((e) => ({ name: e.name, value: e.name }))} />
-				</Label>
-				<Label class="space-y-2">
-					<span>Specialty</span>
-					<Select items={Object.keys(monster.specialties).map((e) => ({ name: e, value: e }))} />
-				</Label>
-				<Label class="space-y-2">
-					<span>Damage Formula</span>
-					<Input type="text" value="" placeholder="eg. [str] + 3" />
-				</Label>
-				<Label class="space-y-2">
-					<span>Armor Piercing</span>
-					<Input type="number" value="0" />
-				</Label>
-			</div>
-			<Button type="submit">Add</Button>
-		</form>
+		<Table striped={true}>
+			<TableBody class="divide-y">
+				{#each monster.equipment as { name, roll_bonus, damage_formula, skills, specialties }}
+					<WeaponRow {monster} {name} {roll_bonus} {damage_formula} {skills} {specialties} />
+				{/each}
+			</TableBody>
+		</Table>
+
+		<div class="mt-4">
+			<SSelect
+				class="mt-4"
+				id="equipment"
+				loadOptions={fetchEquipment}
+				bind:value={selectedEquipmentId}
+			/>
+			<Button class="mt-4" on:click={addEquipment}>Add</Button>
+		</div>
 	</div>
 </div>
 
 <h1 class="text-4xl dark:text-white pb-8">Spells</h1>
+
+<style>
+	label {
+		margin: 0 0 10px;
+	}
+</style>

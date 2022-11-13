@@ -7,6 +7,7 @@
 	export let statValue;
 	export let statSkill;
 	export let statBonus;
+	export let removeSpeciality;
 </script>
 
 <TableBodyRow>
@@ -14,5 +15,5 @@
 	<TableBodyCell>{statSkill}</TableBodyCell>
 	<TableBodyCell><Input bind:value={statValue} type="number" class="w-24" /></TableBodyCell>
 	<TableBodyCell>{statBonus}</TableBodyCell>
-	<TableBodyCell><button><XCircle size="20" /></button></TableBodyCell>
+	<TableBodyCell><button on:click={removeSpeciality}><XCircle size="20" /></button></TableBodyCell>
 </TableBodyRow>

@@ -15,7 +15,6 @@
 		"build": "vite build",
 		"package": "svelte-kit package",
 		"preview": "vite preview",
-		"prepare": "svelte-kit sync",
 		"test": "playwright test",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
@@ -41,6 +40,7 @@
 		"prettier-plugin-svelte": "^2.7.0",
 		"svelte": "^3.49.0",
 		"svelte-check": "^2.8.0",
+		"svelte-headlessui": "NoelOConnell/svelte-headlessui#combobox-component",
 		"svelte-heros": "^2.3.3",
 		"svelte-preprocess": "^4.10.7",
 		"svelte-sidebar-menu": "^0.9.8",
@@ -52,6 +52,7 @@
 	"type": "module",
 	"dependencies": {
 		"@supabase/auth-helpers-sveltekit": "^0.8.6",
-		"@supabase/supabase-js": "^2.1.0"
+		"@supabase/supabase-js": "^2.1.0",
+		"svelte-select": "^4.4.7"
 	}
 }

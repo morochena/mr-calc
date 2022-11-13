@@ -9,9 +9,7 @@
 		Button,
 		Toggle
 	} from 'flowbite-svelte';
-	import skillPool from '../../utils/data/skills';
-
-	let name = '';
+	import skillPool from '../../../utils/data/skills';
 
 	let equipmentTypes = [
 		{ name: 'Armor', value: 'armor' },
@@ -29,39 +27,40 @@
 	<Select items={equipmentTypes} bind:value={selectedNewEquipmentType} required />
 </Label>
 {#if selectedNewEquipmentType == 'weapon'}
-	<form class="mt-4">
+	<form class="mt-4" method="POST">
 		<div class="grid gap-6 mb-6 md:grid-cols-2 mt-4">
 			<Label class="space-y-2">
 				<span>Name</span>
-				<Input type="text" required />
+				<Input name="name" type="text" required />
 			</Label>
+			<input type="hidden" name="type" bind:value={selectedNewEquipmentType} />
 			<Label class="space-y-2">
 				<span>Roll Bonus</span>
-				<Input type="number" required value="0" />
+				<Input name="roll_bonus" type="number" required value="0" />
 			</Label>
 			<Label class="space-y-2">
-				<span>Skill</span>
-				<Select items={skillPool().map((e) => ({ name: e.name, value: e.name }))} />
+				<span>Relevant Skills</span>
+				<Input name="skills" type="text" />
 			</Label>
 			<Label class="space-y-2">
-				<span>Specialty</span>
-				<Input type="text" />
+				<span>Relevant Specialties</span>
+				<Input name="specialties" type="text" />
 			</Label>
 			<Label class="space-y-2">
 				<span>Damage Formula</span>
-				<Input type="text" value="" placeholder="eg. [str] + 3" />
+				<Input name="damage_formula" type="text" value="" placeholder="eg. [str] + 3" />
 			</Label>
 			<Label class="space-y-2">
 				<span>Armor Piercing</span>
-				<Input type="number" value="0" />
+				<Input name="armor_piercing" type="number" value="0" />
 			</Label>
 			<Label class="space-y-2">
 				<span>Range</span>
-				<Input type="number" value="0" />
+				<Input name="range" type="number" value="0" />
 			</Label>
 			<Label class="space-y-2">
-				<span>Structure</span>
-				<Input type="number" value="0" />
+				<span>Structure Points</span>
+				<Input name="structure_points" type="number" value="0" />
 			</Label>
 		</div>
 		<Textarea placeholder="Notes / Description" />

@@ -7,6 +7,10 @@ declare namespace App {
 	interface PageData {
 		session: import("@supabase/supabase-js").Session | null;
 	}
+	interface Supabase {
+		Database: import('./DatabaseDefinitions').Database;
+		SchemaName: 'public';
+	}
 	// interface Platform {}
 	// interface Session {}
 	// interface Stuff {}

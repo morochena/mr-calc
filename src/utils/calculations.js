@@ -47,7 +47,7 @@ export const calcMind = (monster) => {
 
 export const calcDodge = (monster) => {
   const skillBonus = calcRawSkillBonus(monster.dex, monster.stealth);
-  const specialityBonus = (monster.specialties.Dodge.value || 0) * 3;
+  const specialityBonus = (monster.specialties.Dodge?.value || 0) * 3;
   const combined = skillBonus + specialityBonus;
 
   const value = Math.floor(combined / 2) + 7;

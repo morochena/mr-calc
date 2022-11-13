@@ -75,6 +75,24 @@
 		{ href: '/test2', name: 'Test 2' },
 		{ href: '/about', name: 'About' }
 	];
+
+	import { supabaseClient } from '$lib/db';
+
+	import { invalidate } from '$app/navigation';
+
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		const {
+			data: { subscription }
+		} = supabaseClient.auth.onAuthStateChange(() => {
+			invalidate('supabase:auth');
+		});
+
+		return () => {
+			subscription.unsubscribe();
+		};
+	});
 </script>
 
 <DarkMode {btnClass} />
@@ -98,14 +116,22 @@
 			<SidebarWrapper>
 				<SidebarGroup>
 					<SidebarItem
+						href="/npcs"
 						label="NPCs"
 						icon={{ name: User, class: 'text-blue-500 mr-2 dark:text-pink-500' }}
 					/>
 					<SidebarItem
+						href="/spells"
 						label="Spells"
 						icon={{ name: ChartPie, class: 'text-red-500 mr-2 dark:text-blue-500' }}
 					/>
 					<SidebarItem
+						href="/equipment"
+						label="Equipment"
+						icon={{ name: ChartPie, class: 'text-red-500 mr-2 dark:text-blue-500' }}
+					/>
+					<SidebarItem
+						href="/players"
 						label="Player Characters"
 						icon={{ name: User, class: 'text-blue-500 mr-2 dark:text-pink-500' }}
 					/>
