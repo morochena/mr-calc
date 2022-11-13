@@ -20,7 +20,11 @@
 		ShoppingBag,
 		ShoppingCart,
 		Table,
-		Key
+		Key,
+		Beaker,
+		UserGroup,
+		Fire,
+		ShieldCheck
 	} from 'svelte-heros';
 
 	import { Side, Nav, Responsive } from 'svelte-sidebar-menu';
@@ -70,11 +74,7 @@
 		x: -200
 	};
 
-	const topMenuList = [
-		{ href: '/test1', name: 'Test 1' },
-		{ href: '/test2', name: 'Test 2' },
-		{ href: '/about', name: 'About' }
-	];
+	const topMenuList = [];
 
 	import { supabaseClient } from '$lib/db';
 
@@ -118,26 +118,22 @@
 					<SidebarItem
 						href="/npcs"
 						label="NPCs"
-						icon={{ name: User, class: 'text-blue-500 mr-2 dark:text-pink-500' }}
+						icon={{ name: UserGroup, class: 'text-red-500 mr-2 dark:text-blue-500' }}
 					/>
 					<SidebarItem
 						href="/spells"
 						label="Spells"
-						icon={{ name: ChartPie, class: 'text-red-500 mr-2 dark:text-blue-500' }}
+						icon={{ name: Fire, class: 'text-red-500 mr-2 dark:text-blue-500' }}
 					/>
 					<SidebarItem
 						href="/equipment"
 						label="Equipment"
-						icon={{ name: ChartPie, class: 'text-red-500 mr-2 dark:text-blue-500' }}
+						icon={{ name: ShieldCheck, class: 'text-red-500 mr-2 dark:text-blue-500' }}
 					/>
 					<SidebarItem
 						href="/players"
 						label="Player Characters"
-						icon={{ name: User, class: 'text-blue-500 mr-2 dark:text-pink-500' }}
-					/>
-					<SidebarItem
-						label="Sign In"
-						icon={{ name: Login, class: 'text-green-500 mr-2 dark:text-yellow-500' }}
+						icon={{ name: User, class: 'text-red-500 mr-2 dark:text-blue-500' }}
 					/>
 				</SidebarGroup>
 			</SidebarWrapper>
@@ -150,9 +146,5 @@
 
 <svelte:head>
 	<title>Mortal Reins Calculators</title>
-	<meta
-		name="description"
-		content="Flowbite-Svelte-Starter is a quick way to start Svelte and Flowbite/Tailwind CSS. It comes with SvelteKit, Tailwind CSS, Flowbite,
-		Flowbite-Svelte, ESlint, Typescript, Playwright, Prettier, Svelte-heros (Heroicons), Dark mode activated."
-	/>
+	<meta name="description" content="" />
 </svelte:head>

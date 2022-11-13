@@ -1,405 +1,50 @@
 <script>
-	import WeaponRow from './WeaponRow.svelte';
-
 	import {
-		Table,
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
 		TableHead,
 		TableHeadCell,
-		Checkbox,
 		TableSearch,
-		Label,
-		Input,
-		Textarea,
+		Badge,
 		Button,
-		ButtonGroup,
-		Select
+		ButtonGroup
 	} from 'flowbite-svelte';
-	import { supabaseClient } from '$lib/db';
 
-	import StatInput from '../../components/statInput.svelte';
-	import SpecialtyInput from '../../components/specialtyInput.svelte';
-	import SSelect from 'svelte-select';
+	import { calcLevel } from '../../utils/calculations';
 
-	import {
-		calcBody,
-		calcConsider,
-		calcDodge,
-		calcLevel,
-		calcMind,
-		calcMove,
-		calcPerception,
-		calcRun,
-		calcStatBonus,
-		calcTotalSkillBonus,
-		calcSpecialtyBonus
-	} from '../../utils/calculations';
-	import skillPool from '../../utils/data/skills';
-
-	let monster = {
-		id: 134,
-		user_id: '0c0e600d-12ce-4895-bce7-6bcec3e39dc9',
-		name: 'Shi Huang',
-		inserted_at: '2022-11-10T23:03:40.403179+00:00',
-		str: 9,
-		dex: 12,
-		emp: 8,
-		int: 6,
-		description:
-			'- From Jeon\n- Dual wields scimitars\n- Looks very intimidating, he’s obviously the enforcer on the ship\n\nEquipment: \nDual Wield Scimitars\nArmor: Gambeson (+2) and Splint Mail (+4)',
-		smash: 2,
-		launch: 1,
-		athletics: 1,
-		physique: 1,
-		provoke: 1,
-		accuracy: 3,
-		mobility: 3,
-		thievery: 3,
-		notice: 2,
-		stealth: 0,
-		animal_handling: 0,
-		deceive: 0,
-		rapport: 0,
-		willpower: 1,
-		mysticism: 0,
-		craft: 0,
-		travel: 0,
-		reasoning: 0,
-		lore: 0,
-		resourcefulness: 0,
-		specialties: {
-			'long blades': { value: 3, skill: 'accuracy' },
-			Dodge: { value: 1, skill: 'stealth' }
-		},
-		size: 'medium',
-		difficulty: 'average',
-		is_public: false,
-		equipment: []
-	};
-
-	let selectedEquipmentId;
-
-	const addEquipment = async () => {
-		if (!selectedEquipmentId) return;
-		const { data } = await supabaseClient
-			.from('equipment')
-			.select('*')
-			.eq('id', selectedEquipmentId.value)
-			.single();
-
-		monster = {
-			...monster,
-			equipment: [...monster.equipment, data]
-		};
-	};
-
-	const fetchEquipment = async (filterText) => {
-		const { data } = await supabaseClient
-			.from('equipment')
-			.select('id, name, type')
-			.ilike('name', `%${filterText}%`)
-			.limit(20);
-
-		return data?.map((e) => ({ value: e.id, label: e.name, group: e.type })) || [];
-	};
-
-	let specialtyName = '';
-	let specialtySkill = '';
-	const addSpecialty = () => {
-		const value = {
-			value: 1,
-			skill: specialtySkill
-		};
-
-		monster.specialties[specialtyName] = value;
-		specialtyName = '';
-		specialtySkill = '';
-	};
-	const removeSpeciality = (specialtyName) => {
-		const newSpecialties = { ...monster.specialties };
-		delete newSpecialties[specialtyName];
-		monster.specialties = newSpecialties;
-	};
+	export let data;
+	let { npcs } = data;
+	let searchTerm = '';
+	$: filteredNPCS = npcs.filter(
+		(item) =>
+			item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			item.tags?.filter((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())).length > 0
+	);
 </script>
 
 <div class="flex justify-end">
 	<ButtonGroup class="space-x-px my-4">
-		<Button pill color="purple">Public View</Button>
-		<Button pill color="purple">Export</Button>
-		<Button pill color="purple">Make a Copy</Button>
+		<Button href="/npcs/new" pill color="purple">New</Button>
 	</ButtonGroup>
 </div>
 
-<Label class="space-y-2">
-	<span>Name</span>
-	<Input type="text" size="lg" bind:value={monster.name} />
-</Label>
-
-<Label for="description" class="mb-2">Description</Label>
-<Textarea
-	id="description"
-	placeholder=""
-	rows="7"
-	name="description"
-	bind:value={monster.description}
-/>
-
-<h1 class="text-4xl dark:text-white pb-8 mt-8">Stats</h1>
-
-<div class="grid gap-6 mb-6 md:grid-cols-2">
-	<Table striped={true}>
-		<TableBody class="divide-y">
-			<StatInput
-				label="Strength"
-				bind:statValue={monster.str}
-				statBonus={calcStatBonus(monster.str)}
-			/>
-			<StatInput
-				label="Dexterity"
-				bind:statValue={monster.dex}
-				statBonus={calcStatBonus(monster.dex)}
-			/>
-			<StatInput
-				label="Empathy"
-				bind:statValue={monster.emp}
-				statBonus={calcStatBonus(monster.emp)}
-			/>
-			<StatInput
-				label="Intelligence"
-				bind:statValue={monster.int}
-				statBonus={calcStatBonus(monster.int)}
-			/>
-
+<TableSearch bind:inputValue={searchTerm} striped={true}>
+	<TableHead>
+		<TableHeadCell>Name</TableHeadCell>
+		<TableHeadCell>XP</TableHeadCell>
+		<TableHeadCell>Tags</TableHeadCell>
+	</TableHead>
+	<TableBody class="divide-y">
+		{#each filteredNPCS as npc}
 			<TableBodyRow>
-				<TableBodyCell>Size</TableBodyCell>
-				<TableBodyCell>0</TableBodyCell>
+				<TableBodyCell><a href={`/npcs/${npc.id}`}>{npc.name}</a></TableBodyCell>
+				<TableBodyCell>{calcLevel(npc)}</TableBodyCell>
+				<TableBodyCell
+					>{#each npc.tags || [] as tag}<Badge class="mx-1">{tag}</Badge>{/each}</TableBodyCell
+				>
 			</TableBodyRow>
-		</TableBody>
-	</Table>
-
-	<Table striped={true}>
-		<TableBody class="divide-y">
-			<TableBodyRow>
-				<TableBodyCell>Body</TableBodyCell>
-				<TableBodyCell>{calcBody(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Mind</TableBodyCell>
-				<TableBodyCell>{calcMind(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Dodge</TableBodyCell>
-				<TableBodyCell>{calcDodge(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Consider</TableBodyCell>
-				<TableBodyCell>{calcConsider(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Perception</TableBodyCell>
-				<TableBodyCell>{calcPerception(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Move</TableBodyCell>
-				<TableBodyCell>{calcMove(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Run</TableBodyCell>
-				<TableBodyCell>{calcRun(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>~XP</TableBodyCell>
-				<TableBodyCell>{calcLevel(monster)}</TableBodyCell>
-			</TableBodyRow>
-		</TableBody>
-	</Table>
-</div>
-
-<h1 class="text-4xl dark:text-white pb-8">Skills</h1>
-<div class="grid gap-6 mb-6 md:grid-cols-2">
-	<Table striped={true}>
-		<TableBody class="divide-y">
-			<StatInput
-				label="Smash"
-				bind:statValue={monster.smash}
-				statBonus={calcTotalSkillBonus(monster.str, monster.smash)}
-			/>
-			<StatInput
-				label="Launch"
-				bind:statValue={monster.launch}
-				statBonus={calcTotalSkillBonus(monster.str, monster.launch)}
-			/>
-			<StatInput
-				label="Athletics"
-				bind:statValue={monster.athletics}
-				statBonus={calcTotalSkillBonus(monster.str, monster.athletics)}
-			/>
-			<StatInput
-				label="Physique"
-				bind:statValue={monster.physique}
-				statBonus={calcTotalSkillBonus(monster.str, monster.physique)}
-			/>
-			<StatInput
-				label="Provoke"
-				bind:statValue={monster.provoke}
-				statBonus={calcTotalSkillBonus(monster.str, monster.provoke)}
-			/>
-		</TableBody>
-	</Table>
-	<Table striped={true}>
-		<TableBody class="divide-y">
-			<StatInput
-				label="Accuracy"
-				bind:statValue={monster.accuracy}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.accuracy)}
-			/>
-			<StatInput
-				label="Mobility"
-				bind:statValue={monster.mobility}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.mobility)}
-			/>
-			<StatInput
-				label="Thievery"
-				bind:statValue={monster.thievery}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.thievery)}
-			/>
-			<StatInput
-				label="Notice"
-				bind:statValue={monster.notice}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.notice)}
-			/>
-			<StatInput
-				label="Stealth"
-				bind:statValue={monster.stealth}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.stealth)}
-			/>
-		</TableBody>
-	</Table>
-	<Table striped={true}>
-		<TableBody class="divide-y">
-			<StatInput
-				label="Animal Handling"
-				bind:statValue={monster.animal_handling}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.animal_handling)}
-			/>
-			<StatInput
-				label="Deceive"
-				bind:statValue={monster.deceive}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.deceive)}
-			/>
-			<StatInput
-				label="Rapport"
-				bind:statValue={monster.rapport}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.rapport)}
-			/>
-			<StatInput
-				label="Willpower"
-				bind:statValue={monster.willpower}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.willpower)}
-			/>
-			<StatInput
-				label="Mysticism"
-				bind:statValue={monster.mysticism}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.mysticism)}
-			/>
-		</TableBody>
-	</Table>
-	<Table striped={true}>
-		<TableBody class="divide-y">
-			<StatInput
-				label="Craft"
-				bind:statValue={monster.craft}
-				statBonus={calcTotalSkillBonus(monster.int, monster.craft)}
-			/>
-			<StatInput
-				label="Travel"
-				bind:statValue={monster.travel}
-				statBonus={calcTotalSkillBonus(monster.int, monster.travel)}
-			/>
-			<StatInput
-				label="Reasoning"
-				bind:statValue={monster.reasoning}
-				statBonus={calcTotalSkillBonus(monster.int, monster.reasoning)}
-			/>
-			<StatInput
-				label="Lore"
-				bind:statValue={monster.lore}
-				statBonus={calcTotalSkillBonus(monster.int, monster.lore)}
-			/>
-			<StatInput
-				label="Resourcefulness"
-				bind:statValue={monster.resourcefulness}
-				statBonus={calcTotalSkillBonus(monster.int, monster.resourcefulness)}
-			/>
-		</TableBody>
-	</Table>
-</div>
-
-<div class="grid gap-6 mb-6 md:grid-cols-2">
-	<div>
-		<h1 class="text-4xl dark:text-white pb-8">Specialties</h1>
-		<Table striped={true}>
-			<TableBody class="divide-y">
-				{#each Object.keys(monster.specialties || {}) as specialty}
-					<SpecialtyInput
-						label={specialty}
-						statSkill={monster.specialties[specialty].skill}
-						bind:statValue={monster.specialties[specialty].value}
-						statBonus={calcSpecialtyBonus(monster, monster.specialties[specialty])}
-						removeSpeciality={() => removeSpeciality(specialty)}
-					/>
-				{/each}
-			</TableBody>
-		</Table>
-
-		<form class="mt-4" on:submit|preventDefault={addSpecialty}>
-			<div class="grid gap-6 mb-6 md:grid-cols-2">
-				<Label class="space-y-2">
-					<span>New Specialty</span>
-					<Input name="name" type="text" bind:value={specialtyName} required />
-				</Label>
-				<Label class="space-y-2">
-					<span>Skill</span>
-					<Select
-						name="skill"
-						items={skillPool().map((e) => ({ name: e.name, value: e.name }))}
-						required
-						bind:value={specialtySkill}
-					/>
-				</Label>
-			</div>
-			<Button type="submit">Add</Button>
-		</form>
-	</div>
-	<div>
-		<h1 class="text-4xl dark:text-white pb-8">Equipment</h1>
-
-		<Table striped={true}>
-			<TableBody class="divide-y">
-				{#each monster.equipment as { name, roll_bonus, damage_formula, skills, specialties }}
-					<WeaponRow {monster} {name} {roll_bonus} {damage_formula} {skills} {specialties} />
-				{/each}
-			</TableBody>
-		</Table>
-
-		<div class="mt-4">
-			<SSelect
-				class="mt-4"
-				id="equipment"
-				loadOptions={fetchEquipment}
-				bind:value={selectedEquipmentId}
-			/>
-			<Button class="mt-4" on:click={addEquipment}>Add</Button>
-		</div>
-	</div>
-</div>
-
-<h1 class="text-4xl dark:text-white pb-8">Spells</h1>
-
-<style>
-	label {
-		margin: 0 0 10px;
-	}
-</style>
+		{/each}
+		<TableBodyRow />
+	</TableBody>
+</TableSearch>

@@ -9,6 +9,7 @@
 		Button,
 		Toggle
 	} from 'flowbite-svelte';
+	import { sizes } from '../../../utils/data/sizes';
 
 	let name = '';
 
@@ -20,14 +21,6 @@
 	];
 
 	let selectedSize = 'medium';
-	let sizes = [
-		{ value: 'tiny', name: 'Tiny' },
-		{ value: 'small', name: 'Small' },
-		{ value: 'medium', name: 'Medium' },
-		{ value: 'large', name: 'Large' },
-		{ value: 'huge', name: 'Huge' },
-		{ value: 'gargantuan', name: 'Gargantuan' }
-	];
 
 	let selectedType = 'humanoid';
 	let types = [

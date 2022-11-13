@@ -4,14 +4,18 @@ import skillPool from "./data/skills";
 
 export const toHit = (monster, roll_bonus, specialties, skills) => {
   let toHit = roll_bonus;
-  console.log(specialties)
   if (specialties) {
-    const bonuses = specialties.map((specialty) => {
+    const bonuses = specialties.filter(e => !!e).map((specialty) => {
       const value = monster.specialties[specialty];
-      return calcRawSpecialtyBonus(monster, value);
+      if (value) {
+        return calcRawSpecialtyBonus(monster, value);
+      }
+      return 0;
     });
 
-    return roll_bonus + Math.max(bonuses)
+    if (Math.max(bonuses) > 0) {
+      return roll_bonus + Math.max(bonuses)
+    }
   }
 
   if (skills) {

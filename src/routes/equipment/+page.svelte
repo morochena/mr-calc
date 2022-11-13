@@ -35,9 +35,9 @@
 		<TableHeadCell>Range</TableHeadCell>
 	</TableHead>
 	<TableBody class="divide-y">
-		{#each tableData as { name, type, roll_bonus, skills, specialties, damage_formula, armor_piercing, range, structure_points }, i}
+		{#each tableData as { id, name, type, roll_bonus, skills, specialties, damage_formula, armor_piercing, range, structure_points }, i}
 			<TableBodyRow>
-				<TableBodyCell>{name}</TableBodyCell>
+				<TableBodyCell><a href={`/equipment/${id}`}>{name}</a></TableBodyCell>
 				<TableBodyCell>{type}</TableBodyCell>
 				<TableBodyCell>{roll_bonus}</TableBodyCell>
 				<TableBodyCell>{skills}</TableBodyCell>

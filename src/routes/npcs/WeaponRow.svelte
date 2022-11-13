@@ -3,6 +3,7 @@
 	import { damageCalculation, toHit } from '../../utils/weaponCalculations';
 
 	export let monster;
+	export let id;
 	export let name;
 	export let roll_bonus;
 	export let damage_formula;
@@ -11,7 +12,7 @@
 </script>
 
 <TableBodyRow>
-	<TableBodyCell>{name}</TableBodyCell>
+	<TableBodyCell><a href={`/equipment/${id}`} target="_blank">{name}</a></TableBodyCell>
 	<TableBodyCell>To Hit: +{toHit(monster, roll_bonus, specialties, skills)}</TableBodyCell>
 	<TableBodyCell>Damage: {damageCalculation(monster, damage_formula)}</TableBodyCell>
 </TableBodyRow>
