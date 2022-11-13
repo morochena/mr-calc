@@ -48,14 +48,18 @@
 
 	const addSpell = async () => {
 		if (!selectedSpellId) return;
-		const { data } = await supabaseClient
+
+		monster.spell_ids.push(selectedSpellId.value);
+
+		const { data: spell } = await supabaseClient
 			.from('spells')
-			.select('*')
-			.eq('id', selectedSpellId)
+			.select('name')
+			.eq('id', selectedSpellId.value)
 			.single();
+
 		monster = {
 			...monster,
-			spells: [...monster.spells, data]
+			spells: [...(monster.spells || []), spell]
 		};
 	};
 
@@ -75,6 +79,9 @@
 
 	const addEquipment = async () => {
 		if (!selectedEquipmentId) return;
+
+		monster.equipment_ids.push(selectedEquipmentId.value);
+
 		const { data } = await supabaseClient
 			.from('equipment')
 			.select('*')
@@ -119,11 +126,20 @@
 	// End Specialties
 
 	const saveMonster = async () => {
+		const monsterToSave = { ...monster };
 		// if monster.tags is a string, then split it
-		if (typeof monster.tags === 'string') {
-			monster.tags = monster.tags.split(',').map((t) => t.trim());
+		if (typeof monsterToSave.tags === 'string') {
+			monsterToSave.tags = monsterToSave.tags.split(',').map((t) => t.trim());
 		}
-		const { error } = await supabaseClient.from('monsters').update(monster).eq('id', monster.id);
+
+		// remove spells and equipment
+		monsterToSave.spells = undefined;
+		monsterToSave.equipment = undefined;
+
+		const { error } = await supabaseClient
+			.from('monsters')
+			.update(monsterToSave)
+			.eq('id', monsterToSave.id);
 		if (!error) {
 			Toastify({
 				text: 'Saved!',
