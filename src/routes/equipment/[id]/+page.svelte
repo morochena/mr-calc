@@ -18,6 +18,15 @@
 	let { disableInputs, equipment } = data;
 
 	const saveEquipment = async () => {
+		if (typeof equipment.skills === 'string') {
+			equipment.skills = equipment.skills.split(',').map((t) => t.trim());
+		}
+		if (typeof equipment.specialties === 'string') {
+			equipment.specialties = equipment.specialties.split(',').map((t) => t.trim());
+		}
+
+		equipment.skills = equipment.skills;
+
 		const { error } = await supabaseClient
 			.from('equipment')
 			.update(equipment)
