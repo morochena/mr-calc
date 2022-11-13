@@ -10,10 +10,10 @@
 			const { error } = await supabaseClient.auth.signInWithOAuth({
 				provider: 'discord',
 				options: {
-					redirectTo: 'http://localhost:3000'
-					//	import.meta.env.MODE == 'production'
-					//		? 'https://mr-creature-gen.pages.dev'
-					//		: 'http://localhost:3000'
+					redirectTo:
+						import.meta.env.MODE == 'production'
+							? 'https://mr-calc.pages.dev'
+							: 'http://localhost:3000'
 				}
 			});
 			if (error) throw error;
