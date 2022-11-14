@@ -503,6 +503,8 @@
 
 <style>
 	.themed {
+		--background: rgb(55, 65, 81);
+		--border: rgb(75, 85, 99);
 		--inputColor: black;
 		--multiItemBG: black;
 		--itemColor: black;

@@ -9,8 +9,6 @@
 
 <TableBodyRow>
 	<TableBodyCell>{label}</TableBodyCell>
-	<TableBodyCell
-		><Input bind:value={statValue} type="number" class="w-24" {disabled} /></TableBodyCell
-	>
+	<TableBodyCell><Input bind:value={statValue} type="number" {disabled} /></TableBodyCell>
 	<TableBodyCell>{statBonus}</TableBodyCell>
 </TableBodyRow>
