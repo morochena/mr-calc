@@ -1,13 +1,29 @@
 <script>
+	import { supabaseClient } from '$lib/db';
 	import { Button, ButtonGroup, Input, Label, Textarea } from 'flowbite-svelte';
 	import Effects from './Effects.svelte';
 	import Meta from './Meta.svelte';
 	import Modifiers from './Modifiers.svelte';
+	import Toastify from 'toastify-js';
+	import 'toastify-js/src/toastify.css';
 
 	export let data;
 	const { spell, disableInputs } = data;
 
-	export const save = async () => {};
+	export const save = async () => {
+		const { error } = await supabaseClient.from('spells').update(spell).eq('id', spell.id);
+		if (!error) {
+			Toastify({
+				text: 'Saved!',
+				duration: 3000
+			}).showToast();
+		} else {
+			Toastify({
+				text: 'Error!!',
+				duration: 3000
+			}).showToast();
+		}
+	};
 	export const makeACopy = async () => {};
 	export const deleteSpell = async () => {};
 </script>
