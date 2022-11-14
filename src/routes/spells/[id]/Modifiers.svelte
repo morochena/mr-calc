@@ -7,8 +7,12 @@
 		TableHead,
 		TableHeadCell,
 		TableBody,
-		Textarea
+		Textarea,
+		TableBodyRow,
+		TableBodyCell
 	} from 'flowbite-svelte';
+	import { range } from '../../../utils/range';
+	import { calculateDescription } from '../../../utils/calculateSpellDescription';
 	import { availableModifiers } from '../../../utils/data/modifiers';
 
 	const availableModifierOptions = availableModifiers.map((modifier) => ({
@@ -22,7 +26,7 @@
 	let selectedModifier = null;
 </script>
 
-<h2 class="text-xl mt-4">Modifiers</h2>
+<h2 class="text-xl mt-8">Modifiers</h2>
 <Select items={availableModifierOptions} disabled={disableInputs} bind:value={selectedModifier} />
 {#if selectedModifier?.description}
 	<Alert class="mt-2"><span>{selectedModifier.description}</span></Alert>
@@ -38,12 +42,29 @@
 	</TableHead>
 	<TableBody>
 		{#each spell.spell_data.modifiers as modifier}
-			<tr>
-				<td>{modifier.name}</td>
-				<td>{modifier.tier}</td>
-				<Textarea rows="2" bind:value={modifier.notes} />
-				<td>{modifier.description}</td>
-			</tr>
+			<TableBodyRow>
+				<TableBodyCell>{modifier.name}</TableBodyCell>
+				<TableBodyCell>
+					{#if modifier.hasTiers}
+						<Select
+							class="w-20"
+							items={range(1, modifier.maxTier + 1 || 50, 1).map((e) => ({ name: e, value: e }))}
+							bind:value={modifier.tier}
+						/>
+					{/if}
+				</TableBodyCell>
+				<TableBodyCell
+					><Textarea
+						class="w-64"
+						rows="1"
+						bind:value={modifier.notes}
+						disabled={disableInputs}
+					/></TableBodyCell
+				>
+				<TableBodyCell tdClass="px-6 py-4 font-medium"
+					><p>{calculateDescription(spell, modifier)}</p></TableBodyCell
+				>
+			</TableBodyRow>
 		{/each}
 	</TableBody>
 </Table>

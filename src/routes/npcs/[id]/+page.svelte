@@ -469,12 +469,15 @@
 		</Table>
 
 		<div class="mt-4 themed">
-			<SSelect
-				class="mt-4"
-				id="equipment"
-				loadOptions={fetchEquipment}
-				bind:value={selectedEquipmentId}
-			/>
+			<Label class="pt-2 themed"
+				>Add equipment
+				<SSelect
+					class="mt-4 themed"
+					id="equipment"
+					loadOptions={fetchEquipment}
+					bind:value={selectedEquipmentId}
+				/>
+			</Label>
 			<Button class="mt-4" on:click={addEquipment} disabled={disableInputs}>Add</Button>
 		</div>
 	</div>
@@ -491,7 +494,10 @@
 	</TableBody>
 </Table>
 <div class="mt-4 themed">
-	<SSelect class="mt-4" id="equipment" loadOptions={fetchSpells} bind:value={selectedSpellId} />
+	<Label
+		>Add Spells
+		<SSelect class="mt-4" id="equipment" loadOptions={fetchSpells} bind:value={selectedSpellId} />
+	</Label>
 	<Button class="mt-4" on:click={addSpell} disabled={disableInputs}>Add</Button>
 </div>
 
@@ -509,7 +515,7 @@
 	.selectedItem {
 		color: black !important;
 	}
-	.selectedContainer {
+	.selectContainer input {
 		color: black;
 	}
 </style>
