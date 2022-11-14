@@ -23,8 +23,6 @@
 		{ value: `Stable`, name: `Stable` },
 		{ value: `Imbue`, name: `Imbue` }
 	];
-
-	console.log(spell);
 </script>
 
 <Label class="mt-2"

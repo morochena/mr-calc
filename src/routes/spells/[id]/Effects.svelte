@@ -13,15 +13,39 @@
 	} from 'flowbite-svelte';
 	import { range } from '../../../utils/range';
 	import { availableEffects } from '../../../utils/data/effects';
+	import { calculateDescription } from '../../../utils/calculateSpellDescription';
+	import { XCircle } from 'svelte-heros';
 
 	export let spell;
 	export let disableInputs;
 
-	let selectedEffect = null;
 	let availableEffectOptions = availableEffects.map((effect) => ({
 		name: effect.name,
 		value: effect
 	}));
+
+	let selectedEffect = null;
+	const addEffect = () => {
+		if (selectedEffect) {
+			spell = {
+				...spell,
+				spell_data: {
+					...spell.spell_data,
+					effects: [...spell.spell_data.effects, selectedEffect]
+				}
+			};
+			selectedEffect = null;
+		}
+	};
+	const removeEffect = (effect) => {
+		spell = {
+			...spell,
+			spell_data: {
+				...spell.spell_data,
+				effects: spell.spell_data.effects.filter((m) => m !== effect)
+			}
+		};
+	};
 </script>
 
 <h2 class="text-xl mt-8">Effects</h2>
@@ -29,7 +53,9 @@
 {#if selectedEffect?.description}
 	<Alert class="mt-2"><span>{selectedEffect.description}</span></Alert>
 {/if}
-<Button class="mt-2" disabled={disableInputs || !selectedEffect}>Add Effect</Button>
+<Button on:click={addEffect} class="mt-2" disabled={disableInputs || !selectedEffect}
+	>Add Effect</Button
+>
 
 <Table class="mt-2">
 	<TableHead>
@@ -59,7 +85,10 @@
 						disabled={disableInputs}
 					/></TableBodyCell
 				>
-				<TableBodyCell tdClass="px-6 py-4 font-medium"><p>{effect.description}</p></TableBodyCell>
+				<TableBodyCell tdClass="px-6 py-4 font-medium flex justify-end"
+					><p>{calculateDescription(spell, effect)}</p>
+					<button on:click={() => removeEffect(effect)} class="ml-4"><XCircle size="20" /></button>
+				</TableBodyCell>
 			</TableBodyRow>
 		{/each}
 	</TableBody>

@@ -14,16 +14,38 @@
 	import { range } from '../../../utils/range';
 	import { calculateDescription } from '../../../utils/calculateSpellDescription';
 	import { availableModifiers } from '../../../utils/data/modifiers';
+	import { XCircle } from 'svelte-heros';
+
+	export let spell;
+	export let disableInputs;
 
 	const availableModifierOptions = availableModifiers.map((modifier) => ({
 		name: modifier.name,
 		value: modifier
 	}));
 
-	export let spell;
-	export let disableInputs;
-
 	let selectedModifier = null;
+	const addModifier = () => {
+		if (selectedModifier) {
+			spell = {
+				...spell,
+				spell_data: {
+					...spell.spell_data,
+					modifiers: [...spell.spell_data.modifiers, selectedModifier]
+				}
+			};
+			selectedModifier = null;
+		}
+	};
+	const removeModifier = (modifier) => {
+		spell = {
+			...spell,
+			spell_data: {
+				...spell.spell_data,
+				modifiers: spell.spell_data.modifiers.filter((m) => m !== modifier)
+			}
+		};
+	};
 </script>
 
 <h2 class="text-xl mt-8">Modifiers</h2>
@@ -31,7 +53,9 @@
 {#if selectedModifier?.description}
 	<Alert class="mt-2"><span>{selectedModifier.description}</span></Alert>
 {/if}
-<Button class="mt-2" disabled={disableInputs || !selectedModifier}>Add Modifier</Button>
+<Button on:click={addModifier} class="mt-2" disabled={disableInputs || !selectedModifier}
+	>Add Modifier</Button
+>
 
 <Table class="mt-2">
 	<TableHead>
@@ -43,7 +67,7 @@
 	<TableBody>
 		{#each spell.spell_data.modifiers as modifier}
 			<TableBodyRow>
-				<TableBodyCell>{modifier.name}</TableBodyCell>
+				<TableBodyCell tdClass="px-6 py-4 font-medium">{modifier.name}</TableBodyCell>
 				<TableBodyCell>
 					{#if modifier.hasTiers}
 						<Select
@@ -61,9 +85,12 @@
 						disabled={disableInputs}
 					/></TableBodyCell
 				>
-				<TableBodyCell tdClass="px-6 py-4 font-medium"
-					><p>{calculateDescription(spell, modifier)}</p></TableBodyCell
-				>
+				<TableBodyCell tdClass="px-6 py-4 font-medium flex justify-end"
+					><p>{calculateDescription(spell, modifier)}</p>
+					<button on:click={() => removeModifier(modifier)} class="ml-4"
+						><XCircle size="20" /></button
+					>
+				</TableBodyCell>
 			</TableBodyRow>
 		{/each}
 	</TableBody>
