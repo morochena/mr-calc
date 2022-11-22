@@ -64,9 +64,9 @@
 
 <div class="flex justify-end">
 	<ButtonGroup class="space-x-px my-4">
-		<Button on:click={saveEquipment} pill color="purple" disabled={disableInputs}>Save</Button>
-		<Button on:click={makeACopy} pill color="purple">Make a Copy</Button>
-		<Button on:click={deleteEquipment} pill color="purple" disabled={disableInputs}>Delete</Button>
+		<Button on:click={saveEquipment} color="purple" disabled={disableInputs}>Save</Button>
+		<Button on:click={makeACopy} color="purple">Make a Copy</Button>
+		<Button on:click={deleteEquipment} color="purple" disabled={disableInputs}>Delete</Button>
 	</ButtonGroup>
 </div>
 

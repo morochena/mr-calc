@@ -16,7 +16,7 @@
 
 <div class="flex justify-end">
 	<ButtonGroup class="space-x-px my-4">
-		<Button href="/spells/new" pill color="purple">New</Button>
+		<Button href="/spells/new" color="purple">New</Button>
 	</ButtonGroup>
 </div>
 

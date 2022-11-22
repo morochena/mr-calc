@@ -133,20 +133,15 @@
 		<Button
 			on:click={() => saveEntity('monsters', data.monster)}
 			disabled={disableInputs}
-			pill
 			color="purple">Save</Button
 		>
-		<Button href={`/npcs/${monster.id}/public`} pill color="purple">Public View</Button>
-		<Button on:click={() => exportEntity('monsters', data.monster)} pill color="purple"
-			>Export</Button
-		>
-		<Button on:click={() => copyEntity('monsters', data.monster)} pill color="purple"
-			>Make a Copy</Button
+		<Button href={`/npcs/${monster.id}/public`} color="purple">Public View</Button>
+		<Button on:click={() => exportEntity('monsters', data.monster)} color="purple">Export</Button>
+		<Button on:click={() => copyEntity('monsters', data.monster)} color="purple">Make a Copy</Button
 		>
 		<Button
 			on:click={() => deleteEntity('monsters', data.monster)}
 			disabled={disableInputs}
-			pill
 			color="purple">Delete</Button
 		>
 	</ButtonGroup>
