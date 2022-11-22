@@ -148,8 +148,13 @@
 	>
 </ButtonGroup>
 
-<SpeedDial defaultClass="absolute right-6 bottom-6 z-50" tooltip="none">
-	<SpeedDialButton name="Public View">
+<SpeedDial
+	trigger="click"
+	defaultClass="absolute right-6 bottom-6 z-50"
+	tooltip="none"
+	color="purple"
+>
+	<SpeedDialButton name="View">
 		<svg
 			aria-hidden="true"
 			class="w-6 h-6"
