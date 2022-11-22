@@ -41,7 +41,7 @@
 	import { sizes } from '../../../../utils/data/sizes';
 	import { copyEntity, deleteEntity, exportEntity, saveEntity } from '../../../../utils/operations';
 
-	export let data;
+	export let data = {};
 
 	let monster = data.monster;
 	let disableInputs = data.disableInputs;
@@ -60,7 +60,7 @@
 			.eq('id', selectedSpellId.value)
 			.single();
 
-		monster = {
+		data.monster = {
 			...data.monster,
 			spells: [...(data.monster.spells || []), spell]
 		};
@@ -80,12 +80,12 @@
 	// Start Equipment
 	let selectedEquipmentId = null;
 
-	const addEquipment = async () => {
+	const addEquipment = async (monster) => {
 		if (!selectedEquipmentId) return;
 
 		data.monster.equipment_ids.push(selectedEquipmentId.value);
 
-		const { data } = await supabaseClient
+		const { data: serverData } = await supabaseClient
 			.from('equipment')
 			.select('*')
 			.eq('id', selectedEquipmentId.value)
@@ -93,7 +93,7 @@
 
 		data.monster = {
 			...data.monster,
-			equipment: [...data.monster.equipment, data]
+			equipment: [...data.monster.equipment, serverData]
 		};
 	};
 
@@ -489,7 +489,7 @@
 					bind:value={selectedEquipmentId}
 				/>
 			</Label>
-			<Button class="mt-4" on:click={addEquipment} disabled={disableInputs}>Add</Button>
+			<Button class="mt-4" on:click={() => addEquipment()} disabled={disableInputs}>Add</Button>
 		</div>
 	</div>
 </div>
