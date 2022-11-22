@@ -6,6 +6,7 @@
 	import Modifiers from './Modifiers.svelte';
 	import Toastify from 'toastify-js';
 	import 'toastify-js/src/toastify.css';
+	import Calculation from './Calculation.svelte';
 
 	export let data;
 	const { spell, disableInputs } = data;
@@ -39,3 +40,4 @@
 <Meta {spell} {disableInputs} />
 <Modifiers {spell} {disableInputs} />
 <Effects {spell} {disableInputs} />
+<Calculation {spell} {disableInputs} />

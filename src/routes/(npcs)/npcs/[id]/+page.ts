@@ -30,7 +30,6 @@ export const load: PageLoad = async (event) => {
   const disableInputs = monster.user_id == session.user.id ? false : true;
 
   return {
-    user: session.user,
     monster,
     disableInputs,
   };

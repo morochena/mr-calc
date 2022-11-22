@@ -1,4 +1,14 @@
 
+
+export const calcSPCost = (spell) => {
+  return 0
+}
+
+export const calcMentalCost = () => {
+
+  return 0
+}
+
 function calcSpellResist(SPCost) {
   return calcSpellCost(SPCost) + 5;
 }

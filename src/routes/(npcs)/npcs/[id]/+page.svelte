@@ -18,10 +18,9 @@
 		Select
 	} from 'flowbite-svelte';
 	import { supabaseClient } from '$lib/db';
-	import Toastify from 'toastify-js';
 	import 'toastify-js/src/toastify.css';
-	import StatInput from '../../../components/statInput.svelte';
-	import SpecialtyInput from '../../../components/specialtyInput.svelte';
+	import StatInput from '../../../../components/statInput.svelte';
+	import SpecialtyInput from '../../../../components/specialtyInput.svelte';
 	import SSelect from 'svelte-select';
 
 	import {
@@ -36,12 +35,15 @@
 		calcStatBonus,
 		calcTotalSkillBonus,
 		calcSpecialtyBonus
-	} from '../../../utils/calculations';
-	import skillPool from '../../../utils/data/skills';
-	import { sizes } from '../../../utils/data/sizes';
+	} from '../../../../utils/calculations';
+	import skillPool from '../../../../utils/data/skills';
+	import { sizes } from '../../../../utils/data/sizes';
+	import { copyEntity, deleteEntity, exportEntity, saveEntity } from '../../../../utils/operations';
 
 	export let data;
-	let { disableInputs, monster } = data;
+
+	let monster = data.monster;
+	let disableInputs = data.disableInputs;
 
 	// Start Spells
 	let selectedSpellId = null;
@@ -49,7 +51,7 @@
 	const addSpell = async () => {
 		if (!selectedSpellId) return;
 
-		monster.spell_ids.push(selectedSpellId.value);
+		data.monster.spell_ids.push(selectedSpellId.value);
 
 		const { data: spell } = await supabaseClient
 			.from('spells')
@@ -58,8 +60,8 @@
 			.single();
 
 		monster = {
-			...monster,
-			spells: [...(monster.spells || []), spell]
+			...data.monster,
+			spells: [...(data.monster.spells || []), spell]
 		};
 	};
 
@@ -80,7 +82,7 @@
 	const addEquipment = async () => {
 		if (!selectedEquipmentId) return;
 
-		monster.equipment_ids.push(selectedEquipmentId.value);
+		data.monster.equipment_ids.push(selectedEquipmentId.value);
 
 		const { data } = await supabaseClient
 			.from('equipment')
@@ -88,9 +90,9 @@
 			.eq('id', selectedEquipmentId.value)
 			.single();
 
-		monster = {
-			...monster,
-			equipment: [...monster.equipment, data]
+		data.monster = {
+			...data.monster,
+			equipment: [...data.monster.equipment, data]
 		};
 	};
 
@@ -114,82 +116,50 @@
 			skill: specialtySkill
 		};
 
-		monster.specialties[specialtyName] = value;
+		data.monster.specialties[specialtyName] = value;
 		specialtyName = '';
 		specialtySkill = '';
 	};
 	const removeSpeciality = (specialtyName) => {
-		const newSpecialties = { ...monster.specialties };
+		const newSpecialties = { ...data.monster.specialties };
 		delete newSpecialties[specialtyName];
-		monster.specialties = newSpecialties;
+		data.monster.specialties = newSpecialties;
 	};
 	// End Specialties
-
-	const saveMonster = async () => {
-		const monsterToSave = { ...monster };
-		// if monster.tags is a string, then split it
-		if (typeof monsterToSave.tags === 'string') {
-			monsterToSave.tags = monsterToSave.tags.split(',').map((t) => t.trim());
-		}
-
-		// remove spells and equipment
-		monsterToSave.spells = undefined;
-		monsterToSave.equipment = undefined;
-
-		const { error } = await supabaseClient
-			.from('monsters')
-			.update(monsterToSave)
-			.eq('id', monsterToSave.id);
-		if (!error) {
-			Toastify({
-				text: 'Saved!',
-				duration: 3000
-			}).showToast();
-		} else {
-			Toastify({
-				text: 'Error!!',
-				duration: 3000
-			}).showToast();
-		}
-	};
-
-	const exportMonster = () => {};
-
-	const makeCopy = async () => {
-		const { data: userData } = await supabaseClient.auth.getUser();
-		const monsterData = { ...monster };
-		delete monsterData.id;
-		monsterData.name = monsterData.name + ' (copy)';
-		monsterData.user_id = userData.user.id;
-		const { data } = await supabaseClient.from('monsters').insert([monsterData]).select();
-
-		window.location.href = `/npcs/${data[0].id}`;
-	};
-
-	const deleteMonster = async () => {
-		await supabaseClient.from('monsters').delete().eq('id', monster.id);
-		window.location.href = '/npcs';
-	};
 </script>
 
 <div class="flex justify-end">
 	<ButtonGroup class="space-x-px my-4">
-		<Button on:click={saveMonster} disabled={disableInputs} pill color="purple">Save</Button>
+		<Button
+			on:click={() => saveEntity('monsters', data.monster)}
+			disabled={disableInputs}
+			pill
+			color="purple">Save</Button
+		>
 		<Button href={`/npcs/${monster.id}/public`} pill color="purple">Public View</Button>
-		<Button on:click={exportMonster} pill color="purple">Export</Button>
-		<Button on:click={makeCopy} pill color="purple">Make a Copy</Button>
-		<Button on:click={deleteMonster} disabled={disableInputs} pill color="purple">Delete</Button>
+		<Button on:click={() => exportEntity('monsters', data.monster)} pill color="purple"
+			>Export</Button
+		>
+		<Button on:click={() => copyEntity('monsters', data.monster)} pill color="purple"
+			>Make a Copy</Button
+		>
+		<Button
+			on:click={() => deleteEntity('monsters', data.monster)}
+			disabled={disableInputs}
+			pill
+			color="purple">Delete</Button
+		>
 	</ButtonGroup>
 </div>
 
 <Label class="space-y-2">
 	<span>Name</span>
-	<Input type="text" size="lg" bind:value={monster.name} disabled={disableInputs} />
+	<Input type="text" size="lg" bind:value={data.monster.name} disabled={disableInputs} />
 </Label>
 
 <Label class="space-y-2">
 	<span>Tags</span>
-	<Input type="text" bind:value={monster.tags} disabled={disableInputs} />
+	<Input type="text" bind:value={data.monster.tags} disabled={disableInputs} />
 </Label>
 
 <Label for="description" class="mb-2">Description</Label>
@@ -198,7 +168,7 @@
 	placeholder=""
 	rows="7"
 	name="description"
-	bind:value={monster.description}
+	bind:value={data.monster.description}
 	disabled={disableInputs}
 />
 
@@ -209,33 +179,33 @@
 		<TableBody class="divide-y">
 			<StatInput
 				label="Strength"
-				bind:statValue={monster.str}
-				statBonus={calcStatBonus(monster.str)}
+				bind:statValue={data.monster.str}
+				statBonus={calcStatBonus(data.monster.str)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Dexterity"
-				bind:statValue={monster.dex}
-				statBonus={calcStatBonus(monster.dex)}
+				bind:statValue={data.monster.dex}
+				statBonus={calcStatBonus(data.monster.dex)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Empathy"
-				bind:statValue={monster.emp}
-				statBonus={calcStatBonus(monster.emp)}
+				bind:statValue={data.monster.emp}
+				statBonus={calcStatBonus(data.monster.emp)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Intelligence"
-				bind:statValue={monster.int}
-				statBonus={calcStatBonus(monster.int)}
+				bind:statValue={data.monster.int}
+				statBonus={calcStatBonus(data.monster.int)}
 				disabled={disableInputs}
 			/>
 
 			<TableBodyRow>
 				<TableBodyCell>Size</TableBodyCell>
 				<TableBodyCell>
-					<Select items={sizes} bind:value={monster.size} disabled={disableInputs} />
+					<Select items={sizes} bind:value={data.monster.size} disabled={disableInputs} />
 				</TableBodyCell>
 				<TableBodyCell />
 			</TableBodyRow>
@@ -246,35 +216,35 @@
 		<TableBody class="divide-y">
 			<TableBodyRow>
 				<TableBodyCell>Body</TableBodyCell>
-				<TableBodyCell>{calcBody(monster)}</TableBodyCell>
+				<TableBodyCell>{calcBody(data.monster)}</TableBodyCell>
 			</TableBodyRow>
 			<TableBodyRow>
 				<TableBodyCell>Mind</TableBodyCell>
-				<TableBodyCell>{calcMind(monster)}</TableBodyCell>
+				<TableBodyCell>{calcMind(data.monster)}</TableBodyCell>
 			</TableBodyRow>
 			<TableBodyRow>
 				<TableBodyCell>Dodge</TableBodyCell>
-				<TableBodyCell>{calcDodge(monster)}</TableBodyCell>
+				<TableBodyCell>{calcDodge(data.monster)}</TableBodyCell>
 			</TableBodyRow>
 			<TableBodyRow>
 				<TableBodyCell>Consider</TableBodyCell>
-				<TableBodyCell>{calcConsider(monster)}</TableBodyCell>
+				<TableBodyCell>{calcConsider(data.monster)}</TableBodyCell>
 			</TableBodyRow>
 			<TableBodyRow>
 				<TableBodyCell>Perception</TableBodyCell>
-				<TableBodyCell>{calcPerception(monster)}</TableBodyCell>
+				<TableBodyCell>{calcPerception(data.monster)}</TableBodyCell>
 			</TableBodyRow>
 			<TableBodyRow>
 				<TableBodyCell>Move</TableBodyCell>
-				<TableBodyCell>{calcMove(monster)}</TableBodyCell>
+				<TableBodyCell>{calcMove(data.monster)}</TableBodyCell>
 			</TableBodyRow>
 			<TableBodyRow>
 				<TableBodyCell>Run</TableBodyCell>
-				<TableBodyCell>{calcRun(monster)}</TableBodyCell>
+				<TableBodyCell>{calcRun(data.monster)}</TableBodyCell>
 			</TableBodyRow>
 			<TableBodyRow>
 				<TableBodyCell>~XP</TableBodyCell>
-				<TableBodyCell>{calcLevel(monster)}</TableBodyCell>
+				<TableBodyCell>{calcLevel(data.monster)}</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
 	</Table>
@@ -286,32 +256,32 @@
 		<TableBody class="divide-y">
 			<StatInput
 				label="Smash"
-				bind:statValue={monster.smash}
-				statBonus={calcTotalSkillBonus(monster.str, monster.smash)}
+				bind:statValue={data.monster.smash}
+				statBonus={calcTotalSkillBonus(data.monster.str, data.monster.smash)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Launch"
-				bind:statValue={monster.launch}
-				statBonus={calcTotalSkillBonus(monster.str, monster.launch)}
+				bind:statValue={data.monster.launch}
+				statBonus={calcTotalSkillBonus(data.monster.str, data.monster.launch)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Athletics"
-				bind:statValue={monster.athletics}
-				statBonus={calcTotalSkillBonus(monster.str, monster.athletics)}
+				bind:statValue={data.monster.athletics}
+				statBonus={calcTotalSkillBonus(data.monster.str, data.monster.athletics)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Physique"
-				bind:statValue={monster.physique}
-				statBonus={calcTotalSkillBonus(monster.str, monster.physique)}
+				bind:statValue={data.monster.physique}
+				statBonus={calcTotalSkillBonus(data.monster.str, data.monster.physique)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Provoke"
-				bind:statValue={monster.provoke}
-				statBonus={calcTotalSkillBonus(monster.str, monster.provoke)}
+				bind:statValue={data.monster.provoke}
+				statBonus={calcTotalSkillBonus(data.monster.str, data.monster.provoke)}
 				disabled={disableInputs}
 			/>
 		</TableBody>
@@ -320,32 +290,32 @@
 		<TableBody class="divide-y">
 			<StatInput
 				label="Accuracy"
-				bind:statValue={monster.accuracy}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.accuracy)}
+				bind:statValue={data.monster.accuracy}
+				statBonus={calcTotalSkillBonus(data.monster.dex, data.monster.accuracy)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Mobility"
-				bind:statValue={monster.mobility}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.mobility)}
+				bind:statValue={data.monster.mobility}
+				statBonus={calcTotalSkillBonus(data.monster.dex, data.monster.mobility)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Thievery"
-				bind:statValue={monster.thievery}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.thievery)}
+				bind:statValue={data.monster.thievery}
+				statBonus={calcTotalSkillBonus(data.monster.dex, data.monster.thievery)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Notice"
-				bind:statValue={monster.notice}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.notice)}
+				bind:statValue={data.monster.notice}
+				statBonus={calcTotalSkillBonus(data.monster.dex, data.monster.notice)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Stealth"
-				bind:statValue={monster.stealth}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.stealth)}
+				bind:statValue={data.monster.stealth}
+				statBonus={calcTotalSkillBonus(data.monster.dex, data.monster.stealth)}
 				disabled={disableInputs}
 			/>
 		</TableBody>
@@ -354,32 +324,32 @@
 		<TableBody class="divide-y">
 			<StatInput
 				label="Animal Handling"
-				bind:statValue={monster.animal_handling}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.animal_handling)}
+				bind:statValue={data.monster.animal_handling}
+				statBonus={calcTotalSkillBonus(data.monster.emp, data.monster.animal_handling)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Deceive"
-				bind:statValue={monster.deceive}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.deceive)}
+				bind:statValue={data.monster.deceive}
+				statBonus={calcTotalSkillBonus(data.monster.emp, data.monster.deceive)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Rapport"
-				bind:statValue={monster.rapport}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.rapport)}
+				bind:statValue={data.monster.rapport}
+				statBonus={calcTotalSkillBonus(data.monster.emp, data.monster.rapport)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Willpower"
-				bind:statValue={monster.willpower}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.willpower)}
+				bind:statValue={data.monster.willpower}
+				statBonus={calcTotalSkillBonus(data.monster.emp, data.monster.willpower)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Mysticism"
-				bind:statValue={monster.mysticism}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.mysticism)}
+				bind:statValue={data.monster.mysticism}
+				statBonus={calcTotalSkillBonus(data.monster.emp, data.monster.mysticism)}
 				disabled={disableInputs}
 			/>
 		</TableBody>
@@ -388,32 +358,32 @@
 		<TableBody class="divide-y">
 			<StatInput
 				label="Craft"
-				bind:statValue={monster.craft}
-				statBonus={calcTotalSkillBonus(monster.int, monster.craft)}
+				bind:statValue={data.monster.craft}
+				statBonus={calcTotalSkillBonus(data.monster.int, data.monster.craft)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Travel"
-				bind:statValue={monster.travel}
-				statBonus={calcTotalSkillBonus(monster.int, monster.travel)}
+				bind:statValue={data.monster.travel}
+				statBonus={calcTotalSkillBonus(data.monster.int, data.monster.travel)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Reasoning"
-				bind:statValue={monster.reasoning}
-				statBonus={calcTotalSkillBonus(monster.int, monster.reasoning)}
+				bind:statValue={data.monster.reasoning}
+				statBonus={calcTotalSkillBonus(data.monster.int, data.monster.reasoning)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Lore"
-				bind:statValue={monster.lore}
-				statBonus={calcTotalSkillBonus(monster.int, monster.lore)}
+				bind:statValue={data.monster.lore}
+				statBonus={calcTotalSkillBonus(data.monster.int, data.monster.lore)}
 				disabled={disableInputs}
 			/>
 			<StatInput
 				label="Resourcefulness"
-				bind:statValue={monster.resourcefulness}
-				statBonus={calcTotalSkillBonus(monster.int, monster.resourcefulness)}
+				bind:statValue={data.monster.resourcefulness}
+				statBonus={calcTotalSkillBonus(data.monster.int, data.monster.resourcefulness)}
 				disabled={disableInputs}
 			/>
 		</TableBody>
@@ -425,12 +395,12 @@
 		<h1 class="text-4xl dark:text-white pb-8">Specialties</h1>
 		<Table striped={true}>
 			<TableBody class="divide-y">
-				{#each Object.keys(monster.specialties || {}) as specialty}
+				{#each Object.keys(data.monster.specialties || {}) as specialty}
 					<SpecialtyInput
 						label={specialty}
-						statSkill={monster.specialties[specialty].skill}
-						bind:statValue={monster.specialties[specialty].value}
-						statBonus={calcSpecialtyBonus(monster, monster.specialties[specialty])}
+						statSkill={data.monster.specialties[specialty].skill}
+						bind:statValue={data.monster.specialties[specialty].value}
+						statBonus={calcSpecialtyBonus(monster, data.monster.specialties[specialty])}
 						removeSpeciality={() => removeSpeciality(specialty)}
 						disabled={disableInputs}
 					/>
@@ -462,7 +432,7 @@
 
 		<Table striped={true}>
 			<TableBody class="divide-y">
-				{#each monster.equipment as { id, name, roll_bonus, damage_formula, skills, specialties }}
+				{#each data.monster.equipment as { id, name, roll_bonus, damage_formula, skills, specialties }}
 					<WeaponRow {monster} {id} {name} {roll_bonus} {damage_formula} {skills} {specialties} />
 				{/each}
 			</TableBody>
@@ -486,7 +456,7 @@
 <h1 class="text-4xl dark:text-white pb-8">Spells</h1>
 <Table striped={true}>
 	<TableBody class="divide-y">
-		{#each monster.spells || [] as { id, name }}
+		{#each data.monster.spells || [] as { id, name }}
 			<TableBodyRow>
 				<TableBodyCell>{name}</TableBodyCell>
 			</TableBodyRow>

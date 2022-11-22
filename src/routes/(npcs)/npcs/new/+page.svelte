@@ -9,7 +9,9 @@
 		Button,
 		Toggle
 	} from 'flowbite-svelte';
-	import { sizes } from '../../../utils/data/sizes';
+	import { createEntity } from '../../../../utils/operations';
+	import { sizes } from '../../../../utils/data/sizes';
+	import { generateMonster } from '../../../../utils/generateMonster';
 
 	let name = '';
 
@@ -64,6 +66,26 @@
 
 	let theme = '';
 	let magicUser = false;
+
+	const createNPC = (event) => {
+		event.preventDefault();
+		const formData = new FormData(event.target);
+		let data = Object.fromEntries(formData);
+
+		switch (data.generation_type) {
+			case 'stats_only':
+				data = generateMonster(data);
+				delete data.generation_type;
+				createEntity('monsters', data);
+				break;
+			case 'full':
+				break;
+			default:
+				delete data.generation_type;
+				createEntity('monsters', data);
+				break;
+		}
+	};
 </script>
 
 <h1 class="text-4xl dark:text-white pb-8">Generate a new NPC</h1>
@@ -74,44 +96,53 @@
 </Label>
 
 {#if selectedGenerationType === 'none'}
-	<form class="mt-16">
+	<form class="mt-16" on:submit={createNPC}>
 		<div class="grid gap-6 mb-6 md:grid-cols-1">
 			<div>
 				<Label for="name" class="mb-2">Name</Label>
-				<Input type="text" id="name" placeholder="A Goblin Warrior" required bind:value={name} />
+				<Input type="text" name="name" placeholder="A Goblin Warrior" required bind:value={name} />
 			</div>
 		</div>
+
+		<input type="hidden" name="generation_type" bind:value={selectedGenerationType} />
 
 		<Button type="submit">Create</Button>
 	</form>
 {:else if selectedGenerationType === 'stats_only'}
-	<form class="mt-16">
+	<form class="mt-16" on:submit={createNPC}>
 		<div class="grid gap-6 mb-6 md:grid-cols-1">
 			<div>
 				<Label for="name" class="mb-2">Name</Label>
-				<Input type="text" id="name" placeholder="A Goblin Warrior" required bind:value={name} />
+				<Input type="text" name="name" placeholder="A Goblin Warrior" required bind:value={name} />
 			</div>
 
 			<div>
 				<Label
 					>Size
-					<Select class="mt-2" items={sizes} bind:value={selectedSize} />
+					<Select class="mt-2" items={sizes} bind:value={selectedSize} name="size" />
 				</Label>
 			</div>
 			<div>
 				<Label
 					>Difficulty
-					<Select class="mt-2" items={difficulties} bind:value={selectedDifficulty} />
+					<Select
+						class="mt-2"
+						items={difficulties}
+						bind:value={selectedDifficulty}
+						name="difficulty"
+					/>
 				</Label>
 			</div>
 		</div>
 
-		<Toggle class="my-4" checked={magicUser}>Magic User?</Toggle>
+		<Toggle class="my-4" checked={magicUser} name="magic_user">Magic User?</Toggle>
+
+		<input type="hidden" name="generation_type" bind:value={selectedGenerationType} />
 
 		<Button type="submit">Create</Button>
 	</form>
 {:else if selectedGenerationType === 'full'}
-	<form class="mt-16">
+	<form class="mt-16" on:submit={createNPC}>
 		<div class="grid gap-6 mb-6 md:grid-cols-1">
 			<div>
 				<Label for="openapi-key" class="mb-2"
@@ -119,7 +150,7 @@
 				>
 				<Input
 					type="text"
-					id="openai-key"
+					name="openai-key"
 					placeholder="OpenAI API Key"
 					required
 					bind:value={name}
@@ -129,35 +160,53 @@
 			<div>
 				<Label
 					>Size
-					<Select class="mt-2" items={sizes} bind:value={selectedSize} />
+					<Select class="mt-2" items={sizes} bind:value={selectedSize} name="size" />
 				</Label>
 			</div>
 			<div>
 				<Label
 					>Difficulty
-					<Select class="mt-2" items={difficulties} bind:value={selectedDifficulty} />
+					<Select
+						class="mt-2"
+						items={difficulties}
+						bind:value={selectedDifficulty}
+						name="difficulty"
+					/>
 				</Label>
 			</div>
 			<div>
 				<Label
 					>Type
-					<Select class="mt-2" items={types} bind:value={selectedType} />
+					<Select class="mt-2" items={types} bind:value={selectedType} name="type" />
 				</Label>
 			</div>
 			{#if selectedType == 'humanoid'}
 				<div>
 					<Label
 						>Race
-						<Select class="mt-2" items={humanoidRaces} bind:value={selectedHumanoidRace} />
+						<Select
+							class="mt-2"
+							items={humanoidRaces}
+							bind:value={selectedHumanoidRace}
+							name="race"
+						/>
 					</Label>
 				</div>
 			{/if}
 			<div>
 				<Label for="theme" class="mb-2">Theme</Label>
-				<Input type="text" id="theme" placeholder="Theme (eg. Aquatic)" bind:value={theme} />
+				<Input
+					type="text"
+					id="theme"
+					placeholder="Theme (eg. Aquatic)"
+					bind:value={theme}
+					name="theme"
+				/>
 			</div>
 
-			<Toggle class="my-4" checked={magicUser}>Magic User?</Toggle>
+			<Toggle class="my-4" checked={magicUser} name="magic_user">Magic User?</Toggle>
+
+			<input type="hidden" name="generation_type" bind:value={selectedGenerationType} />
 
 			<Button type="submit">Create</Button>
 		</div>
