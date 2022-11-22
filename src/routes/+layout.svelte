@@ -48,7 +48,7 @@
 
 	let topDiv = 'w-full md:block md:w-auto absolute top-16 md:top-1 px-8';
 
-	let topMenuDiv = 'container flex flex-wrap justify-end mx-auto pt-0 md:pt-2';
+	let topMenuDiv = 'container flex flex-wrap justify-end mx-auto pt-0 md:pt-2 hidden';
 
 	let topul =
 		'flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-md md:font-medium pt-1 bg-white dark:bg-gray-900 dark:text-white';
