@@ -129,32 +129,13 @@
 	// End Specialties
 </script>
 
-<ButtonGroup class="space-x-px my-4">
-	<Button href={`/npcs/${monster.id}/public`} color="purple">Public View</Button>
-	<Button on:click={() => exportEntity('monsters', data.monster)} color="purple">Export</Button>
-	<Button on:click={() => copyEntity('monsters', data.monster)} color="purple">Make a Copy</Button>
-	<Button
-		on:click={() => deleteEntity('monsters', data.monster)}
-		disabled={disableInputs}
-		color="purple">Delete</Button
-	>
-</ButtonGroup>
-
-<ButtonGroup class="space-x-px my-4">
-	<Button
-		on:click={() => saveEntity('monsters', data.monster)}
-		disabled={disableInputs}
-		color="purple">Save</Button
-	>
-</ButtonGroup>
-
 <SpeedDial
 	trigger="click"
 	defaultClass="absolute right-6 bottom-6 z-50"
 	tooltip="none"
 	color="purple"
 >
-	<SpeedDialButton name="View">
+	<SpeedDialButton name="View" href={`/npcs/${monster.id}/public`}>
 		<svg
 			aria-hidden="true"
 			class="w-6 h-6"
@@ -166,7 +147,7 @@
 			/></svg
 		>
 	</SpeedDialButton>
-	<SpeedDialButton name="Export">
+	<SpeedDialButton name="Export" on:click={() => exportEntity('monsters', data.monster)}>
 		<svg
 			aria-hidden="true"
 			class="w-6 h-6"
@@ -180,7 +161,7 @@
 			/></svg
 		>
 	</SpeedDialButton>
-	<SpeedDialButton name="Copy">
+	<SpeedDialButton name="Copy" on:click={() => copyEntity('monsters', data.monster)}>
 		<svg
 			aria-hidden="true"
 			class="w-6 h-6"
@@ -192,7 +173,11 @@
 			/></svg
 		>
 	</SpeedDialButton>
-	<SpeedDialButton name="Save">
+	<SpeedDialButton
+		name="Save"
+		on:click={() => saveEntity('monsters', data.monster)}
+		disabled={disableInputs}
+	>
 		<svg
 			aria-hidden="true"
 			class="w-6 h-6"

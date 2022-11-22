@@ -59,7 +59,7 @@
 	{#if !sideBarActive || !isMobile}
 		<div class="h-screen overflow-scroll pt-24 px-8">
 			{#if isMobile}
-				<Button on:click={() => (sideBarActive = !sideBarActive)} color="purple">
+				<Button on:click={() => (sideBarActive = !sideBarActive)} color="purple" class="mb-4">
 					<ArrowLeft color="white" class="w-6 h-6" />
 				</Button>
 			{/if}
