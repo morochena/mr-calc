@@ -27,8 +27,6 @@
 	let sideBarActive = false;
 	let isMobile = false;
 	$: isMobile = browser && window.innerWidth < 768;
-
-	console.log(isMobile);
 </script>
 
 <div class="flex">
