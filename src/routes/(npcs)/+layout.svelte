@@ -31,7 +31,7 @@
 
 <div class="flex">
 	{#if sideBarActive || !isMobile}
-		<div class="pt-24 w-full lg:w-96 h-screen overflow-scroll dark:bg-gray-800">
+		<div class="pt-24 w-full lg:w-96 h-screen overflow-y-scroll dark:bg-gray-800">
 			<h4 class="font-bold dark:text-white m-2">NPCs</h4>
 			<Input
 				bind:value={searchTerm}
@@ -47,9 +47,11 @@
 			<Listgroup active>
 				{#each filteredNPCS as npc}
 					<ListgroupItem on:click={gotoNpc(`/npcs/${npc.id}`)}>
-						<span class="ml-2">{npc.name}</span>
 						<div>
-							{#each npc.tags || [] as tag}<Badge class="mx-1">{tag}</Badge>{/each}
+							<p class="ml-2">{npc.name}</p>
+							<div>
+								{#each npc.tags || [] as tag}<Badge class="mx-1">{tag}</Badge>{/each}
+							</div>
 						</div>
 					</ListgroupItem>
 				{/each}
@@ -57,7 +59,7 @@
 		</div>
 	{/if}
 	{#if !sideBarActive || !isMobile}
-		<div class="h-screen overflow-scroll pt-24 px-8">
+		<div class="h-screen overflow-y-scroll pt-24 px-8">
 			{#if isMobile}
 				<Button on:click={() => (sideBarActive = !sideBarActive)} color="purple" class="mb-4">
 					<ArrowLeft color="white" class="w-6 h-6" />
