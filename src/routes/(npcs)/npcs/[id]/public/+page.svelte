@@ -19,7 +19,6 @@
 	export let data;
 	let { monster } = data;
 
-	let ascii = '';
 	let metaText = '';
 	let calculatedStatsText = '';
 	let baseStatsText = '';
@@ -154,15 +153,13 @@ ${printSpells()}
 `;
 </script>
 
-<table>
+<table class="text-white">
 	<tr><td><pre>{metaText}</pre></td></tr>
 	<tr><td><pre>{baseStatsText}</pre></td></tr>
 	<tr><td><pre>{skillText}</pre></td><td><pre>{specialtyText}</pre></td></tr>
 	<tr><td><pre>{equipmentText}</pre></td></tr>
 	<tr><td><pre>{spellText}</pre></td></tr>
 </table>
-
-<pre>{ascii}</pre>
 
 <style>
 	table td,
