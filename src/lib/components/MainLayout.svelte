@@ -21,7 +21,7 @@
 			(searchTerm.toLowerCase() == 'owned' && item.user_id == user.id)
 	);
 
-	let sideBarActive = false;
+	let sideBarActive = true;
 	let isMobile = false;
 	$: isMobile = browser && window.innerWidth < 768;
 </script>
