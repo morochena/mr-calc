@@ -15,7 +15,7 @@
 	import Toastify from 'toastify-js';
 	import 'toastify-js/src/toastify.css';
 	export let data;
-	let { disableInputs, equipment } = data;
+	$: ({ disableInputs, equipment } = data);
 
 	const saveEquipment = async () => {
 		if (typeof equipment.skills === 'string') {

@@ -9,7 +9,7 @@
 	import Calculation from './Calculation.svelte';
 
 	export let data;
-	const { spell, disableInputs } = data;
+	$: ({ disableInputs, spell } = data);
 
 	export const save = async () => {
 		const { error } = await supabaseClient.from('spells').update(spell).eq('id', spell.id);
