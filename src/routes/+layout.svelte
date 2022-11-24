@@ -10,7 +10,7 @@
 
 	// Darkmode component
 	let btnClass =
-		'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 fixed right-2 top-2 z-[100]';
+		'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 ml-2 z-[100]';
 
 	// Side component
 	let siteName = 'Mortal Reins Calculators';
@@ -72,7 +72,6 @@
 	});
 </script>
 
-<DarkMode {btnClass} />
 <Responsive />
 <Side
 	{siteName}
@@ -112,6 +111,7 @@
 						label="Player Characters"
 						icon={{ name: User, class: 'text-red-500 mr-2 dark:text-blue-500' }}
 					/>
+					<DarkMode {btnClass}>Toggle DarkMode</DarkMode>
 				</SidebarGroup>
 			</SidebarWrapper>
 		</Sidebar>
