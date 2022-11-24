@@ -1,5 +1,5 @@
-import { calcRawSkillBonus, calcRawSpecialtyBonus, formattedValue } from "./calculations";
-import skillPool from "./data/skills";
+import skillPool from "../data/skills";
+import { calcRawSkillBonus, calcRawSpecialtyBonus, formattedValue } from "./statCalculations";
 
 export const formattedToHit = toHitValue => {
   return formattedValue(toHitValue);

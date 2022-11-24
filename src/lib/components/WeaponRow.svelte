@@ -1,6 +1,6 @@
 <script>
 	import { TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import { damageCalculation, formattedToHit, toHit } from '$lib/utils/weaponCalculations';
+	import { damageCalculation, formattedToHit, toHit } from '$lib/utils/npcs/weaponCalculations';
 
 	export let monster;
 	export let id;

@@ -1,29 +1,11 @@
 <script>
 	import WeaponRow from '$lib/components/WeaponRow.svelte';
 
-	import {
-		Table,
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell,
-		Checkbox,
-		TableSearch,
-		Label,
-		Input,
-		Textarea,
-		Button,
-		ButtonGroup,
-		Select,
-		SpeedDial,
-		SpeedDialButton
-	} from 'flowbite-svelte';
-	import { supabaseClient } from '$lib/db';
-	import 'toastify-js/src/toastify.css';
-	import StatInput from '$lib/components/statInput.svelte';
 	import SpecialtyInput from '$lib/components/specialtyInput.svelte';
-	import SSelect from 'svelte-select';
+	import StatInput from '$lib/components/statInput.svelte';
+	import { supabaseClient } from '$lib/db';
+	import { sizes } from '$lib/utils/data/sizes';
+	import skillPool from '$lib/utils/data/skills';
 	import {
 		calcBody,
 		calcConsider,
@@ -33,13 +15,26 @@
 		calcMove,
 		calcPerception,
 		calcRun,
+		calcSpecialtyBonus,
 		calcStatBonus,
-		calcTotalSkillBonus,
-		calcSpecialtyBonus
-	} from '$lib/utils/calculations';
-	import skillPool from '$lib/utils/data/skills';
-	import { sizes } from '$lib/utils/data/sizes';
-	import { copyEntity, deleteEntity, exportEntity, saveEntity } from '$lib/utils/operations';
+		calcTotalSkillBonus
+	} from '$lib/utils/npcs/statCalculations';
+	import { copyEntity, exportEntity, saveEntity } from '$lib/utils/operations';
+	import {
+		Button,
+		Input,
+		Label,
+		Select,
+		SpeedDial,
+		SpeedDialButton,
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		Textarea
+	} from 'flowbite-svelte';
+	import SSelect from 'svelte-select';
+	import 'toastify-js/src/toastify.css';
 
 	export let data = {};
 

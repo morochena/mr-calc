@@ -13,7 +13,7 @@
 	} from 'flowbite-svelte';
 	import { range } from '$lib/utils/range';
 	import { availableEffects } from '$lib/utils/data/effects';
-	import { calculateDescription } from '$lib/utils/calculateSpellDescription';
+	import { calculateDescription } from '$lib/utils/spells/calculateSpellDescription';
 	import { XCircle } from 'svelte-heros';
 
 	export let spell;

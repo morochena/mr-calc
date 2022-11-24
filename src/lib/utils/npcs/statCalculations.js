@@ -1,4 +1,4 @@
-import emptySkillPool from "./data/skills";
+import emptySkillPool from "../data/skills";
 
 export const calcStatBonus = (stat) => {
   const value = Math.floor(stat - 5);

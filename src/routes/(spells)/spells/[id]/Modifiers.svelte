@@ -12,7 +12,7 @@
 		TableBodyCell
 	} from 'flowbite-svelte';
 	import { range } from '$lib/utils/range';
-	import { calculateDescription } from '$lib/utils/calculateSpellDescription';
+	import { calculateDescription } from '$lib/utils/spells/calculateSpellDescription';
 	import { availableModifiers } from '$lib/utils/data/modifiers';
 	import { XCircle } from 'svelte-heros';
 

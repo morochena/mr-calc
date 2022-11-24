@@ -1,6 +1,6 @@
 <script>
 	import { Table, TableHead, TableHeadCell, TableBody } from 'flowbite-svelte';
-	import { calcMentalCost, calcSPCost } from '$lib/utils/calculateSpellDescription';
+	import { calcMentalCost, calcSPCost } from '$lib/utils/spells/calculateSpellDescription';
 
 	export let spell;
 	export let disableInputs;

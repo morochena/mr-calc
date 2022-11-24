@@ -1,5 +1,5 @@
 <script>
-	import { damageCalculation, toHit } from '$lib/utils/weaponCalculations';
+	import skillPool from '$lib/utils/data/skills';
 	import {
 		calcBody,
 		calcConsider,
@@ -13,8 +13,8 @@
 		calcStatBonus,
 		calcTotalSkillBonus,
 		formattedValue
-	} from '$lib/utils/calculations';
-	import skillPool from '$lib/utils/data/skills';
+	} from '$lib/utils/npcs/statCalculations';
+	import { damageCalculation, toHit } from '$lib/utils/npcs/weaponCalculations';
 
 	export let data;
 	let { monster } = data;

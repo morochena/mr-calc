@@ -1,5 +1,5 @@
-import skillPool from "./data/skills";
-import { combatSpecialtylist } from "./data/specialties";
+import skillPool from "../data/skills";
+import { combatSpecialtylist } from "../data/specialties";
 
 
 export const generateMonster = (monster, skills = true) => {

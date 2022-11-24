@@ -11,7 +11,7 @@
 	} from 'flowbite-svelte';
 	import { createEntity } from '$lib/utils/operations';
 	import { sizes } from '$lib/utils/data/sizes';
-	import { generateMonster } from '$lib/utils/generateMonster';
+	import { generateMonster } from '$lib/utils/npcs/generateNPC';
 
 	let name = '';
 
