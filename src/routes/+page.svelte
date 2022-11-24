@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { supabaseClient } from '$lib/db';
 	import { Button } from 'flowbite-svelte';
-	import Auth from './Auth.svelte';
+	import Auth from '$lib/components/Auth.svelte';
 
 	const signOut = async () => {
 		await supabaseClient.auth.signOut();

@@ -1,5 +1,5 @@
 <script>
-	import WeaponRow from '../../../../lib/components/WeaponRow.svelte';
+	import WeaponRow from '$lib/components/WeaponRow.svelte';
 
 	import {
 		Table,
