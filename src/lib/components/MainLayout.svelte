@@ -44,13 +44,15 @@
 			<Listgroup active>
 				{#each filteredItems as item}
 					<ListgroupItem on:click={() => gotoItem(`/${itemType}/${item.id}`)}>
-						<div>
-							<p class="ml-2">{item.name}</p>
+						<div class="w-full">
+							<div class="flex column justify-between">
+								<p class="ml-2">{item.name}</p>
+								{#if item.user_id == user.id}
+									<Badge color="dark" class="mx-1">owned</Badge>
+								{/if}
+							</div>
 							<div>
 								{#each item.tags || [] as tag}<Badge class="mx-1">{tag}</Badge>{/each}
-								{#if item.user_id == user.id}
-									<Badge class="mx-1">owned</Badge>
-								{/if}
 							</div>
 						</div>
 					</ListgroupItem>
