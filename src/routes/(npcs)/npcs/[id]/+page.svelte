@@ -1,5 +1,5 @@
 <script>
-	import WeaponRow from '../WeaponRow.svelte';
+	import WeaponRow from '../../../../lib/components/WeaponRow.svelte';
 
 	import {
 		Table,
@@ -21,8 +21,8 @@
 	} from 'flowbite-svelte';
 	import { supabaseClient } from '$lib/db';
 	import 'toastify-js/src/toastify.css';
-	import StatInput from '../../../../components/statInput.svelte';
-	import SpecialtyInput from '../../../../components/specialtyInput.svelte';
+	import StatInput from '$lib/components/statInput.svelte';
+	import SpecialtyInput from '$lib/components/specialtyInput.svelte';
 	import SSelect from 'svelte-select';
 	import {
 		calcBody,
@@ -36,10 +36,10 @@
 		calcStatBonus,
 		calcTotalSkillBonus,
 		calcSpecialtyBonus
-	} from '../../../../utils/calculations';
-	import skillPool from '../../../../utils/data/skills';
-	import { sizes } from '../../../../utils/data/sizes';
-	import { copyEntity, deleteEntity, exportEntity, saveEntity } from '../../../../utils/operations';
+	} from '$lib/utils/calculations';
+	import skillPool from '$lib/utils/data/skills';
+	import { sizes } from '$lib/utils/data/sizes';
+	import { copyEntity, deleteEntity, exportEntity, saveEntity } from '$lib/utils/operations';
 
 	export let data = {};
 

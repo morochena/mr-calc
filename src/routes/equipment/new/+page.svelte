@@ -9,7 +9,7 @@
 		Button,
 		Toggle
 	} from 'flowbite-svelte';
-	import skillPool from '../../../utils/data/skills';
+	import skillPool from '$lib/utils/data/skills';
 
 	let equipmentTypes = [
 		{ name: 'Armor', value: 'armor' },

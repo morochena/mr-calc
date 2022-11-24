@@ -11,9 +11,9 @@
 		TableBodyRow,
 		TableBodyCell
 	} from 'flowbite-svelte';
-	import { range } from '../../../utils/range';
-	import { calculateDescription } from '../../../utils/calculateSpellDescription';
-	import { availableModifiers } from '../../../utils/data/modifiers';
+	import { range } from '$lib/utils/range';
+	import { calculateDescription } from '$lib/utils/calculateSpellDescription';
+	import { availableModifiers } from '$lib/utils/data/modifiers';
 	import { XCircle } from 'svelte-heros';
 
 	export let spell;

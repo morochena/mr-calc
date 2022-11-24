@@ -57,7 +57,7 @@
 		'block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-lg dark:text-white';
 
 	let asideClass =
-		'absolute w-auto border-r-2 dark:border-gray-900 shadow-lg z-50 bg-white h-screen overflow-y-scroll dark:bg-gray-800 dark:text-white';
+		'absolute w-60 border-r-2 dark:border-gray-900 shadow-lg z-50 bg-white h-screen overflow-y-scroll dark:bg-gray-800 dark:text-white';
 
 	let spanClass =
 		'pl-2 self-center text-lg font-semibold text-gray-900 whitespace-nowrap dark:text-white';
@@ -140,7 +140,7 @@
 		</Sidebar>
 	</Nav>
 </Side>
-<main class="lg:pl-72">
+<main class="lg:pl-60">
 	<slot />
 </main>
 

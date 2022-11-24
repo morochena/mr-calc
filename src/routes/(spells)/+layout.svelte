@@ -7,10 +7,10 @@
 
 	/** @type {import('./$types').PageData} */
 	export let data;
-	let { npcs } = data;
+	let { spells } = data;
 
 	let searchTerm = '';
-	$: filteredNPCS = npcs.filter(
+	$: filteredSpells = spells.filter(
 		(item) =>
 			item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			item.tags?.filter((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())).length > 0
@@ -40,17 +40,17 @@
 				defaultClass="block w-full disabled:cursor-not-allowed disabled:opacity-50 rounded-none"
 			/>
 			<Button
-				href="/npcs/new"
+				href="/spells/new"
 				btnClass="text-center font-medium focus:ring-4 inline-flex items-center justify-center px-5 py-2.5 text-sm text-white bg-purple-700 hover:bg-purple-800 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 rounded-lg w-full rounded-none"
 				color="purple">New</Button
 			>
 			<Listgroup active>
-				{#each filteredNPCS as npc}
-					<ListgroupItem on:click={gotoNpc(`/npcs/${npc.id}`)}>
+				{#each filteredSpells as spell}
+					<ListgroupItem on:click={gotoNpc(`/spells/${spell.id}`)}>
 						<div>
-							<p class="ml-2">{npc.name}</p>
+							<p class="ml-2">{spell.name}</p>
 							<div>
-								{#each npc.tags || [] as tag}<Badge class="mx-1">{tag}</Badge>{/each}
+								{#each spell.tags || [] as tag}<Badge class="mx-1">{tag}</Badge>{/each}
 							</div>
 						</div>
 					</ListgroupItem>

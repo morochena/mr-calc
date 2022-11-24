@@ -11,9 +11,9 @@
 		TableBodyRow,
 		Textarea
 	} from 'flowbite-svelte';
-	import { range } from '../../../utils/range';
-	import { availableEffects } from '../../../utils/data/effects';
-	import { calculateDescription } from '../../../utils/calculateSpellDescription';
+	import { range } from '$lib/utils/range';
+	import { availableEffects } from '$lib/utils/data/effects';
+	import { calculateDescription } from '$lib/utils/calculateSpellDescription';
 	import { XCircle } from 'svelte-heros';
 
 	export let spell;

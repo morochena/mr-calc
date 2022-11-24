@@ -9,10 +9,10 @@ export const load: PageLoad = async (event) => {
     throw redirect(303, '/');
   }
 
-  const { data: tableData } = await supabaseClient.from('spells').select('*');
+  const { data: spells } = await supabaseClient.from('spells').select('*');
 
   return {
     user: session.user,
-    tableData
+    spells
   };
 };
