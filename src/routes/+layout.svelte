@@ -68,8 +68,8 @@
 	let navDivClass = 'pb-8';
 
 	let transitionParams = {
-		duration: 500,
-		delay: 100,
+		duration: 200,
+		delay: 0,
 		easing: quartInOut,
 		x: -200
 	};
