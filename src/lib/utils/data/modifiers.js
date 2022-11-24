@@ -67,16 +67,16 @@ export const lastingModifier = (tier, type = null) => {
     baseCost = 6
     multiplier = 8
   }
-  const { selectedModifiers } = modifiers;
-  const modList = get(selectedModifiers)
-  if (modList.filter(mod => mod.name === "Concentration").length > 0) {
-    cost -= 1;
-    baseCost -= 1;
-  }
-  if (modList.filter(mod => mod.name === "Channelling").length > 0) {
-    cost -= 3;
-    baseCost -= 3;
-  }
+  // const { selectedModifiers } = modifiers;
+  // const modList = get(selectedModifiers)
+  // if (modList.filter(mod => mod.name === "Concentration").length > 0) {
+  //   cost -= 1;
+  //   baseCost -= 1;
+  // }
+  // if (modList.filter(mod => mod.name === "Channelling").length > 0) {
+  //   cost -= 3;
+  //   baseCost -= 3;
+  // }
 
   for (let i = 0; i < tier; i++) {
     if (i < 1) {

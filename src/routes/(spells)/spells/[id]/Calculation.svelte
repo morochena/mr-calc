@@ -1,6 +1,22 @@
 <script>
-	import { Table, TableHead, TableHeadCell, TableBody } from 'flowbite-svelte';
-	import { calcMentalCost, calcSPCost } from '$lib/utils/spells/calculateSpellDescription';
+	import {
+		Table,
+		TableHead,
+		TableHeadCell,
+		TableBody,
+		TableBodyRow,
+		TableBodyCell
+	} from 'flowbite-svelte';
+	import {
+		calcMentalCost,
+		calcSPCost,
+		calculateDescription
+	} from '$lib/utils/spells/calculateSpellDescription';
+	import {
+		calculateCostText,
+		processDomainEffects,
+		processDomainModifiers
+	} from '$lib/utils/spells/moreSpellCalculations';
 
 	export let spell;
 	export let disableInputs;
@@ -8,7 +24,7 @@
 
 <h2 class="text-xl mt-8">Summary</h2>
 
-<div class="mt-2 bg-gray-700 rounded-lg py-5 px-6 mb-4 text-sm text-white mb-3">
+<div class="mt-2 dark:bg-gray-700 rounded-lg py-5 px-6 mb-4 text-sm dark:text-white mb-3">
 	<div>
 		<p><strong>Name:</strong> {spell.name}</p>
 		<p><strong>Description:</strong> {spell.spell_data.description}</p>
@@ -26,5 +42,39 @@
 		<TableHeadCell>Tier</TableHeadCell>
 		<TableHeadCell>Description</TableHeadCell>
 	</TableHead>
-	<TableBody />
+	<TableBody>
+		{#each processDomainModifiers(spell) as modifier}
+			<TableBodyRow>
+				<TableBodyCell>
+					{#if !modifier.prerequisite || modifier.prerequisite.length <= 0}
+						•
+					{/if}{modifier.name}
+				</TableBodyCell>
+				<TableBodyCell>{calculateCostText(modifier)}</TableBodyCell>
+				<TableBodyCell>{modifier.tier}</TableBodyCell>
+				<TableBodyCell>{calculateDescription(spell, modifier)}</TableBodyCell>
+				<TableBodyCell>{modifier.notes}</TableBodyCell>
+			</TableBodyRow>
+		{/each}
+		{#each processDomainEffects(spell) as effect}
+			<TableBodyRow>
+				<TableBodyCell>
+					{#if !effect.prerequisite || effect.prerequisite.length <= 0}
+						•
+					{/if}{effect.name}
+				</TableBodyCell>
+				<TableBodyCell>{calculateCostText(effect)}</TableBodyCell>
+				<TableBodyCell>{effect.tier}</TableBodyCell>
+				<TableBodyCell>{calculateDescription(spell, effect)}</TableBodyCell>
+				<TableBodyCell>{effect.notes}</TableBodyCell>
+			</TableBodyRow>
+		{/each}
+		<TableBodyRow>
+			<TableBodyCell>Total</TableBodyCell>
+			<TableBodyCell>10</TableBodyCell>
+			<TableBodyCell />
+			<TableBodyCell />
+			<TableBodyCell />
+		</TableBodyRow>
+	</TableBody>
 </Table>

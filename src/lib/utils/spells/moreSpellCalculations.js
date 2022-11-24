@@ -9,9 +9,9 @@ import {
   hinder,
   illusion,
   warplight,
-} from "./data/availableEffects.js";
+} from "../data/effects.js";
 
-import { element, identity, xlink_attr } from "svelte/internal";
+import { aoeModifier, componentModifier, lastingModifier, rangeModifier, splitModifier } from "../data/modifiers.js";
 
 const runModifier = (modifier) => {
   // evaluates eg. splitModifier(tier)
@@ -67,16 +67,16 @@ let spellCost = 0;
 let illusionDiscount = 0;
 let sMode = "";
 
-isAlchemy.subscribe((value) => {
-  isAlchemyValue = value;
-});
-isRunesmith.subscribe((value) => {
-  isRunesmithValue = value;
-});
-selectedMode.subscribe((value) => {
-  sMode = value;
-  calculateSPCost();
-});
+// isAlchemy.subscribe((value) => {
+//   isAlchemyValue = value;
+// });
+// isRunesmith.subscribe((value) => {
+//   isRunesmithValue = value;
+// });
+// selectedMode.subscribe((value) => {
+//   sMode = value;
+//   calculateSPCost();
+// });
 
 function calcSpellResist(value) {
   return calcSpellCost(value) + 5;
@@ -122,22 +122,26 @@ function verboseSpellMode(value) {
   }
 }
 
-selectedEffects.subscribe((value) => {
-  selectedEffectValues = value;
-  calculateSPCost();
-});
+// selectedEffects.subscribe((value) => {
+//   selectedEffectValues = value;
+//   calculateSPCost();
+// });
 
-selectedModifiers.subscribe((value) => {
-  selectedModifierValues = value;
-  calculateSPCost();
-});
+// selectedModifiers.subscribe((value) => {
+//   selectedModifierValues = value;
+//   calculateSPCost();
+// });
 
-SPCost.subscribe((value) => {
-  spellResist = calcSpellResist(value);
-  spellCost = calcSpellCost(value);
-});
+// SPCost.subscribe((value) => {
+//   spellResist = calcSpellResist(value);
+//   spellCost = calcSpellCost(value);
+// });
 
-function processDomainEffects(sMode, sDomain, sEffects) {
+export function processDomainEffects(spell) {
+  let sMode = spell.spell_data.mode
+  let sDomain = spell.spell_data.domain
+  let sEffects = spell.spell_data.effects
+
   let effects = sEffects;
   effects = structuredClone(effects);
 
@@ -319,7 +323,13 @@ function processDomainEffects(sMode, sDomain, sEffects) {
   return effects;
 }
 
-function processDomainModifiers(sDomain, sModifiers) {
+export function processDomainModifiers(spell) {
+
+  let sDomain = spell.spell_data.domain
+  let sModifiers = spell.spell_data.modifiers
+
+  console.log(sDomain)
+
   let modifiers = sModifiers;
   modifiers = structuredClone(modifiers);
   let domain = sDomain;
@@ -485,7 +495,7 @@ function craftedSpellPreamble(isAlchemyValue, isRunesmithValue, spellCost) {
   return "";
 }
 
-const calculateCostText = (modifier) => {
+export const calculateCostText = (modifier) => {
   let truetier = modifier.tier;
   if (modifier.domaintier) truetier -= modifier.domaintier;
 
