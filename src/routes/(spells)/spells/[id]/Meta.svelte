@@ -35,8 +35,18 @@
 	<Textarea rows="4" bind:value={spell.spell_data.description} disabled={disableInputs} />
 </Label>
 
-<Label class="mt-2"
-	>Domain
+<Label class="mt-2">
+	<span>Tags</span>
+	<Input
+		type="text"
+		bind:value={spell.tags}
+		disabled={disableInputs}
+		placeholder="eg. fire, ranged"
+	/>
+</Label>
+
+<Label class="mt-2">
+	Domain
 	<Select items={domains} bind:value={spell.spell_data.domain} disabled={disableInputs} />
 </Label>
 

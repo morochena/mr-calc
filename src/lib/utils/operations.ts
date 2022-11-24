@@ -3,8 +3,15 @@ import Toastify from 'toastify-js';
 
 export const saveEntity = async (entityType: string, entity) => {
   const entityToSave = { ...entity };
+
   if (typeof entityToSave.tags === 'string') {
     entityToSave.tags = entityToSave.tags.split(',').map((t) => t.trim());
+  }
+  if (typeof entityToSave.skills === 'string') {
+    entityToSave.skills = entityToSave.skills.split(',').map((t) => t.trim());
+  }
+  if (typeof entityToSave.specialties === 'string') {
+    entityToSave.specialties = entityToSave.specialties.split(',').map((t) => t.trim());
   }
 
   // remove spells and equipment

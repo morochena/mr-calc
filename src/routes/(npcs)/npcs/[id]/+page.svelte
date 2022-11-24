@@ -1,8 +1,8 @@
 <script>
 	import WeaponRow from '$lib/components/WeaponRow.svelte';
 
-	import SpecialtyInput from '$lib/components/specialtyInput.svelte';
-	import StatInput from '$lib/components/statInput.svelte';
+	import SpecialtyInput from '$lib/components/SpecialtyInput.svelte';
+	import StatInput from '$lib/components/StatInput.svelte';
 	import { supabaseClient } from '$lib/db';
 	import { sizes } from '$lib/utils/data/sizes';
 	import skillPool from '$lib/utils/data/skills';
