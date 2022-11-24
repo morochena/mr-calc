@@ -2,9 +2,9 @@
 	import MainLayout from '$lib/components/MainLayout.svelte';
 
 	export let data;
-	let { npcs } = data;
+	let { npcs, user } = data;
 </script>
 
-<MainLayout itemType="npcs" items={npcs}>
+<MainLayout itemType="npcs" items={npcs} {user}>
 	<slot />
 </MainLayout>

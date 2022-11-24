@@ -15,13 +15,17 @@
 
 <div class="flex justify-end">
 	<ButtonGroup class="space-x-px my-4">
-		<Button
-			on:click={() => saveEntity('equipment', equipment)}
-			color="purple"
-			disabled={disableInputs}>Save</Button
-		>
+		{#if !disableInputs}
+			<Button
+				on:click={() => saveEntity('equipment', equipment)}
+				color="purple"
+				disabled={disableInputs}>Save</Button
+			>
+		{/if}
 		<Button on:click={() => copyEntity('equipment', equipment)} color="purple">Make a Copy</Button>
-		<Button on:click={deleteEquipment} color="purple" disabled={disableInputs}>Delete</Button>
+		{#if !disableInputs}
+			<Button on:click={deleteEquipment} color="purple" disabled={disableInputs}>Delete</Button>
+		{/if}
 	</ButtonGroup>
 </div>
 

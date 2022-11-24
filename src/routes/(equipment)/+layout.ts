@@ -9,7 +9,7 @@ export const load: PageLoad = async (event) => {
     throw redirect(303, '/');
   }
 
-  const { data: equipment } = await supabaseClient.from('equipment').select('id,name,tags').order('name', { ascending: true });
+  const { data: equipment } = await supabaseClient.from('equipment').select('id,name,tags,user_id').order('name', { ascending: true });
 
   return {
     user: session.user,

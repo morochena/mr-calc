@@ -6,6 +6,7 @@
 
 	export let items;
 	export let itemType;
+	export let user;
 
 	const gotoItem = (href) => {
 		sideBarActive = false;
@@ -16,7 +17,8 @@
 	$: filteredItems = items.filter(
 		(item) =>
 			item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			item.tags?.filter((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())).length > 0
+			item.tags?.filter((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())).length > 0 ||
+			(searchTerm.toLowerCase() == 'owned' && item.user_id == user.id)
 	);
 
 	let sideBarActive = false;
@@ -46,6 +48,9 @@
 							<p class="ml-2">{item.name}</p>
 							<div>
 								{#each item.tags || [] as tag}<Badge class="mx-1">{tag}</Badge>{/each}
+								{#if item.user_id == user.id}
+									<Badge class="mx-1">owned</Badge>
+								{/if}
 							</div>
 						</div>
 					</ListgroupItem>
