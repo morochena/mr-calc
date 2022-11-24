@@ -32,7 +32,7 @@
 
 <Label class="mt-2"
 	>Description
-	<Textarea bind:value={spell.spell_data.description} disabled={disableInputs} />
+	<Textarea rows="4" bind:value={spell.spell_data.description} disabled={disableInputs} />
 </Label>
 
 <Label class="mt-2"

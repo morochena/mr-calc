@@ -31,9 +31,13 @@
 
 <div class="flex justify-end">
 	<ButtonGroup class="space-x-px my-4">
-		<Button on:click={save} color="purple" disabled={disableInputs}>Save</Button>
+		{#if !disableInputs}
+			<Button on:click={save} color="purple" disabled={disableInputs}>Save</Button>
+		{/if}
 		<Button on:click={makeACopy} color="purple">Make a Copy</Button>
-		<Button on:click={deleteSpell} color="purple" disabled={disableInputs}>Delete</Button>
+		{#if !disableInputs}
+			<Button on:click={deleteSpell} color="purple" disabled={disableInputs}>Delete</Button>
+		{/if}
 	</ButtonGroup>
 </div>
 
