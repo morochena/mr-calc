@@ -1,39 +1,16 @@
 <script>
+	import { DarkMode, Sidebar, SidebarGroup, SidebarItem, SidebarWrapper } from 'flowbite-svelte';
 	import '../app.css';
-	import {
-		Sidebar,
-		SidebarWrapper,
-		SidebarGroup,
-		SidebarItem,
-		SidebarDropdownWrapper,
-		SidebarDropdownItem,
-		DarkMode
-	} from 'flowbite-svelte';
 
-	import {
-		ChartPie,
-		ViewGrid,
-		InboxIn,
-		User,
-		Login,
-		Cog,
-		ShoppingBag,
-		ShoppingCart,
-		Table,
-		Key,
-		Beaker,
-		UserGroup,
-		Fire,
-		ShieldCheck
-	} from 'svelte-heros';
+	import { Fire, ShieldCheck, User, UserGroup } from 'svelte-heros';
 
-	import { Side, Nav, Responsive } from 'svelte-sidebar-menu';
+	import { Nav, Responsive, Side } from 'svelte-sidebar-menu';
 
 	import { quartInOut } from 'svelte/easing';
 
 	// Darkmode component
 	let btnClass =
-		'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 fixed right-2 top-24 z-50';
+		'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 fixed right-2 top-2 z-[100]';
 
 	// Side component
 	let siteName = 'Mortal Reins Calculators';
