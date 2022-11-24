@@ -28,8 +28,7 @@
 
 <div class="flex">
 	{#if sideBarActive || !isMobile}
-		<div class="pt-24 grow-0 shrink-0 w-full lg:w-96 h-screen overflow-y-scroll dark:bg-gray-800">
-			<h4 class="font-bold dark:text-white m-2">NPCs</h4>
+		<div class="pt-20 grow-0 shrink-0 w-full lg:w-96 h-screen overflow-y-scroll dark:bg-gray-800">
 			<Input
 				bind:value={searchTerm}
 				type="text"
