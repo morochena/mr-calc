@@ -13,8 +13,9 @@
 	} from 'flowbite-svelte';
 	import { range } from '$lib/utils/range';
 	import { availableEffects } from '$lib/utils/data/effects';
-	import { calculateDescription } from '$lib/utils/spells/calculateSpellDescription';
 	import { XCircle } from 'svelte-heros';
+
+	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
 
 	export let spell;
 	export let disableInputs;
@@ -87,7 +88,7 @@
 					/></TableBodyCell
 				>
 				<TableBodyCell tdClass="px-6 py-4 font-medium flex justify-end"
-					><p>{calculateDescription(spell, effect)}</p>
+					><p>{calculateMOEDescription(spell, effect)}</p>
 					{#if !disableInputs}
 						<button on:click={() => removeEffect(effect)} class="ml-4"><XCircle size="20" /></button
 						>

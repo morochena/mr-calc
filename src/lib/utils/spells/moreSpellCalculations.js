@@ -257,8 +257,6 @@ export function processDomainModifiers(spell) {
   let sDomain = spell.spell_data.domain
   let sModifiers = spell.spell_data.modifiers
 
-  console.log(sDomain)
-
   let modifiers = sModifiers;
   modifiers = structuredClone(modifiers);
   let domain = sDomain;
