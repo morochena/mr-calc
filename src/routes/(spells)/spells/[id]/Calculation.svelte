@@ -2,6 +2,7 @@
 	import { calculateMOECostText } from '$lib/utils/spells/calculateMOECostText';
 	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
 	import { calculateSpellCost } from '$lib/utils/spells/calculateSpellCost';
+	import { calculateSpellDescription } from '$lib/utils/spells/calculateSpellDescription';
 	import { calculateTotalSP } from '$lib/utils/spells/calculateSpellSP';
 	import {
 		processDomainEffects,
@@ -30,6 +31,12 @@
 		<p><strong>Mode:</strong> {spell.spell_data.mode}</p>
 		<p><strong>Spell Difficulty: {calculateTotalSP(spell).cost}</strong></p>
 		<p><strong>Mental Cost:</strong> {calculateSpellCost(spell)}</p>
+	</div>
+	<hr class="my-3" />
+	<div>
+		<p>
+			{calculateSpellDescription(spell)}
+		</p>
 	</div>
 </div>
 

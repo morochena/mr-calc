@@ -1,15 +1,5 @@
 <script>
-	import {
-		Input,
-		Select,
-		Label,
-		Helper,
-		Checkbox,
-		Textarea,
-		Button,
-		Toggle
-	} from 'flowbite-svelte';
-	import skillPool from '$lib/utils/data/skills';
+	import { Button, Input, Label, Select, Textarea } from 'flowbite-svelte';
 
 	let equipmentTypes = [
 		{ name: 'Armor', value: 'armor' },
