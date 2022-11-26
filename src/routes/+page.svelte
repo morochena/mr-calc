@@ -9,7 +9,7 @@
 	};
 </script>
 
-<div class="p-16 pt-24 text-white">
+<div class="p-16 pt-24 dark:text-white">
 	<h1 class="text-3xl dark:text-white pb-8">Welcome to Mortal Reins Calculators</h1>
 
 	<div class="row flex">
