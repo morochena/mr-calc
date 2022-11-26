@@ -19,6 +19,8 @@
 
 	export let spell;
 	export let disableInputs;
+	export let addModifier;
+	export let removeModifier;
 
 	const availableModifierOptions = availableModifiers.map((modifier) => ({
 		name: modifier.name,
@@ -26,26 +28,15 @@
 	}));
 
 	let selectedModifier = null;
-	const addModifier = () => {
-		if (selectedModifier) {
-			spell = {
-				...spell,
-				spell_data: {
-					...spell.spell_data,
-					modifiers: [...spell.spell_data.modifiers, selectedModifier]
-				}
-			};
-			selectedModifier = null;
-		}
+	const tryAddModifier = () => {
+		if (!selectedModifier) return;
+		addModifier(selectedModifier);
+		selectedModifier = null;
 	};
-	const removeModifier = (modifier) => {
-		spell = {
-			...spell,
-			spell_data: {
-				...spell.spell_data,
-				modifiers: spell.spell_data.modifiers.filter((m) => m !== modifier)
-			}
-		};
+
+	const tryRemoveModifier = (modifier) => {
+		if (disableInputs) return;
+		removeModifier(modifier);
 	};
 </script>
 
@@ -54,7 +45,7 @@
 {#if selectedModifier?.description}
 	<Alert class="mt-2"><span>{selectedModifier.description}</span></Alert>
 {/if}
-<Button on:click={addModifier} class="mt-2" disabled={disableInputs || !selectedModifier}
+<Button on:click={tryAddModifier} class="mt-2" disabled={disableInputs || !selectedModifier}
 	>Add Modifier</Button
 >
 
@@ -90,7 +81,7 @@
 				<TableBodyCell tdClass="px-6 py-4 font-medium flex justify-end"
 					><p>{calculateMOEDescription(spell, modifier)}</p>
 					{#if !disableInputs}
-						<button on:click={() => removeModifier(modifier)} class="ml-4"
+						<button on:click={() => tryRemoveModifier(modifier)} class="ml-4"
 							><XCircle size="20" /></button
 						>
 					{/if}

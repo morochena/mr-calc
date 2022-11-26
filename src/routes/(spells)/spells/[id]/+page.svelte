@@ -27,6 +27,44 @@
 	};
 	export const makeACopy = async () => {};
 	export const deleteSpell = async () => {};
+
+	const addModifier = (modifier) => {
+		spell = {
+			...spell,
+			spell_data: {
+				...spell.spell_data,
+				modifiers: [...spell.spell_data.modifiers, modifier]
+			}
+		};
+	};
+	const removeModifier = (modifier) => {
+		spell = {
+			...spell,
+			spell_data: {
+				...spell.spell_data,
+				modifiers: spell.spell_data.modifiers.filter((m) => m !== modifier)
+			}
+		};
+	};
+
+	const addEffect = (effect) => {
+		spell = {
+			...spell,
+			spell_data: {
+				...spell.spell_data,
+				effects: [...spell.spell_data.effects, effect]
+			}
+		};
+	};
+	const removeEffect = (effect) => {
+		spell = {
+			...spell,
+			spell_data: {
+				...spell.spell_data,
+				effects: spell.spell_data.effects.filter((m) => m !== effect)
+			}
+		};
+	};
 </script>
 
 <div class="flex justify-end">
@@ -42,6 +80,6 @@
 </div>
 
 <Meta bind:spell {disableInputs} />
-<Modifiers bind:spell {disableInputs} />
-<Effects bind:spell {disableInputs} />
+<Modifiers bind:spell {disableInputs} {addModifier} {removeModifier} />
+<Effects bind:spell {disableInputs} {addEffect} {removeEffect} />
 <Calculation {spell} {disableInputs} />

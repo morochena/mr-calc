@@ -19,6 +19,8 @@
 
 	export let spell;
 	export let disableInputs;
+	export let addEffect;
+	export let removeEffect;
 
 	let availableEffectOptions = availableEffects.map((effect) => ({
 		name: effect.name,
@@ -26,26 +28,15 @@
 	}));
 
 	let selectedEffect = null;
-	const addEffect = () => {
-		if (selectedEffect) {
-			spell = {
-				...spell,
-				spell_data: {
-					...spell.spell_data,
-					effects: [...spell.spell_data.effects, selectedEffect]
-				}
-			};
-			selectedEffect = null;
-		}
+	const tryAddEffect = () => {
+		if (!selectedEffect) return;
+		addEffect(selectedEffect);
+		selectedEffect = null;
 	};
-	const removeEffect = (effect) => {
-		spell = {
-			...spell,
-			spell_data: {
-				...spell.spell_data,
-				effects: spell.spell_data.effects.filter((m) => m !== effect)
-			}
-		};
+
+	const tryRemoveEffect = (effect) => {
+		if (disableInputs) return;
+		removeEffect(effect);
 	};
 </script>
 
@@ -54,7 +45,7 @@
 {#if selectedEffect?.description}
 	<Alert class="mt-2"><span>{selectedEffect.description}</span></Alert>
 {/if}
-<Button on:click={addEffect} class="mt-2" disabled={disableInputs || !selectedEffect}
+<Button on:click={tryAddEffect} class="mt-2" disabled={disableInputs || !selectedEffect}
 	>Add Effect</Button
 >
 
@@ -90,7 +81,8 @@
 				<TableBodyCell tdClass="px-6 py-4 font-medium flex justify-end"
 					><p>{calculateMOEDescription(spell, effect)}</p>
 					{#if !disableInputs}
-						<button on:click={() => removeEffect(effect)} class="ml-4"><XCircle size="20" /></button
+						<button on:click={() => tryRemoveEffect(effect)} class="ml-4"
+							><XCircle size="20" /></button
 						>
 					{/if}
 				</TableBodyCell>
