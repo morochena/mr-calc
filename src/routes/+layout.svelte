@@ -117,6 +117,7 @@
 		</Sidebar>
 	</Nav>
 </Side>
+<DarkMode btnclass="hidden">Toggle DarkMode</DarkMode>
 <main class="lg:pl-60">
 	<slot />
 </main>
