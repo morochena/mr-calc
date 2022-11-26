@@ -19,6 +19,7 @@ import { thwartStat } from "./functions/thwartStat";
 import { volume } from "./functions/volume";
 
 import { currentSpell } from "$lib/stores/currentSpellStore";
+import { calculateSpellCost } from "./calculateSpellCost";
 
 // this is used to dynamically evaluate functions while maintaining their name in minified builds
 const functionMap = {
@@ -43,8 +44,8 @@ const functionMap = {
   'halftime': halftime
 }
 
-export const calculateMOEDescription = (spell, effect) => {
-  let formattedDescription = effect.description;
+export const calculateMOEDescription = (spell, moe) => {
+  let formattedDescription = moe.description;
   let evalMatch = formattedDescription.match(/\[(.*?)\]/g);
 
   // this is highly unfortunate, but some modifiers and effects reference other modififers so we need to set the spell here 
@@ -54,10 +55,10 @@ export const calculateMOEDescription = (spell, effect) => {
   if (evalMatch) {
     evalMatch.forEach(e => {
       let evalString = e;
-      evalString = evalString.replace("tier", "effect.tier");
-      evalString = evalString.replace("notes", "effect.notes");
+      evalString = evalString.replace("tier", "moe.tier");
+      evalString = evalString.replace("notes", "moe.notes");
       evalString = evalString.replace("domain", "spell.spell_data.domain");
-      evalString = evalString.replace("cost", calcSpellCost(spell));
+      evalString = evalString.replace("cost", calculateSpellCost(spell));
       evalString = evalString.replace("resist", calcSpellResist(spell));
       evalString = evalString.replace("[", "");
       evalString = evalString.replace("]", "");
@@ -67,7 +68,7 @@ export const calculateMOEDescription = (spell, effect) => {
         evalResult = eval(evalString);
       } catch (error) {
         console.warn('evalMatch: could not eval:', evalString);
-        console.warn(effect)
+        console.warn(moe)
         console.warn(error.message)
         console.warn("--------------------------------")
         evalResult = `Error ${error}`;
@@ -96,7 +97,7 @@ export const calculateMOEDescription = (spell, effect) => {
         evalResult = eval(evalString);
       } catch (error) {
         console.warn('funcMatch: could not eval:', evalString);
-        console.warn("original effect", effect)
+        console.warn("original moe", moe)
         console.warn(error.message)
         console.warn("--------------------------------")
         evalResult = `Error ${error}`;
@@ -110,10 +111,6 @@ export const calculateMOEDescription = (spell, effect) => {
   return formattedDescription;
 }
 
-function calcSpellCost(spell) {
-  return 5;
-}
-
 function calcSpellResist(spell) {
-  return 5;
+  return calculateSpellCost(spell) + 5;
 }

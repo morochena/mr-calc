@@ -1,19 +1,20 @@
 <script>
-	import {
-		Table,
-		TableHead,
-		TableHeadCell,
-		TableBody,
-		TableBodyRow,
-		TableBodyCell
-	} from 'flowbite-svelte';
-	import { calcMentalCost, calcSPCost } from '$lib/utils/spells/calculateSpellDescription';
 	import { calculateMOECostText } from '$lib/utils/spells/calculateMOECostText';
+	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
+	import { calculateSpellCost } from '$lib/utils/spells/calculateSpellCost';
+	import { calculateTotalSP } from '$lib/utils/spells/calculateSpellSP';
 	import {
 		processDomainEffects,
 		processDomainModifiers
 	} from '$lib/utils/spells/moreSpellCalculations';
-	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
+	import {
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell
+	} from 'flowbite-svelte';
 
 	export let spell;
 	export let disableInputs;
@@ -27,8 +28,8 @@
 		<p><strong>Description:</strong> {spell.spell_data.description}</p>
 		<p><strong>Domain:</strong> {spell.spell_data.domain}</p>
 		<p><strong>Mode:</strong> {spell.spell_data.mode}</p>
-		<p><strong>Spell Difficulty: {calcSPCost(spell)}</strong></p>
-		<p><strong>Mental Cost:</strong> {calcMentalCost(spell)}</p>
+		<p><strong>Spell Difficulty: {calculateTotalSP(spell).cost}</strong></p>
+		<p><strong>Mental Cost:</strong> {calculateSpellCost(spell)}</p>
 	</div>
 </div>
 
@@ -37,6 +38,7 @@
 		<TableHeadCell>Name</TableHeadCell>
 		<TableHeadCell>SP</TableHeadCell>
 		<TableHeadCell>Tier</TableHeadCell>
+		<TableHeadCell>Notes</TableHeadCell>
 		<TableHeadCell>Description</TableHeadCell>
 	</TableHead>
 	<TableBody>
@@ -49,8 +51,8 @@
 				</TableBodyCell>
 				<TableBodyCell>{calculateMOECostText(modifier)}</TableBodyCell>
 				<TableBodyCell>{modifier.tier}</TableBodyCell>
-				<TableBodyCell>{calculateMOEDescription(spell, modifier)}</TableBodyCell>
 				<TableBodyCell>{modifier.notes}</TableBodyCell>
+				<TableBodyCell>{calculateMOEDescription(spell, modifier)}</TableBodyCell>
 			</TableBodyRow>
 		{/each}
 		{#each processDomainEffects(spell) as effect}
@@ -62,13 +64,16 @@
 				</TableBodyCell>
 				<TableBodyCell>{calculateMOECostText(effect)}</TableBodyCell>
 				<TableBodyCell>{effect.tier}</TableBodyCell>
-				<TableBodyCell>{calculateMOEDescription(spell, effect)}</TableBodyCell>
 				<TableBodyCell>{effect.notes}</TableBodyCell>
+				<TableBodyCell>{calculateMOEDescription(spell, effect)}</TableBodyCell>
 			</TableBodyRow>
 		{/each}
 		<TableBodyRow>
 			<TableBodyCell>Total</TableBodyCell>
-			<TableBodyCell>10</TableBodyCell>
+			<TableBodyCell
+				>{calculateTotalSP(spell).adds} x {calculateTotalSP(spell).mults.toFixed(2)} =
+				<strong>{calculateTotalSP(spell).cost}</strong></TableBodyCell
+			>
 			<TableBodyCell />
 			<TableBodyCell />
 			<TableBodyCell />

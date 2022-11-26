@@ -3,27 +3,23 @@ import { splitModifier, rangeModifier, aoeModifier, lastingModifier, componentMo
 
 
 export const calculateTotalSP = (spell) => {
-  const { effects, modifiers } = spell
-  let total = 0;
-
+  const { effects, modifiers } = spell.spell_data
   const effectsAndModifiers = effects.concat(modifiers)
 
-  const rawValues = calculateSPCostParam(effectsAndModifiers)
-  return total;
-}
-
-function calculateSPCostParam(effectAndModifierValues) {
   let totalSPAdds = 0;
   let totalSPMults = 1;
 
-  let modifierCost = effectAndModifierValues.reduce((total, modifier) => {
+  const domain = spell.spell_data.domain
+  const mode = spell.spell_data.mode
+
+  let modifierCost = effectsAndModifiers.reduce((total, modifier) => {
     return total + resolveCost(modifier);
   }, 0);
 
-  if (get(selectedDomain) === "Illusion")
+  if (domain === "Illusion")
     modifierCost -= calcIllusionDiscount(modifierCost, selectedEffectValues);
 
-  if (sMode === "Unpredicable") {
+  if (mode === "Unpredicable") {
     modifierCost += 4;
   }
 
@@ -31,7 +27,7 @@ function calculateSPCostParam(effectAndModifierValues) {
 
   let paramSPCost = modifierCost;
 
-  let spMultipliers = effectAndModifierValues.filter(
+  let spMultipliers = effectsAndModifiers.filter(
     (modifier) =>
       modifier.modifierType === "multiply" ||
       modifier.modifierType === "functionMultiply"
@@ -50,7 +46,7 @@ function calculateSPCostParam(effectAndModifierValues) {
   paramSPCost = Math.ceil(paramSPCost);
   paramSPCost = Math.max(paramSPCost, 0);
 
-  return paramSPCost;
+  return { cost: paramSPCost, adds: totalSPAdds, mults: totalSPMults };
 }
 
 
