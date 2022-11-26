@@ -41,7 +41,7 @@
 	</ButtonGroup>
 </div>
 
-<Meta {spell} {disableInputs} />
-<Modifiers {spell} {disableInputs} />
-<Effects {spell} {disableInputs} />
+<Meta bind:spell {disableInputs} />
+<Modifiers bind:spell {disableInputs} />
+<Effects bind:spell {disableInputs} />
 <Calculation {spell} {disableInputs} />

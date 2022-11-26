@@ -7,16 +7,13 @@
 		TableBodyRow,
 		TableBodyCell
 	} from 'flowbite-svelte';
+	import { calcMentalCost, calcSPCost } from '$lib/utils/spells/calculateSpellDescription';
+	import { calculateMOECostText } from '$lib/utils/spells/calculateMOECostText';
 	import {
-		calcMentalCost,
-		calcSPCost,
-		calculateDescription
-	} from '$lib/utils/spells/calculateSpellDescription';
-	import {
-		calculateCostText,
 		processDomainEffects,
 		processDomainModifiers
 	} from '$lib/utils/spells/moreSpellCalculations';
+	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
 
 	export let spell;
 	export let disableInputs;
@@ -50,9 +47,9 @@
 						•
 					{/if}{modifier.name}
 				</TableBodyCell>
-				<TableBodyCell>{calculateCostText(modifier)}</TableBodyCell>
+				<TableBodyCell>{calculateMOECostText(modifier)}</TableBodyCell>
 				<TableBodyCell>{modifier.tier}</TableBodyCell>
-				<TableBodyCell>{calculateDescription(spell, modifier)}</TableBodyCell>
+				<TableBodyCell>{calculateMOEDescription(spell, modifier)}</TableBodyCell>
 				<TableBodyCell>{modifier.notes}</TableBodyCell>
 			</TableBodyRow>
 		{/each}
@@ -63,9 +60,9 @@
 						•
 					{/if}{effect.name}
 				</TableBodyCell>
-				<TableBodyCell>{calculateCostText(effect)}</TableBodyCell>
+				<TableBodyCell>{calculateMOECostText(effect)}</TableBodyCell>
 				<TableBodyCell>{effect.tier}</TableBodyCell>
-				<TableBodyCell>{calculateDescription(spell, effect)}</TableBodyCell>
+				<TableBodyCell>{calculateMOEDescription(spell, effect)}</TableBodyCell>
 				<TableBodyCell>{effect.notes}</TableBodyCell>
 			</TableBodyRow>
 		{/each}

@@ -1,20 +1,21 @@
 <script>
+	import { availableModifiers } from '$lib/utils/data/modifiers';
+	import { range } from '$lib/utils/range';
 	import {
 		Alert,
-		Select,
 		Button,
+		Select,
 		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
 		TableHead,
 		TableHeadCell,
-		TableBody,
-		Textarea,
-		TableBodyRow,
-		TableBodyCell
+		Textarea
 	} from 'flowbite-svelte';
-	import { range } from '$lib/utils/range';
-	import { calculateDescription } from '$lib/utils/spells/calculateSpellDescription';
-	import { availableModifiers } from '$lib/utils/data/modifiers';
 	import { XCircle } from 'svelte-heros';
+
+	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
 
 	export let spell;
 	export let disableInputs;
@@ -71,6 +72,7 @@
 				<TableBodyCell>
 					{#if modifier.hasTiers}
 						<Select
+							disabled={disableInputs}
 							class="w-20"
 							items={range(1, modifier.maxTier + 1 || 50, 1).map((e) => ({ name: e, value: e }))}
 							bind:value={modifier.tier}
@@ -86,10 +88,12 @@
 					/></TableBodyCell
 				>
 				<TableBodyCell tdClass="px-6 py-4 font-medium flex justify-end"
-					><p>{calculateDescription(spell, modifier)}</p>
-					<button on:click={() => removeModifier(modifier)} class="ml-4"
-						><XCircle size="20" /></button
-					>
+					><p>{calculateMOEDescription(spell, modifier)}</p>
+					{#if !disableInputs}
+						<button on:click={() => removeModifier(modifier)} class="ml-4"
+							><XCircle size="20" /></button
+						>
+					{/if}
 				</TableBodyCell>
 			</TableBodyRow>
 		{/each}

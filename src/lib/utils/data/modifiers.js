@@ -1,5 +1,6 @@
 
-import { get } from 'svelte/store';
+
+
 
 export const splitModifier = (tier) => {
   if (tier == 1) return 8;

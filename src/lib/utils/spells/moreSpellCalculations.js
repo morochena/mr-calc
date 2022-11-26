@@ -13,70 +13,14 @@ import {
 
 import { aoeModifier, componentModifier, lastingModifier, rangeModifier, splitModifier } from "../data/modifiers.js";
 
-const runModifier = (modifier) => {
-  // evaluates eg. splitModifier(tier)
-  let truetier = modifier.tier;
-  if (modifier.domaintier) truetier -= modifier.domaintier;
-  switch (modifier.amount) {
-    case "splitModifier":
-      return splitModifier(truetier);
-    case "rangeModifier":
-      return rangeModifier(truetier);
-    case "aoeModifier":
-      return aoeModifier(truetier);
-    case "lastingModifier":
-      return lastingModifier(truetier, modifier.name);
-    case "componentModifier":
-      return componentModifier(truetier);
-    case "createElement":
-      return createElement(truetier);
-    case "movementCondition":
-      return movementCondition(truetier);
-    case "geas":
-      return geas(truetier);
-    case "sound":
-      return sound(truetier);
-    case "plague":
-      return plague(truetier);
-    case "madness":
-      return madness(truetier);
-    case "help":
-      return help(truetier);
-    case "hinder":
-      return hinder(truetier);
-    case "illusion":
-      return illusion(truetier);
-    case "warplight":
-      return warplight(truetier);
-  }
+export const calculateSpellSP = (spell) => {
+  let spellSPCost = 0;
+  const { effects, modifiers } = spell.spell_data;
+  const effectAndModifierValues = effects.concat(modifiers);
+  spellSPCost = calculateSPCostParam(effectAndModifierValues);
 
-  console.log("modifier case not handled: ", modifier.amount);
-
-  return 0;
-};
-
-let isAlchemyValue = false;
-let isRunesmithValue = false;
-let selectedModifierValues = [];
-let selectedEffectValues = [];
-let totalSPCost = 0;
-let totalSPAdds = 0;
-let totalSPMults = 0;
-let spellResist = 0;
-let spellCost = 0;
-let illusionDiscount = 0;
-let sMode = "";
-
-// isAlchemy.subscribe((value) => {
-//   isAlchemyValue = value;
-// });
-// isRunesmith.subscribe((value) => {
-//   isRunesmithValue = value;
-// });
-// selectedMode.subscribe((value) => {
-//   sMode = value;
-//   calculateSPCost();
-// });
+  return spellSPCost;
+}
 
 function calcSpellResist(value) {
   return calcSpellCost(value) + 5;
@@ -121,21 +65,6 @@ function verboseSpellMode(value) {
       return "casts a spell by rolling a skill check versus the Spell Difficulty and Winds of Magic";
   }
 }
-
-// selectedEffects.subscribe((value) => {
-//   selectedEffectValues = value;
-//   calculateSPCost();
-// });
-
-// selectedModifiers.subscribe((value) => {
-//   selectedModifierValues = value;
-//   calculateSPCost();
-// });
-
-// SPCost.subscribe((value) => {
-//   spellResist = calcSpellResist(value);
-//   spellCost = calcSpellCost(value);
-// });
 
 export function processDomainEffects(spell) {
   let sMode = spell.spell_data.mode
@@ -374,70 +303,7 @@ function calcIllusionDiscount(total, effects) {
   return illusionDiscount;
 }
 
-function resolveCost(modifier) {
-  let cost = 0;
-  switch (modifier.modifierType) {
-    case "add":
-      cost = modifier.amount * modifier.tier;
-      break;
-    case "reduce":
-      cost = modifier.amount * modifier.tier * -1;
-      break;
-    case "function":
-      cost = runModifier(modifier);
-      break;
-    case "functionMultiply":
-      if (modifier.name.includes("Lasting")) {
-        cost = runModifier(modifier)[0];
-      } else {
-        cost = runModifier(modifier)[0];
-      }
-      break;
-  }
-  return cost;
-}
 
-function calculateSPCostParam(effectAndModifierValues) {
-  totalSPAdds = 0;
-
-  totalSPMults = 1;
-
-  let modifierCost = effectAndModifierValues.reduce((total, modifier) => {
-    return total + resolveCost(modifier);
-  }, 0);
-
-  if (get(selectedDomain) === "Illusion")
-    modifierCost -= calcIllusionDiscount(modifierCost, selectedEffectValues);
-
-  if (sMode === "Unpredicable") {
-    modifierCost += 4;
-  }
-
-  totalSPAdds = modifierCost;
-
-  let paramSPCost = modifierCost;
-
-  let spMultipliers = effectAndModifierValues.filter(
-    (modifier) =>
-      modifier.modifierType === "multiply" ||
-      modifier.modifierType === "functionMultiply"
-  );
-
-  spMultipliers.forEach((modifier) => {
-    if (modifier.modifierType === "functionMultiply") {
-      paramSPCost *= runModifier(modifier)[1];
-      totalSPMults *= runModifier(modifier)[1];
-    } else {
-      paramSPCost *= modifier.amount;
-      totalSPMults *= modifier.amount;
-    }
-  });
-
-  paramSPCost = Math.ceil(paramSPCost);
-  paramSPCost = Math.max(paramSPCost, 0);
-
-  return paramSPCost;
-}
 
 function calcNumberOfPowers(effects, modifiers) {
   let sum = 0;
@@ -495,28 +361,7 @@ function craftedSpellPreamble(isAlchemyValue, isRunesmithValue, spellCost) {
   return "";
 }
 
-export const calculateCostText = (modifier) => {
-  let truetier = modifier.tier;
-  if (modifier.domaintier) truetier -= modifier.domaintier;
 
-  switch (modifier.modifierType) {
-    case "add":
-      return `+${modifier.amount * truetier}`;
-    case "reduce":
-      return `${modifier.amount * truetier * -1}`;
-    case "multiply":
-      return `x${modifier.amount * truetier}`;
-    case "function":
-      const amount = runModifier(modifier);
-      const operator = amount > 0 ? "+" : "";
-      return `${operator}${amount}`;
-    case "functionMultiply":
-      const amountM = runModifier(modifier)[0];
-      const operatorM = amountM > 0 ? "+" : "";
-      return `x${runModifier(modifier)[1]} and ${operatorM}${runModifier(modifier)[0]
-        }`;
-  }
-};
 
 const threeSpaces = "\t";
 

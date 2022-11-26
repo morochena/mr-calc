@@ -71,6 +71,7 @@
 				<TableBodyCell>
 					{#if effect.hasTiers}
 						<Select
+							disabled={disableInputs}
 							class="w-20"
 							items={range(1, effect.maxTier + 1 || 50, 1).map((e) => ({ name: e, value: e }))}
 							bind:value={effect.tier}
@@ -87,7 +88,10 @@
 				>
 				<TableBodyCell tdClass="px-6 py-4 font-medium flex justify-end"
 					><p>{calculateDescription(spell, effect)}</p>
-					<button on:click={() => removeEffect(effect)} class="ml-4"><XCircle size="20" /></button>
+					{#if !disableInputs}
+						<button on:click={() => removeEffect(effect)} class="ml-4"><XCircle size="20" /></button
+						>
+					{/if}
 				</TableBodyCell>
 			</TableBodyRow>
 		{/each}
