@@ -1,6 +1,12 @@
+import { get } from 'svelte/store'
+import { currentSpell } from "$lib/stores/currentSpellStore"
 
 export function aoeArea(tier) {
   let area = 0;
+
+  const spell = get(currentSpell)
+  const modifiers = spell.spell_data.modifiers
+  const domain = spell.spell_data.domain
 
   for (let i = 0; i < tier; i++) {
     if (i < 10) {
@@ -15,15 +21,11 @@ export function aoeArea(tier) {
   }
 
   // double area if aura is selected
-  const { selectedModifiers } = modifiers;
-  const modList = get(selectedModifiers);
-  if (modList.filter(mod => mod.name === "Aura").length > 0) {
+  if (modifiers.filter(mod => mod.name === "Aura").length > 0) {
     area *= 2;
   }
 
   // double area if water is selected
-  const { selectedDomain } = meta;
-  const domain = get(selectedDomain);
   if (domain === "Water") {
     area *= 2;
   }

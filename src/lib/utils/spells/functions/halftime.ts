@@ -1,6 +1,12 @@
+import { get } from 'svelte/store'
+import { currentSpell } from "$lib/stores/currentSpellStore"
+
 export function halftime() {
-  const { selectedModifiers } = modifiers;
-  const modList = get(selectedModifiers).filter(mod => mod.name.includes("Lasting"));
+
+  const spell = get(currentSpell)
+  const modifiers = spell.spell_data.modifiers
+
+  const modList = modifiers.filter(mod => mod.name.includes("Lasting"));
   if (modList.length <= 0) {
     return "Lasting modifier not found";
   }

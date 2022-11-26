@@ -1,22 +1,24 @@
-import { elementAmount } from "./functions/elementAmount";
-import { calcComponentCost } from "./functions/calcComponentCost";
-import { movementConditionDesc } from "./functions/movementConditionDesc";
-import { light } from "./functions/light";
-import { noise } from "./functions/noise";
-import { sound } from "./functions/sound";
-import { volume } from "./functions/volume";
-import { sense } from "./functions/sense";
-import { thoughts } from "./functions/thoughts";
-import { comms } from "./functions/comms";
-import { temporaryBodySideEffect } from "./functions/temporaryBodySideEffect";
-import { damagingCondition } from "./functions/damagingCondition";
-import { thwartStat } from "./functions/thwartStat";
-import { rangeMeters } from "./functions/rangeMeters";
-import { radiusCalc } from "./functions/radiusCalc";
-import { rectWidthCalc } from "./functions/rectWidthCalc";
-import { coneHeightCalc } from "./functions/coneHeightCalc";
 import { aoeArea } from "./functions/aoeArea";
+import { calcComponentCost } from "./functions/calcComponentCost";
+import { comms } from "./functions/comms";
+import { coneHeightCalc } from "./functions/coneHeightCalc";
+import { damagingCondition } from "./functions/damagingCondition";
+import { elementAmount } from "./functions/elementAmount";
 import { halftime } from "./functions/halftime";
+import { light } from "./functions/light";
+import { movementConditionDesc } from "./functions/movementConditionDesc";
+import { noise } from "./functions/noise";
+import { radiusCalc } from "./functions/radiusCalc";
+import { rangeMeters } from "./functions/rangeMeters";
+import { rectWidthCalc } from "./functions/rectWidthCalc";
+import { sense } from "./functions/sense";
+import { sound } from "./functions/sound";
+import { temporaryBodySideEffect } from "./functions/temporaryBodySideEffect";
+import { thoughts } from "./functions/thoughts";
+import { thwartStat } from "./functions/thwartStat";
+import { volume } from "./functions/volume";
+
+import { currentSpell } from "$lib/stores/currentSpellStore";
 
 // this is used to dynamically evaluate functions while maintaining their name in minified builds
 const functionMap = {
@@ -38,20 +40,25 @@ const functionMap = {
   'radiusCalc': radiusCalc,
   'rectWidthCalc': rectWidthCalc,
   'coneHeightCalc': coneHeightCalc,
-  'halfTime': halftime
+  'halftime': halftime
 }
-
 
 export const calculateMOEDescription = (spell, effect) => {
   let formattedDescription = effect.description;
   let evalMatch = formattedDescription.match(/\[(.*?)\]/g);
+
+  // this is highly unfortunate, but some modifiers and effects reference other modififers so we need to set the spell here 
+  // so that the functions can access it
+  currentSpell.set(spell)
 
   if (evalMatch) {
     evalMatch.forEach(e => {
       let evalString = e;
       evalString = evalString.replace("tier", "effect.tier");
       evalString = evalString.replace("notes", "effect.notes");
-      evalString = evalString.replace("domain", "spell.domain");
+      evalString = evalString.replace("domain", "spell.spell_data.domain");
+      evalString = evalString.replace("cost", calcSpellCost(spell));
+      evalString = evalString.replace("resist", calcSpellResist(spell));
       evalString = evalString.replace("[", "");
       evalString = evalString.replace("]", "");
       let evalResult = ""
@@ -60,6 +67,9 @@ export const calculateMOEDescription = (spell, effect) => {
         evalResult = eval(evalString);
       } catch (error) {
         console.warn('evalMatch: could not eval:', evalString);
+        console.warn(effect)
+        console.warn(error.message)
+        console.warn("--------------------------------")
         evalResult = `Error ${error}`;
       }
       formattedDescription = formattedDescription.replace(e, evalResult);
@@ -73,8 +83,9 @@ export const calculateMOEDescription = (spell, effect) => {
       let evalString = e;
       evalString = evalString.replace("{", "");
       evalString = evalString.replace("}", "");
-      if (spell.domain)
-        evalString = evalString.replace(spell.domain, "'" + spell.domain + "'")
+
+      if (spell.spell_data.domain)
+        evalString = evalString.replace(spell.spell_data.domain, "'" + spell.spell_data.domain + "'")
 
       Object.keys(functionMap).forEach(key => {
         evalString = evalString.replace(key, functionMap[key].name);
@@ -85,6 +96,9 @@ export const calculateMOEDescription = (spell, effect) => {
         evalResult = eval(evalString);
       } catch (error) {
         console.warn('funcMatch: could not eval:', evalString);
+        console.warn("original effect", effect)
+        console.warn(error.message)
+        console.warn("--------------------------------")
         evalResult = `Error ${error}`;
       }
 
@@ -96,4 +110,10 @@ export const calculateMOEDescription = (spell, effect) => {
   return formattedDescription;
 }
 
+function calcSpellCost(spell) {
+  return 5;
+}
 
+function calcSpellResist(spell) {
+  return 5;
+}
