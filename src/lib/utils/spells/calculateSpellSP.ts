@@ -17,7 +17,7 @@ export const calculateTotalSP = (spell) => {
   }, 0);
 
   if (domain === "Illusion")
-    modifierCost -= calcIllusionDiscount(modifierCost, selectedEffectValues);
+    modifierCost -= calcIllusionDiscount(spell, modifierCost, effectsAndModifiers);
 
   if (mode === "Unpredicable") {
     modifierCost += 4;
@@ -114,3 +114,16 @@ const runModifier = (modifier) => {
 
   return 0;
 };
+
+function calcIllusionDiscount(spell, total, effects) {
+  const mode = spell.spell_data.mode
+  //effects = effects.filter((x) => x.);
+  let help = effects.filter((x) => x.name.includes("Help"));
+  let helpSP = 0;
+  help.forEach((element) => {
+    helpSP += resolveCost(element);
+  });
+  let illusionDiscount = Math.min(helpSP, Math.max(total - helpSP, 0));
+  if (mode === "Unpredictable") illusionDiscount -= 4;
+  return illusionDiscount;
+}
