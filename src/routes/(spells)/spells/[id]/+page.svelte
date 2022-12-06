@@ -7,23 +7,14 @@
 	import Toastify from 'toastify-js';
 	import 'toastify-js/src/toastify.css';
 	import Calculation from './Calculation.svelte';
+	import { saveEntity } from '$lib/utils/operations';
 
 	export let data;
-	$: ({ disableInputs, spell } = data);
+
+	$: ({ spell, disableInputs } = data);
 
 	export const save = async () => {
-		const { error } = await supabaseClient.from('spells').update(spell).eq('id', spell.id);
-		if (!error) {
-			Toastify({
-				text: 'Saved!',
-				duration: 3000
-			}).showToast();
-		} else {
-			Toastify({
-				text: 'Error!!',
-				duration: 3000
-			}).showToast();
-		}
+		saveEntity('spells', spell);
 	};
 	export const makeACopy = async () => {};
 	export const deleteSpell = async () => {};
