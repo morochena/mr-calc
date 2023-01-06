@@ -36,7 +36,7 @@
 				defaultClass="block w-full disabled:cursor-not-allowed disabled:opacity-50 rounded-none"
 			/>
 			<Button
-				href={`/${itemType}/new`}
+				on:click={() => gotoItem(`/${itemType}/new`)}
 				btnClass="text-center font-medium focus:ring-4 inline-flex items-center justify-center px-5 py-2.5 text-sm text-white bg-purple-700 hover:bg-purple-800 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 rounded-lg w-full rounded-none"
 				color="purple">New</Button
 			>
