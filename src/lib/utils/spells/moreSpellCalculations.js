@@ -229,7 +229,7 @@ export function processDomainEffects(spell) {
         notes:
           "When Taking Illusion Powers in a spell as well as the “Help Statistic/Skill/Specialty” Power, Ignore the spell points of the Illusion Powers up to the amount spent on the “Help Statistic/Skill/Specialty” Power",
         modifierType: "reduce",
-        amount: illusionDiscount,
+        amount: calcIllusionDiscount(0, effects),
         description: "",
       });
       break;
