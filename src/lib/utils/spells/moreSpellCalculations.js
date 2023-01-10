@@ -284,7 +284,10 @@ function calcIllusionDiscount(total, effects) {
     helpSP += resolveCost(element);
   });
   let illusionDiscount = Math.min(helpSP, Math.max(total - helpSP, 0));
-  if (sMode === "Unpredictable") illusionDiscount -= 4;
+
+  let unpredicable = effects.filter((x) => x.name.includes("Unpredictable")).length > 0
+  if (unpredicable) illusionDiscount -= 4;
+
   return illusionDiscount;
 }
 
