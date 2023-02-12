@@ -8,7 +8,9 @@
 </script>
 
 <TableBodyRow>
-	<TableBodyCell>{label}</TableBodyCell>
-	<TableBodyCell><Input bind:value={statValue} type="number" {disabled} /></TableBodyCell>
-	<TableBodyCell>{statBonus}</TableBodyCell>
+	<TableBodyCell tdClass="px-6 py-2 whitespace-nowrap">{label}</TableBodyCell>
+	<TableBodyCell tdClass="px-6 py-2 whitespace-nowrap"
+		><Input size="sm" bind:value={statValue} type="number" {disabled} /></TableBodyCell
+	>
+	<TableBodyCell tdClass="px-6 py-2 whitespace-nowrap">{statBonus}</TableBodyCell>
 </TableBodyRow>

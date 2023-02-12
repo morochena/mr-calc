@@ -139,29 +139,38 @@
 	{/if}
 </ButtonGroup>
 
-<Label class="space-y-2">
-	<span>Name</span>
-	<Input type="text" size="lg" bind:value={monster.name} disabled={disableInputs} />
-</Label>
+<div class="grid gap-2 mb-6 md:grid-cols-2">
+	<Label class="space-y-2">
+		<span>Name</span>
+		<Input type="text" size="sm" bind:value={monster.name} disabled={disableInputs} />
+	</Label>
 
-<Label class="space-y-2">
-	<span>Tags</span>
-	<Input type="text" bind:value={monster.tags} disabled={disableInputs} />
-</Label>
+	<Label class="space-y-2">
+		<span>Tags</span>
+		<Input type="text" size="sm" bind:value={monster.tags} disabled={disableInputs} />
+	</Label>
 
-<Label for="description" class="mb-2">Description</Label>
-<Textarea
-	id="description"
-	placeholder=""
-	rows="7"
-	name="description"
-	bind:value={monster.description}
-	disabled={disableInputs}
-/>
+	<Label for="description" class="mb-2 col-span-2"
+		>Description
+		<Textarea
+			id="description"
+			placeholder=""
+			rows="5"
+			name="description"
+			bind:value={monster.description}
+			disabled={disableInputs}
+			size="sm"
+		/>
+	</Label>
 
-<h1 class="text-4xl dark:text-white pb-8 mt-8">Stats</h1>
+	<Label class="space-y-2  col-span-2">
+		<span>Size</span>
+		<Select items={sizes} bind:value={monster.size} disabled={disableInputs} />
+	</Label>
+</div>
 
-<div class="grid gap-6 mb-6 md:grid-cols-2">
+<h1 class="text-4xl dark:text-white pb-8">Skills</h1>
+<div class="grid gap-6 mb-6 sm:grid-cols-2">
 	<Table striped={true}>
 		<TableBody class="divide-y">
 			<StatInput
@@ -170,77 +179,6 @@
 				statBonus={calcStatBonus(monster.str)}
 				disabled={disableInputs}
 			/>
-			<StatInput
-				label="Dexterity"
-				bind:statValue={monster.dex}
-				statBonus={calcStatBonus(monster.dex)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Empathy"
-				bind:statValue={monster.emp}
-				statBonus={calcStatBonus(monster.emp)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Intelligence"
-				bind:statValue={monster.int}
-				statBonus={calcStatBonus(monster.int)}
-				disabled={disableInputs}
-			/>
-
-			<TableBodyRow>
-				<TableBodyCell>Size</TableBodyCell>
-				<TableBodyCell>
-					<Select items={sizes} bind:value={monster.size} disabled={disableInputs} />
-				</TableBodyCell>
-				<TableBodyCell />
-			</TableBodyRow>
-		</TableBody>
-	</Table>
-
-	<Table striped={true}>
-		<TableBody class="divide-y">
-			<TableBodyRow>
-				<TableBodyCell>Body</TableBodyCell>
-				<TableBodyCell>{calcBody(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Mind</TableBodyCell>
-				<TableBodyCell>{calcMind(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Dodge</TableBodyCell>
-				<TableBodyCell>{calcDodge(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Consider</TableBodyCell>
-				<TableBodyCell>{calcConsider(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Perception</TableBodyCell>
-				<TableBodyCell>{calcPerception(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Move</TableBodyCell>
-				<TableBodyCell>{calcMove(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Run</TableBodyCell>
-				<TableBodyCell>{calcRun(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>~XP</TableBodyCell>
-				<TableBodyCell>{calcLevel(monster)}</TableBodyCell>
-			</TableBodyRow>
-		</TableBody>
-	</Table>
-</div>
-
-<h1 class="text-4xl dark:text-white pb-8">Skills</h1>
-<div class="grid gap-6 mb-6 md:grid-cols-2">
-	<Table striped={true}>
-		<TableBody class="divide-y">
 			<StatInput
 				label="Smash"
 				bind:statValue={monster.smash}
@@ -276,6 +214,12 @@
 	<Table striped={true}>
 		<TableBody class="divide-y">
 			<StatInput
+				label="Dexterity"
+				bind:statValue={monster.dex}
+				statBonus={calcStatBonus(monster.dex)}
+				disabled={disableInputs}
+			/>
+			<StatInput
 				label="Accuracy"
 				bind:statValue={monster.accuracy}
 				statBonus={calcTotalSkillBonus(monster.dex, monster.accuracy)}
@@ -310,6 +254,12 @@
 	<Table striped={true}>
 		<TableBody class="divide-y">
 			<StatInput
+				label="Empathy"
+				bind:statValue={monster.emp}
+				statBonus={calcStatBonus(monster.emp)}
+				disabled={disableInputs}
+			/>
+			<StatInput
 				label="Animal Handling"
 				bind:statValue={monster.animal_handling}
 				statBonus={calcTotalSkillBonus(monster.emp, monster.animal_handling)}
@@ -343,6 +293,12 @@
 	</Table>
 	<Table striped={true}>
 		<TableBody class="divide-y">
+			<StatInput
+				label="Intelligence"
+				bind:statValue={monster.int}
+				statBonus={calcStatBonus(monster.int)}
+				disabled={disableInputs}
+			/>
 			<StatInput
 				label="Craft"
 				bind:statValue={monster.craft}

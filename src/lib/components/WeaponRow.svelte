@@ -12,9 +12,13 @@
 </script>
 
 <TableBodyRow>
-	<TableBodyCell><a href={`/equipment/${id}`} target="_blank">{name}</a></TableBodyCell>
-	<TableBodyCell
+	<TableBodyCell tdClass="px-6 py-2 whitespace-nowrap"
+		><a href={`/equipment/${id}`} target="_blank">{name}</a></TableBodyCell
+	>
+	<TableBodyCell tdClass="px-6 py-2 whitespace-nowrap"
 		>To Hit: {formattedToHit(toHit(monster, roll_bonus, specialties, skills))}</TableBodyCell
 	>
-	<TableBodyCell>Damage: {damageCalculation(monster, damage_formula)}</TableBodyCell>
+	<TableBodyCell tdClass="px-6 py-2 whitespace-nowrap"
+		>Damage: {damageCalculation(monster, damage_formula)}</TableBodyCell
+	>
 </TableBodyRow>
