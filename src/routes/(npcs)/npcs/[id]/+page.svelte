@@ -6,6 +6,7 @@
 	import { sizes } from '$lib/utils/data/sizes';
 	import skillPool from '$lib/utils/data/skills';
 	import {
+		calcArcana,
 		calcBody,
 		calcConsider,
 		calcDodge,
