@@ -123,34 +123,48 @@
 
 <ButtonGroup class="space-x-px my-4">
 	{#if !disableInputs}
-		<Button on:click={() => saveEntity('monsters', monster)} disabled={disableInputs} color="purple"
-			>Save</Button
+		<Button
+			on:click={() => saveEntity('monsters', monster)}
+			disabled={disableInputs}
+			color="primary">Save</Button
 		>
 	{/if}
-	<Button href={`/npcs/${monster.id}/public`} color="purple">Public View</Button>
-	<Button on:click={() => exportEntity('monsters', monster)} color="purple">Export</Button>
-	<Button on:click={() => copyEntity('monsters', monster)} color="purple">Make a Copy</Button>
+	<Button href={`/npcs/${monster.id}/public`} color="primary">Public View</Button>
+	<Button on:click={() => exportEntity('monsters', monster)} color="primary">Export</Button>
+	<Button on:click={() => copyEntity('monsters', monster)} color="primary">Make a Copy</Button>
 	{#if !disableInputs}
 		<Button
 			on:click={() => deleteEntity('monsters', monster)}
 			disabled={disableInputs}
-			color="purple">Delete</Button
+			color="primary">Delete</Button
 		>
 	{/if}
 </ButtonGroup>
 
-<div class="grid gap-2 mb-6 md:grid-cols-2">
-	<Label class="space-y-2">
-		<span>Name</span>
-		<Input type="text" size="sm" bind:value={monster.name} disabled={disableInputs} />
-	</Label>
+<div class="grid gap-2 mb-6 md:grid-rows-4 md:grid-cols-3">
+	<div class="grid gap-2 md:grid-cols-2 col-start-1 col-end-3">
+		<Label class="space-y-2">
+			<span>Name</span>
+			<Input type="text" size="sm" bind:value={monster.name} disabled={disableInputs} />
+		</Label>
+		<Label class="space-y-2">
+			<span>Tags</span>
+			<Input type="text" size="sm" bind:value={monster.tags} disabled={disableInputs} />
+		</Label>
+	</div>
 
-	<Label class="space-y-2">
-		<span>Tags</span>
-		<Input type="text" size="sm" bind:value={monster.tags} disabled={disableInputs} />
-	</Label>
+	<div class="row-span-3 dark:text-white">
+		<p>Body: {calcBody(monster)}</p>
+		<p>Mind: {calcMind(monster)}</p>
+		<p>Dodge: {calcDodge(monster)}</p>
+		<p>Consider: {calcConsider(monster)}</p>
+		<p>Perception: {calcPerception(monster)}</p>
+		<p>Move: {calcMove(monster)}</p>
+		<p>Run: {calcRun(monster)}</p>
+		<p>~XP: {calcLevel(monster)}</p>
+	</div>
 
-	<Label for="description" class="mb-2 col-span-2"
+	<Label for="description" class="mb-2 col-start-1 col-end-3 row-start-2 row-end-4"
 		>Description
 		<Textarea
 			id="description"
@@ -367,7 +381,7 @@
 					/>
 				</Label>
 			</div>
-			<Button type="submit" disabled={disableInputs}>Add</Button>
+			<Button type="submit" disabled={disableInputs} color="primary">Add</Button>
 		</form>
 	</div>
 	<div>
@@ -391,7 +405,9 @@
 					bind:value={selectedEquipmentId}
 				/>
 			</Label>
-			<Button class="mt-4" on:click={() => addEquipment()} disabled={disableInputs}>Add</Button>
+			<Button class="mt-4" on:click={() => addEquipment()} disabled={disableInputs} color="primary"
+				>Add</Button
+			>
 		</div>
 	</div>
 </div>

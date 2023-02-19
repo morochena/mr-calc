@@ -9,10 +9,16 @@ export const load: PageLoad = async (event) => {
     throw redirect(303, '/');
   }
 
-  const { data: equipment } = await supabaseClient.from('equipment').select('*,profiles (id, username)').order('name', { ascending: true });
+  const { data: profile } = await supabaseClient
+    .from('profiles')
+    .select('id, username')
+    .filter('id', 'eq', session.user.id)
+    .single()
+
+
 
   return {
     user: session.user,
-    equipment
+    profile
   };
 };

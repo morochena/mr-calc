@@ -10,10 +10,8 @@
 	};
 </script>
 
-<div class="p-16 pt-24 dark:text-white">
+<div class="p-16 pt-0 dark:text-white text-center flex items-center flex-col">
 	<img src={logo} width="500" alt="Mortal Reins" />
-
-	<h1 class="text-3xl dark:text-white pb-8">Welcome to Mortal Reins Calculators</h1>
 
 	<div class="row flex">
 		{#if !$page.data.session}
@@ -21,7 +19,7 @@
 		{:else}
 			<div>
 				<h1>You are logged in as: {$page.data.session.user.email}</h1>
-				<Button on:click={signOut} class="mt-4" color="red">Logout</Button>
+				<Button on:click={signOut} class="mt-4" color="primary">Logout</Button>
 			</div>
 		{/if}
 	</div>
@@ -34,6 +32,7 @@
 			<ul class="list-disc list-inside">
 				<li class="mt-2">Large layout refactor</li>
 				<li class="mt-2">Fix spell calculator bugs</li>
+				<li class="mt-2">Added profiles</li>
 			</ul>
 		</li>
 	</ul>

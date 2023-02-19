@@ -36,8 +36,8 @@
 		<NavLi href="/npcs">NPCs</NavLi>
 		<NavLi href="/spells">Spells</NavLi>
 		<NavLi href="/equipment">Equipment</NavLi>
-		<NavLi href="/players">Player Characters</NavLi>
-		<DarkMode btnclass="hidden">Toggle DarkMode</DarkMode>
+		<NavLi href="/profile">Profile</NavLi>
+		<NavLi><DarkMode btnclass="hidden">Toggle DarkMode</DarkMode></NavLi>
 	</NavUl>
 </Navbar>
 
