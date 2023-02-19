@@ -29,10 +29,13 @@
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
-		Textarea
+		Textarea,
+		Toggle
 	} from 'flowbite-svelte';
 	import SSelect from 'svelte-select';
 	import 'toastify-js/src/toastify.css';
+
+	import { Tooltip } from 'flowbite-svelte';
 
 	export let data = {};
 
@@ -121,6 +124,10 @@
 	// End Specialties
 </script>
 
+<div class="my-4 float-right">
+	<Toggle disabled={disableInputs} bind:checked={monster.is_public}>Public</Toggle>
+</div>
+
 <ButtonGroup class="space-x-px my-4">
 	{#if !disableInputs}
 		<Button
@@ -156,6 +163,7 @@
 	<div class="row-span-3 dark:text-white">
 		<p>Body: {calcBody(monster)}</p>
 		<p>Mind: {calcMind(monster)}</p>
+		<p>Arcana: {calcArcana(monster)}</p>
 		<p>Dodge: {calcDodge(monster)}</p>
 		<p>Consider: {calcConsider(monster)}</p>
 		<p>Perception: {calcPerception(monster)}</p>
@@ -163,6 +171,16 @@
 		<p>Run: {calcRun(monster)}</p>
 		<p>~XP: {calcLevel(monster)}</p>
 	</div>
+	<Tooltip>
+		<ul>
+			<li>Dodge [Stealth-Dodge / 2 + 7] What people need to hit to physically hit you</li>
+			<li>Perception [Notice-Perception / 2 + 7] What people need to get to sneak past you</li>
+			<li>Consider [Reasoning-Consider / 2 + 7] What people need to hit to mentally affect you</li>
+			<li>Body [10 + Physique] How much abuse your body can take</li>
+			<li>Mind [10 + Willpower] How much abuse your mind can take</li>
+			<li>Arcana [Lore] Extra mind points to cast magic.</li>
+		</ul>
+	</Tooltip>
 
 	<Label for="description" class="mb-2 col-start-1 col-end-3 row-start-2 row-end-4"
 		>Description
@@ -184,14 +202,15 @@
 </div>
 
 <h1 class="text-4xl dark:text-white pb-8">Skills</h1>
-<div class="grid gap-6 mb-6 sm:grid-cols-2">
+<div class="grid gap-6 mb-6 sm:grid-cols-2 md:grid-cols-2">
 	<Table striped={true}>
-		<TableBody class="divide-y">
+		<TableBody tableBodyClass="divide-y">
 			<StatInput
 				label="Strength"
 				bind:statValue={monster.str}
 				statBonus={calcStatBonus(monster.str)}
 				disabled={disableInputs}
+				bold={true}
 			/>
 			<StatInput
 				label="Smash"
@@ -226,12 +245,13 @@
 		</TableBody>
 	</Table>
 	<Table striped={true}>
-		<TableBody class="divide-y">
+		<TableBody tableBodyClass="divide-y">
 			<StatInput
 				label="Dexterity"
 				bind:statValue={monster.dex}
 				statBonus={calcStatBonus(monster.dex)}
 				disabled={disableInputs}
+				bold={true}
 			/>
 			<StatInput
 				label="Accuracy"
@@ -266,12 +286,13 @@
 		</TableBody>
 	</Table>
 	<Table striped={true}>
-		<TableBody class="divide-y">
+		<TableBody tableBodyClass="divide-y">
 			<StatInput
 				label="Empathy"
 				bind:statValue={monster.emp}
 				statBonus={calcStatBonus(monster.emp)}
 				disabled={disableInputs}
+				bold={true}
 			/>
 			<StatInput
 				label="Animal Handling"
@@ -306,12 +327,13 @@
 		</TableBody>
 	</Table>
 	<Table striped={true}>
-		<TableBody class="divide-y">
+		<TableBody tableBodyClass="divide-y">
 			<StatInput
 				label="Intelligence"
 				bind:statValue={monster.int}
 				statBonus={calcStatBonus(monster.int)}
 				disabled={disableInputs}
+				bold={true}
 			/>
 			<StatInput
 				label="Craft"
@@ -388,14 +410,14 @@
 		<h1 class="text-4xl dark:text-white pb-8">Equipment</h1>
 
 		<Table striped={true}>
-			<TableBody class="divide-y">
+			<TableBody tableBodyClass="divide-y">
 				{#each monster.equipment as { id, name, roll_bonus, damage_formula, skills, specialties }}
 					<WeaponRow {monster} {id} {name} {roll_bonus} {damage_formula} {skills} {specialties} />
 				{/each}
 			</TableBody>
 		</Table>
 
-		<div class="mt-4 themed">
+		<div class="mt-4">
 			<Label class="pt-2"
 				>Add equipment
 				<SSelect
@@ -403,6 +425,7 @@
 					id="equipment"
 					loadOptions={fetchEquipment}
 					bind:value={selectedEquipmentId}
+					placeholder="Search equipment"
 				/>
 			</Label>
 			<Button class="mt-4" on:click={() => addEquipment()} disabled={disableInputs} color="primary"
@@ -422,22 +445,16 @@
 		{/each}
 	</TableBody>
 </Table>
-<div class="mt-4 themed">
+<div class="mt-4">
 	<Label
 		>Add Spells
-		<SSelect class="mt-4" id="equipment" loadOptions={fetchSpells} bind:value={selectedSpellId} />
+		<SSelect
+			class="mt-4"
+			id="spells"
+			loadOptions={fetchSpells}
+			bind:value={selectedSpellId}
+			placeholder="Search spells"
+		/>
 	</Label>
-	<Button class="mt-4" on:click={addSpell} disabled={disableInputs}>Add</Button>
+	<Button class="mt-4" color="primary" on:click={addSpell} disabled={disableInputs}>Add</Button>
 </div>
-
-<style>
-	.themed {
-		--background: rgb(55, 65, 81);
-		--border: rgb(75, 85, 99);
-		--inputColor: black;
-		--multiItemBG: black;
-		--itemColor: black;
-		--itemHoverColor: black;
-		color: black !important;
-	}
-</style>

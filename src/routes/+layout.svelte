@@ -37,7 +37,12 @@
 		<NavLi href="/spells">Spells</NavLi>
 		<NavLi href="/equipment">Equipment</NavLi>
 		<NavLi href="/profile">Profile</NavLi>
-		<NavLi><DarkMode btnclass="hidden">Toggle DarkMode</DarkMode></NavLi>
+		<NavLi
+			><DarkMode
+				btnClass="text-gray-500 dark:text-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 pt-0"
+				>Toggle DarkMode</DarkMode
+			></NavLi
+		>
 	</NavUl>
 </Navbar>
 

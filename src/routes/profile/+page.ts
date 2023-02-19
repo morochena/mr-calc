@@ -15,8 +15,6 @@ export const load: PageLoad = async (event) => {
     .filter('id', 'eq', session.user.id)
     .single()
 
-
-
   return {
     user: session.user,
     profile

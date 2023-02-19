@@ -45,6 +45,10 @@ export const calcMind = (monster) => {
   return Math.floor(calcRawSkillBonus(monster.emp, monster.willpower)) + 10;
 };
 
+export const calcArcana = (monster) => {
+  return Math.floor(calcRawSkillBonus(monster.int, monster.lore)) + 10;
+};
+
 export const calcDodge = (monster) => {
   const skillBonus = calcRawSkillBonus(monster.dex, monster.stealth);
   const specialityBonus = (monster.specialties.Dodge?.value || 0) * 3;

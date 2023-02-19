@@ -1,11 +1,10 @@
 {
-	"name": "flowbite-svelte-starter",
-	"version": "0.1.2",
-	"description": "Flowbite-Svelte starter kit",
+	"name": "mr-calc",
+	"version": "0.1",
+	"description": "Mortal Reins Calculators",
 	"author": {
-		"name": "Shinichi Okada",
-		"email": "connect@codewithshin.com",
-		"url": "https://blog.codewithshin.com"
+		"name": "Marcus Orochena",
+		"email": "marcus.orochena@gmail.com"
 	},
 	"bugs": "https://github.com/shinokada/flowbite-svelte-starter/issues",
 	"homepage": "https://github.com/shinokada/flowbite-svelte-starter",
@@ -56,6 +55,6 @@
 	"dependencies": {
 		"@supabase/auth-helpers-sveltekit": "^0.8.6",
 		"@supabase/supabase-js": "^2.1.0",
-		"svelte-select": "^4.4.7"
+		"svelte-select": "^5.2.1"
 	}
 }
