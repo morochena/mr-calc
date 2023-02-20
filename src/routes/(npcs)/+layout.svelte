@@ -1,10 +1,3 @@
-<script>
-	import MainLayout from '$lib/components/MainLayout.svelte';
-
-	export let data;
-	let { npcs, user } = data;
-</script>
-
-<MainLayout itemType="npcs" items={npcs} {user}>
+<div class="container mx-auto px-4">
 	<slot />
-</MainLayout>
+</div>

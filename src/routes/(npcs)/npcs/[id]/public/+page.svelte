@@ -153,10 +153,11 @@ ${printSpells()}
 `;
 </script>
 
-<table class="text-white">
+<table class="dark:text-white text-black">
 	<tr><td><pre>{metaText}</pre></td></tr>
 	<tr><td><pre>{baseStatsText}</pre></td></tr>
-	<tr><td><pre>{skillText}</pre></td><td><pre>{specialtyText}</pre></td></tr>
+	<tr><td><pre>{skillText}</pre></td> </tr>
+	<tr><td><pre>{specialtyText}</pre></td></tr>
 	<tr><td><pre>{equipmentText}</pre></td></tr>
 	<tr><td><pre>{spellText}</pre></td></tr>
 </table>

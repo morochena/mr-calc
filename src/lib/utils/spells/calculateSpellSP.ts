@@ -3,7 +3,10 @@ import { splitModifier, rangeModifier, aoeModifier, lastingModifier, componentMo
 
 
 export const calculateTotalSP = (spell) => {
-  const { effects, modifiers } = spell.spell_data
+  let { effects, modifiers } = spell.spell_data
+  effects = effects || []
+  modifiers = modifiers || []
+
   const effectsAndModifiers = effects.concat(modifiers)
 
   let totalSPAdds = 0;

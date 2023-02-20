@@ -1,3 +1,4 @@
+import type { Monster, MonsterSkill, MonsterStat } from "../../../../types/fromSupabase";
 import emptySkillPool from "../data/skills";
 
 export const calcStatBonus = (stat) => {
@@ -16,14 +17,31 @@ export const calcTotalSkillBonus = (stat, skill) => {
   return value;
 };
 
+export const calcBonusValue = (monster: Monster, stat?: MonsterStat, skill?: MonsterSkill, speciality?: string) => {
+  let value = 0;
+  value += speciality ? (monster.specialties[speciality]?.value || 0 * 3) : 0;
+  value += skill ? ((monster[skill] || 0) * 2) : 0;
+  value += stat ? ((monster[stat] || 0) - 5) : 0
+
+  return Math.floor(value);
+}
+
+export const calcBonusString = (monster: Monster, stat?: MonsterStat, skill?: MonsterSkill, speciality?: string) => {
+  const value = calcBonusValue(monster, stat, skill, speciality);
+  if (value > 0) {
+    return "+" + value;
+  }
+  return value;
+}
+
 export const calcRawSkillBonus = (stat, skill) => {
   const skillValue = skill * 2;
   const statValue = stat - 5;
   return Math.floor(statValue + skillValue);
 };
 
-export const calcBody = (monster) => {
-  const value = Math.floor(calcRawSkillBonus(monster.str, monster.physique)) + 10;
+export const calcBody = (monster: Monster) => {
+  const value = calcBonusValue(monster, "str", "physique") + 10;
 
   if (monster.size == "tiny") {
     return Math.floor(value / 4);
@@ -41,16 +59,16 @@ export const calcBody = (monster) => {
   return value;
 };
 
-export const calcMind = (monster) => {
-  return Math.floor(calcRawSkillBonus(monster.emp, monster.willpower)) + 10;
+export const calcMind = (monster: Monster) => {
+  return calcBonusValue(monster, "emp", "willpower") + 10
 };
 
-export const calcDodge = (monster) => {
-  const skillBonus = calcRawSkillBonus(monster.dex, monster.stealth);
-  const specialityBonus = (monster.specialties.Dodge?.value || 0) * 3;
-  const combined = skillBonus + specialityBonus;
+export const calcArcana = (monster: Monster) => {
+  return Math.max(calcBonusValue(monster, "int", "lore", "arcana"), 0);
+};
 
-  const value = Math.floor(combined / 2) + 7;
+export const calcDodge = (monster: Monster) => {
+  const value = calcBonusValue(monster, "dex", "stealth", "dodge") + 7
 
   if (monster.size == "tiny") {
     return value + 4;
@@ -70,16 +88,12 @@ export const calcDodge = (monster) => {
 };
 
 export const calcPerception = (monster) => {
-  const skillBonus = calcRawSkillBonus(monster.int, monster.notice);
-  const combined = skillBonus;
-  return Math.floor(combined / 2) + 7;
+  return Math.floor(calcBonusValue(monster, "dex", "notice", "perception") / 2) + 7;
+
 };
 
 export const calcConsider = (monster) => {
-  const skillBonus = calcRawSkillBonus(monster.int, monster.reasoning);
-  const specialityBonus = (monster.specialties.Consider?.value || 0) * 3;
-  const combined = skillBonus + specialityBonus;
-  return Math.floor(combined / 2) + 7;
+  return Math.floor(calcBonusValue(monster, "int", "reasoning", "consider") / 2) + 7;
 };
 
 export const calcMove = (monster) => {

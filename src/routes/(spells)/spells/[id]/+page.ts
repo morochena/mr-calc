@@ -10,8 +10,6 @@ export const load: PageLoad = async (event) => {
   }
 
   const { data: spell } = await supabaseClient.from('spells').select('*').eq('id', event.params.id).single();
-
-
   const disableInputs = spell.user_id == session.user.id ? false : true;
 
   return {

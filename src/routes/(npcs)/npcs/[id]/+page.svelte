@@ -6,7 +6,10 @@
 	import { sizes } from '$lib/utils/data/sizes';
 	import skillPool from '$lib/utils/data/skills';
 	import {
+		calcArcana,
 		calcBody,
+		calcBonusString,
+		calcBonusValue,
 		calcConsider,
 		calcDodge,
 		calcLevel,
@@ -29,10 +32,13 @@
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
-		Textarea
+		Textarea,
+		Toggle
 	} from 'flowbite-svelte';
 	import SSelect from 'svelte-select';
 	import 'toastify-js/src/toastify.css';
+
+	import { Tooltip } from 'flowbite-svelte';
 
 	export let data = {};
 
@@ -121,130 +127,98 @@
 	// End Specialties
 </script>
 
+<div class="my-4 float-right">
+	<Toggle disabled={disableInputs} bind:checked={monster.is_public}>Public</Toggle>
+</div>
+
 <ButtonGroup class="space-x-px my-4">
 	{#if !disableInputs}
-		<Button on:click={() => saveEntity('monsters', monster)} disabled={disableInputs} color="purple"
-			>Save</Button
+		<Button
+			on:click={() => saveEntity('monsters', monster)}
+			disabled={disableInputs}
+			color="primary">Save</Button
 		>
 	{/if}
-	<Button href={`/npcs/${monster.id}/public`} color="purple">Public View</Button>
-	<Button on:click={() => exportEntity('monsters', monster)} color="purple">Export</Button>
-	<Button on:click={() => copyEntity('monsters', monster)} color="purple">Make a Copy</Button>
+	<Button href={`/npcs/${monster.id}/public`} color="primary">Public View</Button>
+	<Button on:click={() => exportEntity('monsters', monster)} color="primary">Export</Button>
+	<Button on:click={() => copyEntity('monsters', monster)} color="primary">Make a Copy</Button>
 	{#if !disableInputs}
 		<Button
 			on:click={() => deleteEntity('monsters', monster)}
 			disabled={disableInputs}
-			color="purple">Delete</Button
+			color="primary">Delete</Button
 		>
 	{/if}
 </ButtonGroup>
 
-<Label class="space-y-2">
-	<span>Name</span>
-	<Input type="text" size="lg" bind:value={monster.name} disabled={disableInputs} />
-</Label>
+<div class="grid gap-2 mb-6 md:grid-rows-4 md:grid-cols-3">
+	<div class="grid gap-2 md:grid-cols-2 col-start-1 col-end-3">
+		<Label class="space-y-2">
+			<span>Name</span>
+			<Input type="text" size="sm" bind:value={monster.name} disabled={disableInputs} />
+		</Label>
+		<Label class="space-y-2">
+			<span>Tags</span>
+			<Input type="text" size="sm" bind:value={monster.tags} disabled={disableInputs} />
+		</Label>
+	</div>
 
-<Label class="space-y-2">
-	<span>Tags</span>
-	<Input type="text" bind:value={monster.tags} disabled={disableInputs} />
-</Label>
+	<div class="row-span-3 dark:text-white">
+		<p>Body: {calcBody(monster)}</p>
+		<p>Mind: {calcMind(monster)}</p>
+		<p>Arcana: {calcArcana(monster)}</p>
+		<p>Dodge: {calcDodge(monster)}</p>
+		<p>Consider: {calcConsider(monster)}</p>
+		<p>Perception: {calcPerception(monster)}</p>
+		<p>Move: {calcMove(monster)}</p>
+		<p>Run: {calcRun(monster)}</p>
+		<p>~XP: {calcLevel(monster)}</p>
+	</div>
+	<Tooltip>
+		<ul>
+			<li>Dodge [Stealth-Dodge / 2 + 7] What people need to hit to physically hit you</li>
+			<li>Perception [Notice-Perception / 2 + 7] What people need to get to sneak past you</li>
+			<li>Consider [Reasoning-Consider / 2 + 7] What people need to hit to mentally affect you</li>
+			<li>Body [10 + Physique] How much abuse your body can take</li>
+			<li>Mind [10 + Willpower] How much abuse your mind can take</li>
+			<li>Arcana [Lore] Extra mind points to cast magic.</li>
+		</ul>
+	</Tooltip>
 
-<Label for="description" class="mb-2">Description</Label>
-<Textarea
-	id="description"
-	placeholder=""
-	rows="7"
-	name="description"
-	bind:value={monster.description}
-	disabled={disableInputs}
-/>
+	<Label for="description" class="mb-2 col-start-1 col-end-3 row-start-2 row-end-4"
+		>Description
+		<Textarea
+			id="description"
+			placeholder=""
+			rows="5"
+			name="description"
+			bind:value={monster.description}
+			disabled={disableInputs}
+			size="sm"
+		/>
+	</Label>
 
-<h1 class="text-4xl dark:text-white pb-8 mt-8">Stats</h1>
-
-<div class="grid gap-6 mb-6 md:grid-cols-2">
-	<Table striped={true}>
-		<TableBody class="divide-y">
-			<StatInput
-				label="Strength"
-				bind:statValue={monster.str}
-				statBonus={calcStatBonus(monster.str)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Dexterity"
-				bind:statValue={monster.dex}
-				statBonus={calcStatBonus(monster.dex)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Empathy"
-				bind:statValue={monster.emp}
-				statBonus={calcStatBonus(monster.emp)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Intelligence"
-				bind:statValue={monster.int}
-				statBonus={calcStatBonus(monster.int)}
-				disabled={disableInputs}
-			/>
-
-			<TableBodyRow>
-				<TableBodyCell>Size</TableBodyCell>
-				<TableBodyCell>
-					<Select items={sizes} bind:value={monster.size} disabled={disableInputs} />
-				</TableBodyCell>
-				<TableBodyCell />
-			</TableBodyRow>
-		</TableBody>
-	</Table>
-
-	<Table striped={true}>
-		<TableBody class="divide-y">
-			<TableBodyRow>
-				<TableBodyCell>Body</TableBodyCell>
-				<TableBodyCell>{calcBody(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Mind</TableBodyCell>
-				<TableBodyCell>{calcMind(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Dodge</TableBodyCell>
-				<TableBodyCell>{calcDodge(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Consider</TableBodyCell>
-				<TableBodyCell>{calcConsider(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Perception</TableBodyCell>
-				<TableBodyCell>{calcPerception(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Move</TableBodyCell>
-				<TableBodyCell>{calcMove(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Run</TableBodyCell>
-				<TableBodyCell>{calcRun(monster)}</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>~XP</TableBodyCell>
-				<TableBodyCell>{calcLevel(monster)}</TableBodyCell>
-			</TableBodyRow>
-		</TableBody>
-	</Table>
+	<Label class="space-y-2  col-span-2">
+		<span>Size</span>
+		<Select items={sizes} bind:value={monster.size} disabled={disableInputs} />
+	</Label>
 </div>
 
 <h1 class="text-4xl dark:text-white pb-8">Skills</h1>
-<div class="grid gap-6 mb-6 md:grid-cols-2">
+<div class="grid gap-6 mb-6 sm:grid-cols-2 md:grid-cols-2">
 	<Table striped={true}>
-		<TableBody class="divide-y">
+		<TableBody tableBodyClass="divide-y">
+			<StatInput
+				label="Strength"
+				bind:statValue={monster.str}
+				statBonus={calcBonusString(monster, 'str')}
+				disabled={disableInputs}
+				bold={true}
+			/>
 			<StatInput
 				label="Smash"
 				bind:statValue={monster.smash}
-				statBonus={calcTotalSkillBonus(monster.str, monster.smash)}
+				statBonus={calcBonusString(monster, 'str', 'smash')}
 				disabled={disableInputs}
 			/>
 			<StatInput
@@ -274,7 +248,14 @@
 		</TableBody>
 	</Table>
 	<Table striped={true}>
-		<TableBody class="divide-y">
+		<TableBody tableBodyClass="divide-y">
+			<StatInput
+				label="Dexterity"
+				bind:statValue={monster.dex}
+				statBonus={calcStatBonus(monster.dex)}
+				disabled={disableInputs}
+				bold={true}
+			/>
 			<StatInput
 				label="Accuracy"
 				bind:statValue={monster.accuracy}
@@ -308,7 +289,14 @@
 		</TableBody>
 	</Table>
 	<Table striped={true}>
-		<TableBody class="divide-y">
+		<TableBody tableBodyClass="divide-y">
+			<StatInput
+				label="Empathy"
+				bind:statValue={monster.emp}
+				statBonus={calcStatBonus(monster.emp)}
+				disabled={disableInputs}
+				bold={true}
+			/>
 			<StatInput
 				label="Animal Handling"
 				bind:statValue={monster.animal_handling}
@@ -342,7 +330,14 @@
 		</TableBody>
 	</Table>
 	<Table striped={true}>
-		<TableBody class="divide-y">
+		<TableBody tableBodyClass="divide-y">
+			<StatInput
+				label="Intelligence"
+				bind:statValue={monster.int}
+				statBonus={calcStatBonus(monster.int)}
+				disabled={disableInputs}
+				bold={true}
+			/>
 			<StatInput
 				label="Craft"
 				bind:statValue={monster.craft}
@@ -411,21 +406,21 @@
 					/>
 				</Label>
 			</div>
-			<Button type="submit" disabled={disableInputs}>Add</Button>
+			<Button type="submit" disabled={disableInputs} color="primary">Add</Button>
 		</form>
 	</div>
 	<div>
 		<h1 class="text-4xl dark:text-white pb-8">Equipment</h1>
 
 		<Table striped={true}>
-			<TableBody class="divide-y">
+			<TableBody tableBodyClass="divide-y">
 				{#each monster.equipment as { id, name, roll_bonus, damage_formula, skills, specialties }}
 					<WeaponRow {monster} {id} {name} {roll_bonus} {damage_formula} {skills} {specialties} />
 				{/each}
 			</TableBody>
 		</Table>
 
-		<div class="mt-4 themed">
+		<div class="mt-4">
 			<Label class="pt-2"
 				>Add equipment
 				<SSelect
@@ -433,9 +428,12 @@
 					id="equipment"
 					loadOptions={fetchEquipment}
 					bind:value={selectedEquipmentId}
+					placeholder="Search equipment"
 				/>
 			</Label>
-			<Button class="mt-4" on:click={() => addEquipment()} disabled={disableInputs}>Add</Button>
+			<Button class="mt-4" on:click={() => addEquipment()} disabled={disableInputs} color="primary"
+				>Add</Button
+			>
 		</div>
 	</div>
 </div>
@@ -450,22 +448,16 @@
 		{/each}
 	</TableBody>
 </Table>
-<div class="mt-4 themed">
+<div class="mt-4">
 	<Label
 		>Add Spells
-		<SSelect class="mt-4" id="equipment" loadOptions={fetchSpells} bind:value={selectedSpellId} />
+		<SSelect
+			class="mt-4"
+			id="spells"
+			loadOptions={fetchSpells}
+			bind:value={selectedSpellId}
+			placeholder="Search spells"
+		/>
 	</Label>
-	<Button class="mt-4" on:click={addSpell} disabled={disableInputs}>Add</Button>
+	<Button class="mt-4" color="primary" on:click={addSpell} disabled={disableInputs}>Add</Button>
 </div>
-
-<style>
-	.themed {
-		--background: rgb(55, 65, 81);
-		--border: rgb(75, 85, 99);
-		--inputColor: black;
-		--multiItemBG: black;
-		--itemColor: black;
-		--itemHoverColor: black;
-		color: black !important;
-	}
-</style>
