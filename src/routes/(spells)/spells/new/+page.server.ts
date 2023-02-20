@@ -1,7 +1,6 @@
-import type { Actions } from './$types';
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { error, invalid, redirect } from '@sveltejs/kit';
-import { goto } from '$app/navigation';
+import { error } from '@sveltejs/kit';
+import type { Actions } from './$types';
 
 export const actions: Actions = {
 
@@ -29,9 +28,7 @@ export const actions: Actions = {
 
     if (createSpellError) {
       console.log(createSpellError);
-      return invalid(500, {
-        supabaseErrorMessage: createSpellError.message
-      });
+      return error(500, createSpellError.message);
     }
 
     return {
