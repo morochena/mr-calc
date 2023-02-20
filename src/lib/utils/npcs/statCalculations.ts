@@ -1,3 +1,4 @@
+import type { Monster, MonsterSkill, MonsterStat } from "../../../../types/fromSupabase";
 import emptySkillPool from "../data/skills";
 
 export const calcStatBonus = (stat) => {
@@ -16,7 +17,7 @@ export const calcTotalSkillBonus = (stat, skill) => {
   return value;
 };
 
-export const calcBonusValue = (monster: any, stat?: string, skill?: string, speciality?: string) => {
+export const calcBonusValue = (monster: Monster, stat?: MonsterStat, skill?: MonsterSkill, speciality?: string) => {
   let value = 0;
   value += speciality ? (monster.specialties[speciality]?.value || 0 * 3) : 0;
   value += skill ? ((monster[skill] || 0) * 2) : 0;
@@ -25,7 +26,7 @@ export const calcBonusValue = (monster: any, stat?: string, skill?: string, spec
   return Math.floor(value);
 }
 
-export const calcBonusString = (monster: any, stat?: string, skill?: string, speciality?: string) => {
+export const calcBonusString = (monster: Monster, stat?: MonsterStat, skill?: MonsterSkill, speciality?: string) => {
   const value = calcBonusValue(monster, stat, skill, speciality);
   if (value > 0) {
     return "+" + value;
@@ -39,7 +40,7 @@ export const calcRawSkillBonus = (stat, skill) => {
   return Math.floor(statValue + skillValue);
 };
 
-export const calcBody = (monster) => {
+export const calcBody = (monster: Monster) => {
   const value = calcBonusValue(monster, "str", "physique") + 10;
 
   if (monster.size == "tiny") {
@@ -58,15 +59,15 @@ export const calcBody = (monster) => {
   return value;
 };
 
-export const calcMind = (monster) => {
+export const calcMind = (monster: Monster) => {
   return calcBonusValue(monster, "emp", "willpower") + 10
 };
 
-export const calcArcana = (monster) => {
+export const calcArcana = (monster: Monster) => {
   return Math.max(calcBonusValue(monster, "int", "lore", "arcana"), 0);
 };
 
-export const calcDodge = (monster) => {
+export const calcDodge = (monster: Monster) => {
   const value = calcBonusValue(monster, "dex", "stealth", "dodge") + 7
 
   if (monster.size == "tiny") {

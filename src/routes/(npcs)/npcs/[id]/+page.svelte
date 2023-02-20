@@ -8,6 +8,8 @@
 	import {
 		calcArcana,
 		calcBody,
+		calcBonusString,
+		calcBonusValue,
 		calcConsider,
 		calcDodge,
 		calcLevel,
@@ -209,14 +211,14 @@
 			<StatInput
 				label="Strength"
 				bind:statValue={monster.str}
-				statBonus={calcStatBonus(monster.str)}
+				statBonus={calcBonusString(monster, 'str')}
 				disabled={disableInputs}
 				bold={true}
 			/>
 			<StatInput
 				label="Smash"
 				bind:statValue={monster.smash}
-				statBonus={calcTotalSkillBonus(monster.str, monster.smash)}
+				statBonus={calcBonusString(monster, 'str', 'smash')}
 				disabled={disableInputs}
 			/>
 			<StatInput
