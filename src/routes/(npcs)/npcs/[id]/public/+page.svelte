@@ -79,7 +79,7 @@
 		// split description into lines that are 80 characters or less
 		// add to new line if split
 
-		const lines = description.split('\n');
+		const lines = description?.split('\n') || [];
 		const newLines = [];
 
 		lines.forEach((line) => {

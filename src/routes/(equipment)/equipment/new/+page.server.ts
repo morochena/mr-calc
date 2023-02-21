@@ -26,14 +26,12 @@ export const actions: Actions = {
       user_id: session.user.id
     };
 
-    console.log(newEquipment)
-
     const { error: createEquipmentError, data: newPost } = await supabaseClient
       .from('equipment')
       .insert(newEquipment);
 
     if (createEquipmentError) {
-      console.log(createEquipmentError);
+      console.error(createEquipmentError);
       return error(500, createEquipmentError.message);
     }
 

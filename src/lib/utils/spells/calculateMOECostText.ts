@@ -63,7 +63,7 @@ const evalCost = (moe) => {
       return warplight(trueTier);
   }
 
-  console.log("modifier case not handled: ", moe.amount);
+  console.warn("modifier case not handled: ", moe.amount);
 
   return 0;
 };

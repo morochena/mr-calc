@@ -4,6 +4,14 @@
 
 	import logo from '$lib/assets/logo.png';
 	import { Navbar, NavBrand, NavHamburger, NavLi, NavUl } from 'flowbite-svelte';
+	import {
+		Footer,
+		FooterBrand,
+		FooterCopyright,
+		FooterIcon,
+		FooterLink,
+		FooterLinkGroup
+	} from 'flowbite-svelte';
 
 	import { supabaseClient } from '$lib/db';
 
@@ -49,6 +57,17 @@
 <main>
 	<slot />
 </main>
+
+<Footer>
+	<FooterCopyright
+		href="https://www.mythicvisionsgames.com"
+		by="Mythic Visions™"
+		year={new Date().getFullYear()}
+	/>
+	<FooterLinkGroup
+		ulClass="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0"
+	/>
+</Footer>
 
 <svelte:head>
 	<title>Mortal Reins Calculators</title>

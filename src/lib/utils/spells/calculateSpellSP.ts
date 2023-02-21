@@ -113,7 +113,7 @@ const runModifier = (modifier) => {
       return warplight(truetier);
   }
 
-  console.log("modifier case not handled: ", modifier.amount);
+  console.warn("modifier case not handled: ", modifier.amount);
 
   return 0;
 };

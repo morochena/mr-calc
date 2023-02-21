@@ -9,15 +9,13 @@ export const load: PageLoad = async (event) => {
     throw redirect(303, '/');
   }
 
-  const { data: spells, error } = await supabaseClient
+  const { data: spells } = await supabaseClient
     .from('spells')
     .select(`
       *,
       profiles (id, username)
     `)
     .order('name', { ascending: true });
-
-  console.log(error)
 
   return {
     user: session.user,

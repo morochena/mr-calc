@@ -27,7 +27,7 @@ export const actions: Actions = {
       .insert(newSpell);
 
     if (createSpellError) {
-      console.log(createSpellError);
+      console.error(createSpellError);
       return error(500, createSpellError.message);
     }
 

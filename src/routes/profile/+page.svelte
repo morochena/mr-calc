@@ -16,7 +16,7 @@
 			.update({ username: profile.username })
 			.match({ id: profile.id });
 		if (error) {
-			console.log('error', error);
+			console.error('error', error);
 		} else {
 			Toastify({
 				text: 'Saved!',
