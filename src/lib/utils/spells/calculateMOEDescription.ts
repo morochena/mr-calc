@@ -85,8 +85,9 @@ export const calculateMOEDescription = (spell, moe) => {
       evalString = evalString.replace("{", "");
       evalString = evalString.replace("}", "");
 
-      if (spell.spell_data.domain)
+      if (spell.spell_data.domain) {
         evalString = evalString.replace(spell.spell_data.domain, "'" + spell.spell_data.domain + "'")
+      }
 
       Object.keys(functionMap).forEach(key => {
         evalString = evalString.replace(key, functionMap[key].name);

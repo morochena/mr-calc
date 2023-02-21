@@ -1,4 +1,4 @@
-
+import { cloneDeep } from 'lodash'
 
 export const calculateSpellSP = (spell) => {
   let spellSPCost = 0;
@@ -59,7 +59,7 @@ export function processDomainEffects(spell) {
   let sEffects = spell.spell_data.effects
 
   let effects = sEffects;
-  effects = structuredClone(effects);
+  effects = cloneDeep(effects);
 
   if (sMode === "Unpredicable") {
     effects.push({
@@ -245,7 +245,7 @@ export function processDomainModifiers(spell) {
   let sModifiers = spell.spell_data.modifiers
 
   let modifiers = sModifiers;
-  modifiers = structuredClone(modifiers);
+  modifiers = cloneDeep(modifiers);
   let domain = sDomain;
   switch (domain) {
     case "Fire":

@@ -25,15 +25,11 @@
 	</div>
 
 	<h2 class="text-2xl mt-10">Changelog</h2>
-	<ul class="list-inside">
-		<li class="mt-2">
-			<h3 class="text-xl">v0.2.0</h3>
-			<p class="text-sm">2023-02-11</p>
-			<ul class="list-disc list-inside">
-				<li class="mt-2">Large layout refactor</li>
-				<li class="mt-2">Fix spell calculator bugs</li>
-				<li class="mt-2">Added profiles</li>
-			</ul>
-		</li>
-	</ul>
+	<pre class="text-left">
+		## 2023-02-21
+		- layout refactor
+		- fix spell calculator bugs
+		- added profiles
+		- allowed public/private npcs/spells/equipment
+	</pre>
 </div>
