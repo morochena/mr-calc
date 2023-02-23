@@ -1,6 +1,7 @@
 <script>
 	import { DarkMode } from 'flowbite-svelte';
 	import '../app.css';
+	let clientVersion = __version__;
 
 	import logo from '$lib/assets/logo.png';
 	import { Navbar, NavBrand, NavHamburger, NavLi, NavUl } from 'flowbite-svelte';
@@ -59,7 +60,7 @@
 </main>
 
 <br />
-<Footer class="absolute bottom-0 left-0 w-full">
+<Footer>
 	<FooterCopyright
 		href="https://www.mythicvisionsgames.com"
 		by="Mythic Visions™"
