@@ -1,7 +1,6 @@
 <script>
 	import { DarkMode } from 'flowbite-svelte';
 	import '../app.css';
-	let clientVersion = __version__;
 
 	import logo from '$lib/assets/logo.png';
 	import { Navbar, NavBrand, NavHamburger, NavLi, NavUl } from 'flowbite-svelte';
@@ -69,7 +68,7 @@
 	<FooterLinkGroup
 		ulClass="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0"
 	>
-		<FooterLink>Build: {new Date().toDateString()}</FooterLink>
+		<FooterLink><span class="text-xs">Build: </span></FooterLink>
 	</FooterLinkGroup>
 </Footer>
 
