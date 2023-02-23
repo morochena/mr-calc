@@ -1,41 +1,45 @@
-<script>
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { calcLevel } from '$lib/utils/npcs/statCalculations';
+	import ColorHash from 'color-hash';
 	import {
-		Listgroup,
-		ListgroupItem,
-		Avatar,
 		Badge,
-		Input,
 		Button,
 		ButtonGroup,
-		Table,
-		TableHead,
-		TableSearch,
-		TableHeadCell,
 		TableBody,
 		TableBodyCell,
-		TableBodyRow
+		TableBodyRow,
+		TableHead,
+		TableHeadCell,
+		TableSearch,
+		Toggle
 	} from 'flowbite-svelte';
-	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
-	import { ArrowLeft } from 'svelte-heros';
-	import { Toggle } from 'flowbite-svelte';
-	import ColorHash from 'color-hash';
-	import { calcLevel } from '$lib/utils/npcs/statCalculations';
-	import { calculateTotalSP } from '$lib/utils/spells/calculateSpellSP';
+	import type { ItemType } from '../../../types/fromSupabase';
 
 	export let items;
-	export let itemType;
+	export let itemType: ItemType;
 	export let user;
-
-	const ch = new ColorHash({ lightness: 0.8 });
+	let sortKey = 'name';
+	let sortDirection = 'asc';
 	let ownedOnlyToggle = true;
 
-	const colorHash = (text) => {
+	const ch = new ColorHash({ lightness: 0.8 });
+
+	const colorHash = (text: string) => {
 		return ch.hex(text);
 	};
 
-	const gotoItem = (href) => {
+	const gotoItem = (href: string) => {
 		goto(href);
+	};
+
+	const updateSortKey = (key: string) => {
+		if (sortKey == key) {
+			sortDirection = sortDirection == 'asc' ? 'desc' : 'asc';
+		} else {
+			sortKey = key;
+			sortDirection = 'asc';
+		}
 	};
 
 	let searchTerm = '';
@@ -45,6 +49,18 @@
 			item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			item.tags?.filter((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())).length > 0
 	);
+	$: sortedItems = filteredItems.sort((a, b) => {
+		// sortKey can be a nested key, like 'spell_data.domain'
+		const aVal = sortKey.split('.').reduce((acc, key) => acc[key], a);
+		const bVal = sortKey.split('.').reduce((acc, key) => acc[key], b);
+		if (aVal > bVal) {
+			return sortDirection == 'asc' ? 1 : -1;
+		} else if (aVal < bVal) {
+			return sortDirection == 'asc' ? -1 : 1;
+		} else {
+			return 0;
+		}
+	});
 </script>
 
 <div class="w-full dark:bg-gray-900">
@@ -60,25 +76,27 @@
 
 	<TableSearch placeholder={`Search ${itemType}`} hoverable={true} bind:inputValue={searchTerm}>
 		<TableHead>
-			<TableHeadCell>Name</TableHeadCell>
+			<TableHeadCell><span on:click={() => updateSortKey('name')}>Name</span></TableHeadCell>
 			{#if itemType == 'npcs'}
-				<TableHeadCell>~XP</TableHeadCell>
+				<TableHeadCell><span on:click={() => updateSortKey('level')}>~XP</span></TableHeadCell>
 			{/if}
 			{#if itemType == 'spells'}
-				<TableHeadCell>Domain</TableHeadCell>
-				<TableHeadCell>Mode</TableHeadCell>
-				<TableHeadCell>SP</TableHeadCell>
+				<TableHeadCell><span on:click={() => updateSortKey('domain')}>Domain</span></TableHeadCell>
+				<TableHeadCell><span on:click={() => updateSortKey('mode')}>Mode</span></TableHeadCell>
+				<TableHeadCell><span on:click={() => updateSortKey('cost')}>SP</span></TableHeadCell>
 			{/if}
 			{#if itemType == 'equipment'}
-				<TableHeadCell>Type</TableHeadCell>
-				<TableHeadCell>Skills</TableHeadCell>
-				<TableBodyCell>Specialties</TableBodyCell>
+				<TableHeadCell><span on:click={() => updateSortKey('type')}>Type</span></TableHeadCell>
+				<TableHeadCell><span on:click={() => updateSortKey('skills')}>Skills</span></TableHeadCell>
+				<TableBodyCell
+					><span on:click={() => updateSortKey('specialties')}>Specialties</span></TableBodyCell
+				>
 			{/if}
 			<TableHeadCell>Tags</TableHeadCell>
-			<TableHeadCell>Owner</TableHeadCell>
+			<TableHeadCell><span on:click={() => updateSortKey('owner')}>Owner</span></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
-			{#each filteredItems as item}
+			{#each sortedItems as item}
 				<TableBodyRow>
 					<a href={`/${itemType}/${item.id}`}>
 						<TableBodyCell>{item.name}</TableBodyCell>
@@ -87,9 +105,9 @@
 						<TableBodyCell>{calcLevel(item)}</TableBodyCell>
 					{/if}
 					{#if itemType == 'spells'}
-						<TableBodyCell>{item.spell_data.domain}</TableBodyCell>
-						<TableBodyCell>{item.spell_data.mode}</TableBodyCell>
-						<TableBodyCell>{calculateTotalSP(item).cost}</TableBodyCell>
+						<TableBodyCell>{item.domain}</TableBodyCell>
+						<TableBodyCell>{item.mode}</TableBodyCell>
+						<TableBodyCell>{item.cost}</TableBodyCell>
 					{/if}
 					{#if itemType == 'equipment'}
 						<TableBodyCell>{item.type || ''}</TableBodyCell>
@@ -105,7 +123,9 @@
 						{#each item.tags || [] as tag}<Badge class="mx-1">{tag}</Badge>{/each}
 					</TableBodyCell>
 					<TableBodyCell
-						><Badge class="" style="background-color: {colorHash(item.profiles.username)}"
+						><Badge
+							class="dark:text-black text-black"
+							style="background-color: {colorHash(item.profiles.username)}"
 							>{item.profiles.username}</Badge
 						>
 					</TableBodyCell>

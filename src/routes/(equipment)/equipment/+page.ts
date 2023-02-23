@@ -1,4 +1,4 @@
-import type { PageLoad } from './$types';
+import type { PageLoad } from '../$types';
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { redirect } from '@sveltejs/kit';
 
@@ -9,7 +9,13 @@ export const load: PageLoad = async (event) => {
     throw redirect(303, '/');
   }
 
-  const { data: equipment } = await supabaseClient.from('equipment').select('*,profiles (id, username)').order('name', { ascending: true });
+  let { data: equipment } = await supabaseClient.from('equipment').select('*,profiles (id, username)').order('name', { ascending: true });
+
+  equipment = equipment?.map(item => (
+    {
+      ...item,
+      owner: item.profiles.username
+    })) || []
 
   return {
     user: session.user,
