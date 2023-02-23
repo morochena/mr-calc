@@ -1,8 +1,6 @@
+import type { Modifier } from "../../../../types/fromSupabase";
 
-
-
-
-export const splitModifier = (tier) => {
+export const splitModifier = (tier: number) => {
   if (tier == 1) return 8;
   if (tier == 2) return 15;
   if (tier == 3) return 27;
@@ -10,7 +8,7 @@ export const splitModifier = (tier) => {
   if (tier > 4) return tier * 10;
 }
 
-export const rangeModifier = (tier) => {
+export const rangeModifier = (tier: number) => {
   let cost = 0
 
   for (let i = 0; i < tier; i++) {
@@ -26,7 +24,7 @@ export const rangeModifier = (tier) => {
   return cost;
 }
 
-export const aoeModifier = (tier) => {
+export const aoeModifier = (tier: number) => {
   let cost = 0;
 
   for (let i = 0; i < tier; i++) {
@@ -44,7 +42,7 @@ export const aoeModifier = (tier) => {
   return cost;
 }
 
-export const lastingModifier = (tier, type = null) => {
+export const lastingModifier = (tier: number, type = null) => {
   let baseCost = 0
   let cost = 0
   let multiplier = 0
@@ -63,7 +61,7 @@ export const lastingModifier = (tier, type = null) => {
     cost += 5
     baseCost = 5
     multiplier = 5
-  } else if (type == 'Lasting (Hours)') {
+  } else if (type == 'Lasting (Weeks)') {
     cost += 8
     baseCost = 6
     multiplier = 8
@@ -89,11 +87,11 @@ export const lastingModifier = (tier, type = null) => {
   return [cost, multiplier];
 }
 
-export const componentModifier = (tier) => {
+export const componentModifier = (tier: number) => {
   return tier * -1 + 1;
 }
 
-export const availableModifiers = [
+export const availableModifiers: Modifier[] = [
   { name: "Ray", hasTiers: false, incompatible: ["Area of Effect"], prerequisite: ["Range"], modifierType: 'reduce', amount: 3, description: "the targets must be in direct line of sight for the character for the entire duration of the spell or the spell fails" },
   { name: "Aura", hasTiers: false, incompatible: ["Damage", "Attack"], prerequisite: ["Area of Effect"], modifierType: 'add', amount: 2, description: " is an Aura" },
   { name: "Reaction", hasTiers: false, incompatible: ["Charge Up"], modifierType: 'add', amount: 3, description: "as a Reaction" },

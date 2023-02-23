@@ -1,8 +1,12 @@
+import type { Spell } from "../../../../../types/fromSupabase";
 import { aoeArea } from "./aoeArea";
+import { get } from 'svelte/store'
+import { currentSpell } from "$lib/stores/currentSpellStore"
 
-export function radiusCalc(spell, tier) {
-  let area = aoeArea(tier);
-  let radius = Math.sqrt(area / Math.PI);
+
+export function radiusCalc(spell: Spell, tier: number) {
+  const area = aoeArea(tier);
+  const radius = Math.sqrt(area / Math.PI);
 
   return Math.ceil(radius);
 }

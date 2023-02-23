@@ -1,4 +1,4 @@
-export function rangeMeters(tier) {
+export function rangeMeters(tier: number) {
   let meters = 0;
 
   for (let i = 0; i < tier; i++) {

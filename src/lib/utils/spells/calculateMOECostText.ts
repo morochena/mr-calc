@@ -1,7 +1,8 @@
+import type { ModifierOrEffect } from "../../../../types/fromSupabase";
 import { createElement, movementCondition, geas, sound, plague, madness, help, hinder, illusion, warplight } from "../data/effects";
 import { aoeModifier, componentModifier, lastingModifier, rangeModifier, splitModifier } from "../data/modifiers";
 
-export const calculateMOECostText = (moe) => {
+export const calculateMOECostText = (moe: ModifierOrEffect) => {
   let truetier = moe.tier;
   let amount;
   let operator;
@@ -26,7 +27,7 @@ export const calculateMOECostText = (moe) => {
   }
 };
 
-const evalCost = (moe) => {
+const evalCost = (moe: ModifierOrEffect) => {
   let trueTier = moe.tier;
   if (moe.domaintier) trueTier -= moe.domaintier;
 

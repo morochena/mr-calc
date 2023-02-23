@@ -1,4 +1,4 @@
-export function sense(tier) {
+export function sense(tier: number) {
   switch (tier) {
     case 1:
       return "nonspecific";

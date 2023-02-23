@@ -1,4 +1,4 @@
-export function comms(tier) {
+export function comms(tier: number) {
   switch (tier) {
     case 1:
       return "words";

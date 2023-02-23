@@ -1,4 +1,4 @@
-export function noise(tier) {
+export function noise(tier: number) {
   if (tier < 4) {
     return 90 + 10 * tier + " DB";
   }

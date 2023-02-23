@@ -1,4 +1,4 @@
-export function volume(tier) {
+export function volume(tier: number) {
   switch (tier) {
     case 1:
       return "50 DB";

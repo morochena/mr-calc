@@ -24,7 +24,7 @@ export const load: PageLoad = async (event) => {
       ...spell,
       domain: spell.spell_data.domain,
       mode: spell.spell_data.mode,
-      cost: calculateTotalSP(spell).cost,
+      sp: calculateTotalSP(spell).cost,
       owner: spell.profiles.username
     })) || []
 

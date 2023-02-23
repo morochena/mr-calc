@@ -1,9 +1,9 @@
 import { aoeArea } from "./aoeArea";
 
-export function rectWidthCalc(tier, notes) {
-  let area = aoeArea(tier);
+export function rectWidthCalc(tier: number, notes: string) {
+  const area = aoeArea(tier);
   try {
-    let width = area / parseInt(notes);
+    const width = area / parseInt(notes);
     return Math.ceil(width);
   } catch (error) {
     return "Enter a Number into notes";

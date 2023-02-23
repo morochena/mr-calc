@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {
 		Alert,
 		Select,
@@ -16,25 +16,27 @@
 	import { XCircle } from 'svelte-heros';
 
 	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
+	import type { Effect, Spell } from '../../../../../types/fromSupabase';
 
-	export let spell;
-	export let disableInputs;
-	export let addEffect;
-	export let removeEffect;
+	export let spell: Spell;
+	export let disableInputs: boolean;
+	export let addEffect: (effect: Effect) => void;
+	export let removeEffect: (effect: Effect) => void;
 
 	let availableEffectOptions = availableEffects.map((effect) => ({
 		name: effect.name,
 		value: effect
 	}));
 
-	let selectedEffect = null;
+	let selectedEffect: Effect | null = null;
+
 	const tryAddEffect = () => {
 		if (!selectedEffect) return;
 		addEffect(selectedEffect);
 		selectedEffect = null;
 	};
 
-	const tryRemoveEffect = (effect) => {
+	const tryRemoveEffect = (effect: Effect) => {
 		if (disableInputs) return;
 		removeEffect(effect);
 	};

@@ -1,8 +1,9 @@
+import type { Modifier, Spell } from "../../../../types/fromSupabase";
 import { createElement, movementCondition, geas, sound, plague, madness, help, hinder, illusion, warplight } from "../data/effects";
 import { splitModifier, rangeModifier, aoeModifier, lastingModifier, componentModifier } from "../data/modifiers";
 
 
-export const calculateTotalSP = (spell) => {
+export const calculateTotalSP = (spell: Spell) => {
   let { effects, modifiers } = spell.spell_data
   effects = effects || []
   modifiers = modifiers || []
@@ -30,7 +31,7 @@ export const calculateTotalSP = (spell) => {
 
   let paramSPCost = modifierCost;
 
-  let spMultipliers = effectsAndModifiers.filter(
+  const spMultipliers = effectsAndModifiers.filter(
     (modifier) =>
       modifier.modifierType === "multiply" ||
       modifier.modifierType === "functionMultiply"
@@ -53,7 +54,7 @@ export const calculateTotalSP = (spell) => {
 }
 
 
-function resolveCost(modifier) {
+function resolveCost(modifier: Modifier) {
   let cost = 0;
   switch (modifier.modifierType) {
     case "add":
@@ -77,7 +78,7 @@ function resolveCost(modifier) {
 }
 
 
-const runModifier = (modifier) => {
+const runModifier = (modifier: Modifier) => {
   let truetier = modifier.tier;
   if (modifier.domaintier) truetier -= modifier.domaintier;
   switch (modifier.amount) {

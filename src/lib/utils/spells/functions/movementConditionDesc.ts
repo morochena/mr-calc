@@ -1,4 +1,4 @@
-export function movementConditionDesc(tier) {
+export function movementConditionDesc(tier: number) {
   switch (tier) {
     case 1:
       return "unable to Run";

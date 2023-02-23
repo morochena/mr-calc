@@ -1,4 +1,4 @@
-export function calcComponentCost(tier) {
+export function calcComponentCost(tier: number) {
   let cost = 1;
   const ftier = tier - 1;
   if (ftier < 5)
@@ -11,5 +11,6 @@ export function calcComponentCost(tier) {
 
   if (cost <= 0)
     return "less than 1";
+
   return cost;
 }

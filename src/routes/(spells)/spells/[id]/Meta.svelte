@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
 	import { Checkbox, Input, Label, Select, Textarea } from 'flowbite-svelte';
+	import type { Spell } from '../../../../../types/fromSupabase';
 
-	export let spell;
-	export let disableInputs;
+	export let spell: Spell;
+	export let disableInputs: boolean;
 
 	const domains = [
 		{ value: `Sorcery`, name: `Sorcery` },
@@ -25,40 +26,44 @@
 	];
 </script>
 
-<Label class="mt-2"
-	>Spell Name
-	<Input type="text" bind:value={spell.name} disabled={disableInputs} />
-</Label>
+<div class="grid gap-2 mb-6 md:grid-cols-2">
+	<div>
+		<Label class="mt-2"
+			>Spell Name
+			<Input type="text" bind:value={spell.name} disabled={disableInputs} />
+		</Label>
 
-<Label class="mt-2"
-	>Description
-	<Textarea rows="4" bind:value={spell.spell_data.description} disabled={disableInputs} />
-</Label>
+		<Label class="mt-2"
+			>Description
+			<Textarea rows="4" bind:value={spell.spell_data.description} disabled={disableInputs} />
+		</Label>
+	</div>
+	<div>
+		<Label class="mt-2">
+			Domain
+			<Select items={domains} bind:value={spell.spell_data.domain} disabled={disableInputs} />
+		</Label>
 
-<Label class="mt-2">
-	<span>Tags</span>
-	<Input
-		type="text"
-		bind:value={spell.tags}
-		disabled={disableInputs}
-		placeholder="eg. fire, ranged"
-	/>
-</Label>
+		<Label class="mt-2"
+			>Mode
+			<Select items={modes} bind:value={spell.spell_data.mode} disabled={disableInputs} />
+		</Label>
 
-<Label class="mt-2">
-	Domain
-	<Select items={domains} bind:value={spell.spell_data.domain} disabled={disableInputs} />
-</Label>
-
-<Label class="mt-2"
-	>Mode
-	<Select items={modes} bind:value={spell.spell_data.mode} disabled={disableInputs} />
-</Label>
+		<Label class="mt-2">
+			<span>Tags</span>
+			<Input
+				type="text"
+				bind:value={spell.tags}
+				disabled={disableInputs}
+				placeholder="eg. fire, ranged"
+			/>
+		</Label>
+	</div>
+</div>
 
 <Checkbox class="mt-2" disabled={disableInputs} bind:checked={spell.spell_data.isAlchemy}
 	>Alchemy</Checkbox
 >
-
 <Checkbox class="mt-2" disabled={disableInputs} bind:checked={spell.spell_data.isRunesmith}
 	>Runesmithing</Checkbox
 >

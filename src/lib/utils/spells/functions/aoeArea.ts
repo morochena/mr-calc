@@ -1,10 +1,11 @@
 import { get } from 'svelte/store'
 import { currentSpell } from "$lib/stores/currentSpellStore"
+import type { Spell } from '../../../../../types/fromSupabase';
 
-export function aoeArea(tier) {
+export function aoeArea(tier: number) {
   let area = 0;
 
-  const spell = get(currentSpell)
+  const spell: Spell = get(currentSpell)
   const modifiers = spell.spell_data.modifiers
   const domain = spell.spell_data.domain
 

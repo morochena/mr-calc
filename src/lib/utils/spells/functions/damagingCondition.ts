@@ -1,4 +1,6 @@
-export function damagingCondition(domain) {
+import type { Domain } from "../../../../../types/fromSupabase";
+
+export function damagingCondition(domain: Domain) {
   switch (domain) {
     case "Fire":
       return "catches on Fire, Burning";

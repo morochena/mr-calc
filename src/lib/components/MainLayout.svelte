@@ -83,7 +83,7 @@
 			{#if itemType == 'spells'}
 				<TableHeadCell><span on:click={() => updateSortKey('domain')}>Domain</span></TableHeadCell>
 				<TableHeadCell><span on:click={() => updateSortKey('mode')}>Mode</span></TableHeadCell>
-				<TableHeadCell><span on:click={() => updateSortKey('cost')}>SP</span></TableHeadCell>
+				<TableHeadCell><span on:click={() => updateSortKey('sp')}>SP</span></TableHeadCell>
 			{/if}
 			{#if itemType == 'equipment'}
 				<TableHeadCell><span on:click={() => updateSortKey('type')}>Type</span></TableHeadCell>
@@ -107,7 +107,7 @@
 					{#if itemType == 'spells'}
 						<TableBodyCell>{item.domain}</TableBodyCell>
 						<TableBodyCell>{item.mode}</TableBodyCell>
-						<TableBodyCell>{item.cost}</TableBodyCell>
+						<TableBodyCell>{item.sp}</TableBodyCell>
 					{/if}
 					{#if itemType == 'equipment'}
 						<TableBodyCell>{item.type || ''}</TableBodyCell>

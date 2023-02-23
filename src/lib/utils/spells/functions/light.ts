@@ -1,4 +1,4 @@
-export function light(tier) {
+export function light(tier: number) {
   if (tier == 1) {
     return "a small room with light";
   }

@@ -20,6 +20,7 @@ import { volume } from "./functions/volume";
 
 import { currentSpell } from "$lib/stores/currentSpellStore";
 import { calculateSpellCost } from "./calculateSpellCost";
+import type { Spell } from "../../../../types/fromSupabase";
 
 // this is used to dynamically evaluate functions while maintaining their name in minified builds
 const functionMap = {
@@ -112,6 +113,6 @@ export const calculateMOEDescription = (spell, moe) => {
   return formattedDescription;
 }
 
-function calcSpellResist(spell) {
+function calcSpellResist(spell: Spell) {
   return calculateSpellCost(spell) + 5;
 }

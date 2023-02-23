@@ -1,4 +1,6 @@
-export function temporaryBodySideEffect(domain) {
+import type { Domain } from "../../../../../types/fromSupabase";
+
+export function temporaryBodySideEffect(domain: Domain) {
   switch (domain) {
     case "Holy":
       return "starts glowing with holy protection";

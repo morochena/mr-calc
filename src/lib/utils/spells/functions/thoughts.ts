@@ -1,4 +1,4 @@
-export function thoughts(tier) {
+export function thoughts(tier: number) {
   switch (tier) {
     case 1:
       return "surface thoughts";

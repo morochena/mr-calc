@@ -1,24 +1,10 @@
-/*
-Sorcery ✨
-Fire 🔥
-Water 🌊
-Earth 🌑
-Air 🍃
-Necromancy 💀
-Holy 💥
-Mind 🧠
-Illusion 👁
-Nature 🌳
-*/
+import type { Effect } from "../../../../types/fromSupabase";
 
-// { name: "", domains: [], cost: 0, hasTiers: true, description: "" },
-
-export const createElement = (tier) => {
+export const createElement = (tier: number) => {
   return tier + 2;
 }
 
-
-export const movementCondition = (tier) => {
+export const movementCondition = (tier: number) => {
   switch (tier) {
     case 1:
       return 3;
@@ -30,7 +16,7 @@ export const movementCondition = (tier) => {
   }
 }
 
-export const sound = (tier) => {
+export const sound = (tier: number) => {
   switch (tier) {
     case 1:
       return 2;
@@ -43,7 +29,7 @@ export const sound = (tier) => {
   }
 }
 
-export const plague = (tier) => {
+export const plague = (tier: number) => {
   switch (tier) {
     case 1:
       return 10;
@@ -55,7 +41,7 @@ export const plague = (tier) => {
   }
 }
 
-export const madness = (tier) => {
+export const madness = (tier: number) => {
   switch (tier) {
     case 1:
       return 20;
@@ -67,7 +53,7 @@ export const madness = (tier) => {
   }
 }
 
-export const geas = (tier) => {
+export const geas = (tier: number) => {
   switch (tier) {
     case 1:
       return 3;
@@ -80,7 +66,7 @@ export const geas = (tier) => {
   }
 }
 
-export const help = (tier) => {
+export const help = (tier: number) => {
   let sum = 0;
   for (let i = 1; i <= tier; i++) {
     sum += i;
@@ -89,7 +75,7 @@ export const help = (tier) => {
   return sum;
 }
 
-export const hinder = (tier) => {
+export const hinder = (tier: number) => {
   let sum = 0;
   for (let i = 1; i <= tier; i++) {
     sum += i;
@@ -97,16 +83,15 @@ export const hinder = (tier) => {
   return sum;
 }
 
-export const warplight = (tier) => {
+export const warplight = (tier: number) => {
   return (tier - 1) * 4 + 2;
 }
 
-export const illusion = (tier) => {
+export const illusion = (tier: number) => {
   return (tier - 1) * 6 + 3;
 }
 
-export const availableEffects = [
-
+export const availableEffects: Effect[] = [
   { name: "Attack", domains: ["Sorcery", "Fire", "Water", "Air", "Earth", "Necromancy", "Holy"], modifierType: 'add', amount: 0, hasTiers: false, description: "takes an attack using the Caster's Magical Attack specialty that deals d10 DMG" },
   { name: "Attack (Targeted)", domains: ["Sorcery", "Necromancy", "Holy"], modifierType: 'add', amount: 2, hasTiers: false, description: "takes an attack which cannot be dodged that deals d10 DMG" },
   { name: "Create Element", maxTier: 3, domains: ["Air", "Earth", "Fire", "Water"], modifierType: 'function', amount: 'createElement', hasTiers: true, description: "creates {elementAmount([tier],[domain])}" },
@@ -219,3 +204,4 @@ export const availableEffects = [
   { name: "Hinder Empathy Speciality", domains: ["Mind", "Holy", "Water", "Illusion", "Nature"], modifierType: 'function', amount: 'hinder', hasTiers: true, maxTier: 5, description: "Subtract [tier*2] points from Empathy-[notes]" },
 
 ]
+

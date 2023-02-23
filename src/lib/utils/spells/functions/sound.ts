@@ -1,4 +1,4 @@
-export function sound(tier) {
+export function sound(tier: number) {
   switch (tier) {
     case 1:
       return "heard during the spell casting or preparation";

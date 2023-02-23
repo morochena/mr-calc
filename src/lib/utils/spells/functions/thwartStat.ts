@@ -1,4 +1,6 @@
-export function thwartStat(domain) {
+import type { Domain } from "../../../../../types/fromSupabase";
+
+export function thwartStat(domain: Domain) {
   switch (domain) {
     case "Fire":
       return "Dexterity";

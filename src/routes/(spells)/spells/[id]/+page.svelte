@@ -1,13 +1,12 @@
-<script>
-	import { supabaseClient } from '$lib/db';
-	import { Button, ButtonGroup, Input, Label, Textarea } from 'flowbite-svelte';
+<script lang="ts">
+	import { saveEntity } from '$lib/utils/operations';
+	import { Button, ButtonGroup } from 'flowbite-svelte';
+	import 'toastify-js/src/toastify.css';
+	import type { Effect, Modifier } from '../../../../../types/fromSupabase';
+	import Calculation from './Calculation.svelte';
 	import Effects from './Effects.svelte';
 	import Meta from './Meta.svelte';
 	import Modifiers from './Modifiers.svelte';
-	import Toastify from 'toastify-js';
-	import 'toastify-js/src/toastify.css';
-	import Calculation from './Calculation.svelte';
-	import { saveEntity } from '$lib/utils/operations';
 
 	export let data;
 
@@ -19,7 +18,7 @@
 	export const makeACopy = async () => {};
 	export const deleteSpell = async () => {};
 
-	const addModifier = (modifier) => {
+	const addModifier = (modifier: Modifier) => {
 		spell = {
 			...spell,
 			spell_data: {
@@ -28,17 +27,17 @@
 			}
 		};
 	};
-	const removeModifier = (modifier) => {
+	const removeModifier = (modifier: Modifier) => {
 		spell = {
 			...spell,
 			spell_data: {
 				...spell.spell_data,
-				modifiers: spell.spell_data.modifiers.filter((m) => m !== modifier)
+				modifiers: spell.spell_data.modifiers.filter((m: Modifier) => m !== modifier)
 			}
 		};
 	};
 
-	const addEffect = (effect) => {
+	const addEffect = (effect: Effect) => {
 		spell = {
 			...spell,
 			spell_data: {
@@ -47,12 +46,12 @@
 			}
 		};
 	};
-	const removeEffect = (effect) => {
+	const removeEffect = (effect: Effect) => {
 		spell = {
 			...spell,
 			spell_data: {
 				...spell.spell_data,
-				effects: spell.spell_data.effects.filter((m) => m !== effect)
+				effects: spell.spell_data.effects.filter((m: Effect) => m !== effect)
 			}
 		};
 	};

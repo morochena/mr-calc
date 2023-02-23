@@ -1,6 +1,7 @@
+import type { Spell } from "../../../../types/fromSupabase";
 import { calculateTotalSP } from "./calculateSpellSP";
 
-export function calculateSpellCost(spell) {
+export function calculateSpellCost(spell: Spell) {
   const SP = calculateTotalSP(spell).cost;
   let cost = Math.ceil(SP / 10.0) + 1;
 

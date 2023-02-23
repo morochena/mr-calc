@@ -1,4 +1,6 @@
-export function elementAmount(tier, domain) {
+import type { Domain } from "../../../../../types/fromSupabase";
+
+export function elementAmount(tier: number, domain: Domain) {
   switch (domain) {
     case "Fire":
       switch (tier) {
