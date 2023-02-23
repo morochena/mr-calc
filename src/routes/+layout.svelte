@@ -59,7 +59,7 @@
 </main>
 
 <br />
-<Footer>
+<Footer class="absolute bottom-0 left-0 w-full">
 	<FooterCopyright
 		href="https://www.mythicvisionsgames.com"
 		by="Mythic Visions™"
@@ -67,7 +67,9 @@
 	/>
 	<FooterLinkGroup
 		ulClass="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0"
-	/>
+	>
+		<FooterLink>Build: {new Date().toDateString()}</FooterLink>
+	</FooterLinkGroup>
 </Footer>
 
 <svelte:head>
