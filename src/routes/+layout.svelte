@@ -58,6 +58,7 @@
 	<slot />
 </main>
 
+<br />
 <Footer>
 	<FooterCopyright
 		href="https://www.mythicvisionsgames.com"
