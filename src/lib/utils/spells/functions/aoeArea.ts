@@ -1,13 +1,12 @@
-import { get } from 'svelte/store'
-import { currentSpell } from "$lib/stores/currentSpellStore"
-import type { Spell } from '../../../../../types/types';
+import type { CombinedModifier, Spell } from '../../../../../types/types';
+import { getCombinedModifiers } from '../getCombinedEffects';
 
-export function aoeArea(tier: number) {
+export function aoeArea(spell: Spell, modifier: CombinedModifier) {
   let area = 0;
 
-  const spell: Spell = get(currentSpell)
-  const modifiers = spell.spell_data.modifiers
-  const domain = spell.spell_data.domain
+  const modifiers = getCombinedModifiers(spell)
+  const domain = spell.domain
+  const tier = modifier.tier
 
   for (let i = 0; i < tier; i++) {
     if (i < 10) {

@@ -1,4 +1,7 @@
-export function rangeMeters(tier: number) {
+import type { CombinedModifier, Spell } from "../../../../../types/types";
+
+export function rangeMeters(_spell: Spell, modifier: CombinedModifier) {
+  const tier = modifier.tier;
   let meters = 0;
 
   for (let i = 0; i < tier; i++) {
@@ -12,4 +15,8 @@ export function rangeMeters(tier: number) {
   }
 
   return meters;
+}
+
+export function rangeMetersTimesThree(spell: Spell, modifier: CombinedModifier) {
+  return rangeMeters(spell, modifier) * 3;
 }

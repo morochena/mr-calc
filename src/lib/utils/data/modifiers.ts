@@ -1,4 +1,8 @@
 import type { Modifier } from "../../../../types/types";
+import { radiusCalc } from "../spells/functions/radiusCalc";
+import { rangeMeters, rangeMetersTimesThree } from "../spells/functions/rangeMeters";
+import { rectWidthCalc } from "../spells/functions/rectWidthCalc";
+import { thwartStat } from "../spells/functions/thwartStat";
 
 export const splitModifier = (tier: number) => {
   if (tier == 1) return 8;
@@ -110,7 +114,7 @@ export const availableModifiers: Modifier[] = [
     prerequisite: ['Area of Effect'],
     modifierType: 'add',
     amount: 2,
-    description: ' is an Aura'
+    description: 'is an Aura'
   },
   {
     id: 2,
@@ -181,7 +185,7 @@ export const availableModifiers: Modifier[] = [
     incompatible: ['Stealth', 'Rune', 'Alchemy'],
     modifierType: 'reduce',
     amount: 3,
-    description: 'requires both hands to perform [notes]'
+    description: 'requires both hands to perform {meta|a hand sign}'
   },
   {
     id: 10,
@@ -198,7 +202,11 @@ export const availableModifiers: Modifier[] = [
     hasTiers: true,
     modifierType: 'function',
     amount: 'rangeModifier',
-    description: 'has a range of {rangeMeters([tier])} meters or {rangeMeters([tier])*3} with disadvantage'
+    description: 'has a range of {1} meters or {2} with disadvantage',
+    descriptionFunctions: [
+      rangeMeters,
+      rangeMetersTimesThree
+    ]
   },
   {
     id: 12,
@@ -206,7 +214,7 @@ export const availableModifiers: Modifier[] = [
     hasTiers: false,
     modifierType: 'multiply',
     amount: 0.5,
-    description: 'the target has to [notes] which takes an action in combat, or be restrained and have someone else perform the action for them'
+    description: 'the target has to {meta|whistle a tune} which takes an action in combat, or be restrained and have someone else perform the action for them'
   },
   {
     id: 13,
@@ -214,7 +222,10 @@ export const availableModifiers: Modifier[] = [
     hasTiers: false,
     modifierType: 'multiply',
     amount: 0.667,
-    description: 'the target rolls their {thwartStat([domain])} bonus versus difficulty [resist] '
+    description: 'the target rolls their {1} bonus versus difficulty [resist]',
+    descriptionFunctions: [
+      thwartStat
+    ]
   },
   {
     id: 14,
@@ -222,7 +233,10 @@ export const availableModifiers: Modifier[] = [
     hasTiers: true,
     modifierType: 'function',
     amount: 'aoeModifier',
-    description: 'covers a continuous Sphere with radius {radiusCalc([JSON.stringify(spell)],[tier])} .'
+    description: 'covers a continuous Sphere with radius {1}.',
+    descriptionFunctions: [
+      radiusCalc
+    ]
   },
   {
     id: 15,
@@ -230,7 +244,10 @@ export const availableModifiers: Modifier[] = [
     hasTiers: true,
     modifierType: 'function',
     amount: 'aoeModifier',
-    description: 'covers a continuous Rectangle with length [notes] and width {rectWidthCalc([tier],[notes])}'
+    description: 'covers a continuous Rectangle with length {meta|0} and width {1}',
+    descriptionFunctions: [
+      rectWidthCalc
+    ]
   },
   {
     id: 16,
@@ -238,7 +255,10 @@ export const availableModifiers: Modifier[] = [
     hasTiers: true,
     modifierType: 'function',
     amount: 'aoeModifier',
-    description: 'covers a continuous Cone with length [notes] and width {rectWidthCalc([tier],[notes])}.'
+    description: 'covers a continuous Cone with length {meta|0} and width {1}.',
+    descriptionFunctions: [
+      rectWidthCalc
+    ]
   },
   {
     id: 17,
@@ -363,7 +383,7 @@ export const availableModifiers: Modifier[] = [
     hasTiers: false,
     modifierType: 'add',
     amount: -2,
-    description: 'will not target [notes]'
+    description: 'will not target {meta|friends}'
   },
   {
     id: 28,
@@ -379,7 +399,7 @@ export const availableModifiers: Modifier[] = [
     hasTiers: true,
     modifierType: 'function',
     amount: 'componentModifier',
-    description: 'requires a [notes], of at least cost {calcComponentCost([tier])} Denar'
+    description: 'requires a {meta|component}, of at least cost {calcComponentCost([tier])} Denar'
   },
   {
     id: 30,
@@ -484,3 +504,8 @@ export const availableModifiers: Modifier[] = [
     description: 'keeps for [tier+1] months'
   }
 ]
+
+export const availableModifiersById = availableModifiers.reduce((acc: Record<number, Modifier>, modifier) => {
+  acc[modifier.id] = modifier
+  return acc
+}, {})

@@ -25,6 +25,7 @@ export type Effect = {
   description: string;
   maxTier?: number;
   notes?: string;
+  descriptionFunctions?: Function[];
 };
 
 export type SelectedEffect = {
@@ -32,6 +33,8 @@ export type SelectedEffect = {
   tier: number;
   meta?: string;
 };
+
+export type CombinedEffect = Effect & SelectedEffect
 
 export type Modifier = {
   id: number;
@@ -44,6 +47,7 @@ export type Modifier = {
   description: string;
   types?: string[];
   maxTier?: number;
+  descriptionFunctions?: Function[];
 };
 
 export type SelectedModifier = {
@@ -52,22 +56,24 @@ export type SelectedModifier = {
   meta?: string;
 };
 
+export type CombinedModifier = Modifier & SelectedModifier
+
 export type ModifierOrEffect = Modifier | Effect;
+export type CombinedModifierOrEffect = CombinedModifier | CombinedEffect
+
 
 export type Spell = {
   id: number;
   user_id: string;
   name: string;
   inserted_at: string;
-  spell_data: {
-    description: string;
-    domain: Domain;
-    mode: string;
-    effects: Effect[];
-    modifiers: Modifier[];
-    isAlchemy: boolean;
-    isRunesmith: boolean;
-  };
+  description: string;
+  domain: Domain;
+  mode: string;
+  selected_effects: SelectedEffect[];
+  selected_modifiers: SelectedModifier[];
+  is_alchemy: boolean;
+  is_runesmith: boolean;
   is_public: boolean;
   tags: string | string[];
   profiles: {

@@ -15,6 +15,11 @@ export const saveEntity = async (entityType: string, entity) => {
     entityToSave.specialties = entityToSave.specialties.split(',').map((t) => t.trim());
   }
 
+  // if entityType is spells, rename to spells_v2
+  if (entityType === 'spells') {
+    entityType = 'spells_v2';
+  }
+
   // remove spells and equipment
   entityToSave.spells = undefined;
   entityToSave.equipment = undefined;
@@ -55,6 +60,10 @@ export const copyEntity = async (entityType, entity) => {
   delete entityData.spells;
   delete entityData.equipment;
 
+  if (entityType === 'spells') {
+    entityType = 'spells_v2';
+  }
+
   const { data, error } = await supabaseClient.from(entityType).insert([entityData]).select();
 
   let location = "/"
@@ -78,6 +87,10 @@ export const copyEntity = async (entityType, entity) => {
 }
 
 export const deleteEntity = async (entityType: ItemType, entity: Spell | any) => {
+  if (entityType === 'spells') {
+    entityType = 'spells_v2';
+  }
+
   const { error } = await supabaseClient.from(entityType).delete().eq('id', entity.id);
 
   let location = "/"
@@ -105,6 +118,11 @@ export const createEntity = async (entityType, entity) => {
   const entityData = { ...entity };
   delete entityData.id;
   entityData.user_id = userData?.user?.id;
+
+  if (entityType === 'spells') {
+    entityType = 'spells_v2';
+  }
+
 
   const { data, error } = await supabaseClient.from(entityType).insert([entityData]).select();
 

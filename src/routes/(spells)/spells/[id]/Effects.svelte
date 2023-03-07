@@ -16,41 +16,55 @@
 	import { XCircle } from 'svelte-heros';
 
 	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
-	import type { Effect, Spell } from '../../../../../types/types';
+	import type { CombinedModifierOrEffect, Effect, Spell } from '../../../../../types/types';
+	import { getCombinedEffects, getCombinedModifiers } from '$lib/utils/spells/getCombinedEffects';
 
 	export let spell: Spell;
 	export let disableInputs: boolean;
 	export let addEffect: (effect: Effect) => void;
 	export let removeEffect: (effect: Effect) => void;
 
+	let selectedCombinedModifiersOrEffects: string[] = [];
+
+	$: {
+		selectedCombinedModifiersOrEffects = getCombinedModifiers(spell)
+			.concat(getCombinedEffects(spell))
+			.map((m) => m.name);
+
+		if (spell.is_alchemy && !selectedCombinedModifiersOrEffects.includes('Alchemy'))
+			selectedCombinedModifiersOrEffects.push('Alchemist');
+		if (spell.is_runesmith && !selectedCombinedModifiersOrEffects.includes('Runesmith'))
+			selectedCombinedModifiersOrEffects.push('Runesmith');
+	}
+
 	$: availableEffectOptions = availableEffects
 		.filter((effect) => {
-			let selectedMOEs = spell.spell_data.modifiers
-				.map((m) => m.name)
-				.concat(spell.spell_data.effects.map((e) => e.name));
-			if (spell.spell_data.isAlchemy) selectedMOEs.push('Alchemy');
-			if (spell.spell_data.isRunesmith) selectedMOEs.push('Runesmith');
+			let selectedMOEs = selectedCombinedModifiersOrEffects;
 
 			// if any prereqs aren't met, return false
 			if (effect.prerequisite) {
+				let shouldReturnFalse = false;
 				effect.prerequisite.forEach((prerequisite) => {
 					if (!selectedMOEs.includes(prerequisite)) {
-						return false;
+						shouldReturnFalse = true;
 					}
 				});
+				if (shouldReturnFalse) return false;
 			}
 
 			// if any incompatible are set, return false
 			if (effect.incompatible) {
+				let shouldReturnFalse = false;
 				effect.incompatible.forEach((incompatible) => {
 					if (selectedMOEs.includes(incompatible)) {
-						return false;
+						shouldReturnFalse = true;
 					}
 				});
+				if (shouldReturnFalse) return false;
 			}
 
 			// if effect domains are not of the spell's domain, return false
-			if (effect.domains && !effect.domains.includes(spell.spell_data.domain)) {
+			if (effect.domains && !effect.domains.includes(spell.domain)) {
 				return false;
 			}
 
@@ -80,7 +94,7 @@
 	};
 </script>
 
-<h2 class="text-xl mt-8">Effects</h2>
+<h2 class="text-xl mt-8 dark:text-white">Effects</h2>
 <Select items={availableEffectOptions} disabled={disableInputs} bind:value={selectedEffect} />
 {#if selectedEffect?.description}
 	<Alert class="mt-2"><span>{selectedEffect.description}</span></Alert>

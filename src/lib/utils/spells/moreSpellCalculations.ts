@@ -1,6 +1,7 @@
 import { cloneDeep } from 'lodash'
-import type { Modifier } from '../../../../types/types';
+import type { Modifier, Spell } from '../../../../types/types';
 import { availableModifiers } from '../data/modifiers';
+import { getCombinedEffects, getCombinedModifiers } from './getCombinedEffects';
 
 export const calculateSpellSP = (spell) => {
   let spellSPCost = 0;
@@ -55,10 +56,10 @@ function verboseSpellMode(value) {
   }
 }
 
-export function processDomainEffects(spell) {
-  let sMode = spell.spell_data.mode
-  let sDomain = spell.spell_data.domain
-  let sEffects = spell.spell_data.effects
+export function processDomainEffects(spell: Spell) {
+  let sMode = spell.mode
+  let sDomain = spell.domain
+  let sEffects = getCombinedEffects(spell);
 
   let effects = sEffects;
   effects = cloneDeep(effects);
@@ -241,22 +242,11 @@ export function processDomainEffects(spell) {
   return effects;
 }
 
-export function processDomainModifiers(spell) {
+export function processDomainModifiers(spell: Spell) {
 
-  // let sDomain = spell.spell_data.domain
-  // let sModifiers = spell.spell_data.modifiers
+  let modifiers = cloneDeep(getCombinedModifiers(spell));
 
-  let selectedModifiers = spell.selected_modifiers
-  // get modifiers from availableModifiers based on selectedModifiers
-  let sModifiers = availableModifiers.filter((x: Modifier) => selectedModifiers.includes(x.id))
-
-  let modifiers =
-
-
-    let modifiers = sModifiers;
-  modifiers = cloneDeep(modifiers);
-
-  switch (spell.spell_data.domain) {
+  switch (spell.domain) {
     case "Fire":
       break;
     case "Air":

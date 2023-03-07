@@ -1,6 +1,10 @@
-import type { Domain } from "../../../../../types/types";
+import type { Domain, Spell, CombinedEffect } from "../../../../../types/types";
 
-export function elementAmount(tier: number, domain: Domain) {
+export function elementAmount(spell: Spell, effect: CombinedEffect) {
+
+  const domain = spell.domain
+  const tier = effect.tier
+
   switch (domain) {
     case "Fire":
       switch (tier) {

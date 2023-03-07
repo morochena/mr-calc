@@ -1,3 +1,4 @@
+import type { Spell } from "../../../../types/types";
 import { calculateSpellCost } from "./calculateSpellCost";
 
 
@@ -17,37 +18,37 @@ export const calculateSpellDescription = (spell) => {
 // 			{/each}
 
 
-const calculatePreamble = (spell) => {
-  const modifiers = spell.spell_data.modifiers;
-  const spellCost = calculateSpellCost(spell).cost;
-  const isAlchemy = spell.spell_data.isAlchemy;
-  const isRunesmith = spell.spell_data.isRunesmith;
+const calculatePreamble = (spell: Spell) => {
+  // const modifiers = spell.spell_data.modifiers;
+  // const spellCost = calculateSpellCost(spell).cost;
+  // const isAlchemy = spell.spell_data.isAlchemy;
+  // const isRunesmith = spell.spell_data.isRunesmith;
 
-  let hours = spellCost;
-  let days = 2;
-  const alclist = modifiers.filter((mod) => mod.name.includes("brewing"));
-  const runelist = modifiers.filter((mod) => mod.name.includes("crafting"));
+  // let hours = spellCost;
+  // let days = 2;
+  // const alclist = modifiers.filter((mod) => mod.name.includes("brewing"));
+  // const runelist = modifiers.filter((mod) => mod.name.includes("crafting"));
 
-  if (alclist.length > 0) {
-    hours += alclist[0].tier;
-  }
-  if (runelist.length > 0) {
-    days += runelist[0].tier;
-  }
+  // if (alclist.length > 0) {
+  //   hours += alclist[0].tier;
+  // }
+  // if (runelist.length > 0) {
+  //   days += runelist[0].tier;
+  // }
 
-  if (isAlchemy)
-    return (
-      "This is an alchemical creation that takes a day to craft, which includes working on it for " +
-      hours +
-      " hours actively. Thereafter they can be used by anyone."
-    );
-  if (isRunesmith) {
-    hours = days * hours;
-    return (
-      "This is an magical rune that takes " +
-      hours +
-      " in hours of intense labor to craft. Thereafter they can be used by anyone."
-    );
-  }
+  // if (isAlchemy)
+  //   return (
+  //     "This is an alchemical creation that takes a day to craft, which includes working on it for " +
+  //     hours +
+  //     " hours actively. Thereafter they can be used by anyone."
+  //   );
+  // if (isRunesmith) {
+  //   hours = days * hours;
+  //   return (
+  //     "This is an magical rune that takes " +
+  //     hours +
+  //     " in hours of intense labor to craft. Thereafter they can be used by anyone."
+  //   );
+  // }
   return "";
 }

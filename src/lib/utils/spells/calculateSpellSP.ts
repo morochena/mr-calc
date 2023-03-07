@@ -1,10 +1,13 @@
 import type { Modifier, Spell } from "../../../../types/types";
 import { createElement, movementCondition, geas, sound, plague, madness, help, hinder, illusion, warplight } from "../data/effects";
 import { splitModifier, rangeModifier, aoeModifier, lastingModifier, componentModifier } from "../data/modifiers";
-
+import { getCombinedEffects, getCombinedModifiers } from "./getCombinedEffects";
 
 export const calculateTotalSP = (spell: Spell) => {
-  let { effects, modifiers } = spell.spell_data
+
+  let effects = getCombinedEffects(spell);
+  let modifiers = getCombinedModifiers(spell);
+
   effects = effects || []
   modifiers = modifiers || []
 
@@ -13,8 +16,8 @@ export const calculateTotalSP = (spell: Spell) => {
   let totalSPAdds = 0;
   let totalSPMults = 1;
 
-  const domain = spell.spell_data.domain
-  const mode = spell.spell_data.mode
+  const domain = spell.domain
+  const mode = spell.mode
 
   let modifierCost = effectsAndModifiers.reduce((total, modifier) => {
     return total + resolveCost(modifier);

@@ -1,4 +1,6 @@
 import type { Effect } from "../../../../types/types";
+import { elementAmount } from "../spells/functions/elementAmount";
+import { sense } from "../spells/functions/sense";
 
 export const createElement = (tier: number) => {
   return tier + 2;
@@ -126,7 +128,10 @@ export const availableEffects: Effect[] = [
     modifierType: 'function',
     amount: 'createElement',
     hasTiers: true,
-    description: 'creates {elementAmount([tier],[domain])}'
+    description: 'creates {1}',
+    descriptionFunctions: [
+      elementAmount
+    ]
   },
   {
     id: 3,
@@ -145,7 +150,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'is moved [tier] meters [notes]'
+    description: 'is moved [tier] meters {meta|backwards}'
   },
   {
     id: 5,
@@ -172,7 +177,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'turns [tier * 1000]cm^3 of [domain] into [notes]'
+    description: 'turns [tier * 1000]cm^3 of [domain] into {meta|another element}'
   },
   {
     id: 8,
@@ -244,7 +249,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'emulates [notes] made of [domain] at 10 Structure Points or what the item had, whichever is less.'
+    description: 'emulates {meta|a sword} made of [domain] at 10 Structure Points or what the item had, whichever is less.'
   },
   {
     id: 16,
@@ -253,7 +258,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'emulates [notes] made of [domain] at 1 Structure Points or what the item had, whichever is less.'
+    description: 'emulates {meta|a key} made of [domain] at 1 Structure Points or what the item had, whichever is less.'
   },
   {
     id: 17,
@@ -262,7 +267,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'emulates [notes] made of [domain]'
+    description: 'emulates {meta|a shield} made of [domain]'
   },
   {
     id: 18,
@@ -271,7 +276,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 2,
     hasTiers: true,
-    description: 'Adds [tier] structure points to the [notes] item'
+    description: 'Adds [tier] structure points to the {meta|equipped} item'
   },
   {
     id: 19,
@@ -280,7 +285,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'Adds [tier] structure points to the [notes] item'
+    description: 'Adds [tier] structure points to the {meta|equipped} item'
   },
   {
     id: 20,
@@ -289,7 +294,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'creates an animated golem with the following Stats: [notes]'
+    description: 'creates an animated golem with the following Stats: {meta|stats}'
   },
   {
     id: 21,
@@ -298,7 +303,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'creates an animated skeleton or ghoul with the following Stats: [notes]'
+    description: 'creates an animated skeleton or ghoul with the following Stats: {meta|stats}'
   },
   {
     id: 22,
@@ -307,7 +312,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'creates an animated tree with the following Stats: [notes]'
+    description: 'creates an animated tree with the following Stats: {meta|stats}'
   },
   {
     id: 23,
@@ -316,7 +321,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'creates an animated item or cloth with the following Stats: [notes]'
+    description: 'creates an animated item or cloth with the following Stats: {meta|stats}'
   },
   {
     id: 24,
@@ -426,7 +431,7 @@ export const availableEffects: Effect[] = [
     amount: 'geas',
     hasTiers: true,
     maxTier: 4,
-    description: 'is forced to [notes] if they have less than d10+[tier] Mind Points, or otherwise they lose [tier] Mind Points'
+    description: 'is forced to {meta|perform a conscious action}  if they have less than d10+[tier] Mind Points, or otherwise they lose [tier] Mind Points'
   },
   {
     id: 36,
@@ -436,7 +441,7 @@ export const availableEffects: Effect[] = [
     amount: 'geas',
     hasTiers: true,
     maxTier: 4,
-    description: 'is forced to [notes] if they have less than d10+[tier] Mind Points, or otherwise they lose [tier] Mind Points'
+    description: 'is forced to {meta|perform an unconscious action} if they have less than d10+[tier] Mind Points, or otherwise they lose [tier] Mind Points'
   },
   {
     id: 37,
@@ -446,7 +451,7 @@ export const availableEffects: Effect[] = [
     amount: 'geas',
     hasTiers: true,
     maxTier: 4,
-    description: 'is forced to [notes] if they have less than d10+[tier] Mind Points, or otherwise they lose [tier] Mind Points'
+    description: 'is forced to {meta|inanimate object} if they have less than d10+[tier] Mind Points, or otherwise they lose [tier] Mind Points'
   },
   {
     id: 38,
@@ -473,7 +478,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 7,
     hasTiers: false,
-    description: 'changes into an [notes] animal of the same size as the creature'
+    description: 'changes into an {meta|wolf} animal of the same size as the creature'
   },
   {
     id: 41,
@@ -523,7 +528,10 @@ export const availableEffects: Effect[] = [
     amount: 'createElement',
     hasTiers: true,
     maxTier: 3,
-    description: "Sense [notes]{sense([tier])} magic, and only execute the rest of the spell once it's sensed"
+    description: "Sense {meta|something}{1} magic, and only execute the rest of the spell once it's sensed",
+    descriptionFunctions: [
+      sense
+    ]
   },
   {
     id: 46,
@@ -533,7 +541,10 @@ export const availableEffects: Effect[] = [
     amount: 'createElement',
     hasTiers: true,
     maxTier: 3,
-    description: "Sense [notes]{sense([tier])} living things, and only execute the rest of the spell once it's sensed"
+    description: "Sense {meta|something}{1} living things, and only execute the rest of the spell once it's sensed",
+    descriptionFunctions: [
+      sense
+    ]
   },
   {
     id: 47,
@@ -543,7 +554,10 @@ export const availableEffects: Effect[] = [
     amount: 'createElement',
     hasTiers: true,
     maxTier: 3,
-    description: "Sense [notes]{sense([tier])} intent, and only execute the rest of the spell once it's sensed"
+    description: "Sense {meta|something}{1} intent, and only execute the rest of the spell once it's sensed",
+    descriptionFunctions: [
+      sense
+    ]
   },
   {
     id: 48,
@@ -553,7 +567,10 @@ export const availableEffects: Effect[] = [
     amount: 'createElement',
     hasTiers: true,
     maxTier: 3,
-    description: "Sense [notes]{sense([tier])} soul, and only execute the rest of the spell once it's sensed"
+    description: "Sense {meta|something}{1} soul, and only execute the rest of the spell once it's sensed",
+    descriptionFunctions: [
+      sense
+    ]
   },
   {
     id: 49,
@@ -563,7 +580,10 @@ export const availableEffects: Effect[] = [
     amount: 'createElement',
     hasTiers: true,
     maxTier: 3,
-    description: "Sense [notes]{sense([tier])} liquid, and only execute the rest of the spell once it's sensed"
+    description: "Sense {meta|something}{1} liquid, and only execute the rest of the spell once it's sensed",
+    descriptionFunctions: [
+      sense
+    ]
   },
   {
     id: 50,
@@ -573,7 +593,10 @@ export const availableEffects: Effect[] = [
     amount: 'createElement',
     hasTiers: true,
     maxTier: 3,
-    description: "Sense [notes]{sense([tier])} temperature, and only execute the rest of the spell once it's sensed"
+    description: "Sense {meta|something}{1} temperature, and only execute the rest of the spell once it's sensed",
+    descriptionFunctions: [
+      sense
+    ]
   },
   {
     id: 51,
@@ -583,7 +606,10 @@ export const availableEffects: Effect[] = [
     amount: 'createElement',
     hasTiers: true,
     maxTier: 3,
-    description: "Sense [notes]{sense([tier])} gas, and only execute the rest of the spell once it's sensed"
+    description: "Sense {meta|something}{1} gas, and only execute the rest of the spell once it's sensed",
+    descriptionFunctions: [
+      sense
+    ]
   },
   {
     id: 52,
@@ -593,7 +619,10 @@ export const availableEffects: Effect[] = [
     amount: 'createElement',
     hasTiers: true,
     maxTier: 3,
-    description: "Sense [notes]{sense([tier])} plants and minerals, and only execute the rest of the spell once it's sensed"
+    description: "Sense {meta|something}{1} plants and minerals, and only execute the rest of the spell once it's sensed",
+    descriptionFunctions: [
+      sense
+    ]
   },
   {
     id: 53,
@@ -810,7 +839,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*2} points to STR-[notes]'
+    description: 'Add {[tier]*2} points to STR-{meta|physique}'
   },
   {
     id: 74,
@@ -820,7 +849,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*3} points to STR-[notes]'
+    description: 'Add {[tier]*3} points to STR-{meta|armor}'
   },
   {
     id: 75,
@@ -840,7 +869,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*2} points to DEX-[notes]'
+    description: 'Add {[tier]*2} points to DEX-{meta|stealth}'
   },
   {
     id: 77,
@@ -850,7 +879,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*3} points to DEX-[notes]'
+    description: 'Add {[tier]*3} points to DEX-{meta|dodge}'
   },
   {
     id: 78,
@@ -870,7 +899,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*2} points to INT-[notes]'
+    description: 'Add {[tier]*2} points to INT-{meta|reasoning}'
   },
   {
     id: 80,
@@ -880,7 +909,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {tier]*3} points to INT-[notes]'
+    description: 'Add {tier]*3} points to INT-{meta|consider}'
   },
   {
     id: 81,
@@ -900,7 +929,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*2} points to EMP-[notes]'
+    description: 'Add {[tier]*2} points to EMP-{meta|willpower}'
   },
   {
     id: 83,
@@ -910,7 +939,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*3} points to EMP-[notes]'
+    description: 'Add {[tier]*3} points to EMP-{meta|mind points}'
   },
   {
     id: 84,
@@ -920,7 +949,7 @@ export const availableEffects: Effect[] = [
     amount: 'hinder',
     hasTiers: true,
     maxTier: 5,
-    description: 'Subtract [tier] points from Strength-[notes]'
+    description: 'Subtract [tier] points from Strength-{meta|physique}'
   },
   {
     id: 85,
@@ -930,7 +959,7 @@ export const availableEffects: Effect[] = [
     amount: 'hinder',
     hasTiers: true,
     maxTier: 5,
-    description: 'Subtract [tier*2] points from Strength-[notes]'
+    description: 'Subtract [tier*2] points from Strength-{meta|armor}'
   },
   {
     id: 86,
@@ -940,7 +969,7 @@ export const availableEffects: Effect[] = [
     amount: 'hinder',
     hasTiers: true,
     maxTier: 5,
-    description: 'Subtract [tier] points from Dexterity-[notes]'
+    description: 'Subtract [tier] points from Dexterity-{meta|stealth}'
   },
   {
     id: 87,
@@ -950,7 +979,7 @@ export const availableEffects: Effect[] = [
     amount: 'hinder',
     hasTiers: true,
     maxTier: 5,
-    description: 'Subtract [tier*2] points from Dexterity-[notes]'
+    description: 'Subtract [tier*2] points from Dexterity-{meta|dodge}'
   },
   {
     id: 88,
@@ -960,7 +989,7 @@ export const availableEffects: Effect[] = [
     amount: 'hinder',
     hasTiers: true,
     maxTier: 5,
-    description: 'Subtract [tier] points from Intelligence-[notes]'
+    description: 'Subtract [tier] points from Intelligence-{meta|reasoning}'
   },
   {
     id: 89,
@@ -970,7 +999,7 @@ export const availableEffects: Effect[] = [
     amount: 'hinder',
     hasTiers: true,
     maxTier: 5,
-    description: 'Subtract [tier*2] points from Intelligence-[notes]'
+    description: 'Subtract [tier*2] points from Intelligence-{meta|consider}'
   },
   {
     id: 90,
@@ -980,7 +1009,7 @@ export const availableEffects: Effect[] = [
     amount: 'hinder',
     hasTiers: true,
     maxTier: 5,
-    description: 'Subtract [tier] points from Empathy-[notes]'
+    description: 'Subtract [tier] points from Empathy-{meta|willpower}'
   },
   {
     id: 91,
@@ -990,6 +1019,11 @@ export const availableEffects: Effect[] = [
     amount: 'hinder',
     hasTiers: true,
     maxTier: 5,
-    description: 'Subtract [tier*2] points from Empathy-[notes]'
+    description: 'Subtract [tier*2] points from Empathy-{meta|mind points}'
   }
 ]
+
+export const availableEffectsById = availableEffects.reduce((acc: Record<number, Effect>, effect) => {
+  acc[effect.id] = effect
+  return acc
+}, {})

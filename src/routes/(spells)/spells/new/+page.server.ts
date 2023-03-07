@@ -17,14 +17,10 @@ export const actions: Actions = {
     const newSpell = {
       name: formData.get('name'),
       user_id: session.user.id,
-      spell_data: {
-        modifiers: [],
-        effects: []
-      }
     };
 
     const { error: createSpellError, data: newSpellData } = await supabaseClient
-      .from('spells')
+      .from('spells_v2')
       .insert(newSpell)
       .select()
       .single();

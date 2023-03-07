@@ -1,6 +1,8 @@
-import type { Domain } from "../../../../../types/types";
+import type { CombinedModifier, Domain, Spell } from "../../../../../types/types";
 
-export function thwartStat(domain: Domain) {
+export function thwartStat(spell: Spell, modifier: CombinedModifier) {
+  const domain = spell.domain
+
   switch (domain) {
     case "Fire":
       return "Dexterity";

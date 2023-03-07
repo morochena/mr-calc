@@ -17,36 +17,50 @@
 
 	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
 	import type { Modifier, Spell } from '../../../../../types/types';
+	import { getCombinedEffects, getCombinedModifiers } from '$lib/utils/spells/getCombinedEffects';
 
 	export let spell: Spell;
 	export let disableInputs: boolean;
 	export let addModifier: (modifier: Modifier) => void;
 	export let removeModifier: (modifier: Modifier) => void;
 
+	let selectedCombinedModifiersOrEffects = [];
+
+	$: {
+		selectedCombinedModifiersOrEffects = getCombinedModifiers(spell)
+			.concat(getCombinedEffects(spell))
+			.map((m) => m.name);
+
+		if (spell.is_alchemy && !selectedCombinedModifiersOrEffects.includes('Alchemy'))
+			selectedCombinedModifiersOrEffects.push('Alchemist');
+		if (spell.is_runesmith && !selectedCombinedModifiersOrEffects.includes('Runesmith'))
+			selectedCombinedModifiersOrEffects.push('Runesmith');
+	}
+
 	$: availableModifierOptions = availableModifiers
 		.filter((modifier) => {
-			let selectedMOEs = spell.spell_data.modifiers
-				.map((m) => m.name)
-				.concat(spell.spell_data.effects.map((e) => e.name));
-			if (spell.spell_data.isAlchemy) selectedMOEs.push('Alchemy');
-			if (spell.spell_data.isRunesmith) selectedMOEs.push('Runesmith');
+			let selectedMOEs = selectedCombinedModifiersOrEffects;
 
 			// if any prereqs aren't met, return false
 			if (modifier.prerequisite) {
+				let shouldReturnFalse = false;
 				modifier.prerequisite.forEach((prerequisite) => {
 					if (!selectedMOEs.includes(prerequisite)) {
-						return false;
+						shouldReturnFalse = true;
 					}
 				});
+				if (shouldReturnFalse) return false;
 			}
 
 			// if any incompatible are set, return false
 			if (modifier.incompatible) {
+				let shouldReturnFalse = false;
 				modifier.incompatible.forEach((incompatible) => {
 					if (selectedMOEs.includes(incompatible)) {
-						return false;
+						shouldReturnFalse = true;
 					}
 				});
+				if (shouldReturnFalse) return false;
 			}
 
 			// if modifier already is set, return false
@@ -75,7 +89,7 @@
 	};
 </script>
 
-<h2 class="text-xl mt-8">Modifiers</h2>
+<h2 class="text-xl mt-8 dark:text-white">Modifiers</h2>
 <Select items={availableModifierOptions} disabled={disableInputs} bind:value={selectedModifier} />
 {#if selectedModifier?.description}
 	<Alert class="mt-2"><span>{selectedModifier.description}</span></Alert>
