@@ -5,6 +5,7 @@ import { radiusCalc } from "../spells/functions/modifiers/radiusCalc";
 import { rangeMeters, rangeMetersTimesThree } from "../spells/functions/modifiers/rangeMeters";
 import { rectWidthCalc } from "../spells/functions/modifiers/rectWidthCalc";
 import { thwartStat } from "../spells/functions/modifiers/thwartStat";
+import { aoeArea } from "../spells/functions/modifiers/aoeArea";
 
 export const availableModifiers: Modifier[] = [
   {
@@ -177,7 +178,10 @@ export const availableModifiers: Modifier[] = [
     hasTiers: true,
     modifierType: 'function',
     amount: 'aoeModifier',
-    description: 'covers a continuous polygon with area {aoeArea([tier])} meters Sq.'
+    description: 'covers a continuous polygon with area {1} meters Sq.',
+    descriptionFunctions: [
+      aoeArea
+    ]
   },
   {
     id: 18,

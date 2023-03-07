@@ -1,4 +1,4 @@
-import type { ModifierOrEffect } from "../../../../types/types";
+import type { CombinedModifierOrEffect, ModifierOrEffect } from "../../../../types/types";
 import { illusion } from "./valueFunctions/effects/illusion";
 import { warplight } from "./valueFunctions/effects/warplight";
 import { hinder } from "./valueFunctions/effects/hinder";
@@ -15,7 +15,7 @@ import { aoeModifier } from "./valueFunctions/modifiers/aoeModifier";
 import { rangeModifier } from "./valueFunctions/modifiers/rangeModifier";
 import { splitModifier } from "./valueFunctions/modifiers/splitModifier";
 
-export const calculateMOECostText = (moe: ModifierOrEffect) => {
+export const calculateMOECostText = (moe: CombinedModifierOrEffect) => {
   let truetier = moe.tier || 1;
   let amount;
   let operator;
@@ -29,18 +29,18 @@ export const calculateMOECostText = (moe: ModifierOrEffect) => {
     case "multiply":
       return `x${moe.amount * truetier}`;
     case "function":
-      amount = evalCost(moe);
+      amount = functionCost(moe);
       operator = amount > 0 ? "+" : "";
       return `${operator}${amount}`;
     case "functionMultiply":
-      amount = evalCost(moe)[0];
+      amount = functionCost(moe)[0];
       operator = amount > 0 ? "+" : "";
-      return `x${evalCost(moe)[1]} and ${operator}${evalCost(moe)[0]
+      return `x${functionCost(moe)[1]} and ${operator}${functionCost(moe)[0]
         }`;
   }
 };
 
-const evalCost = (moe: ModifierOrEffect) => {
+const functionCost = (moe: CombinedModifierOrEffect) => {
   let trueTier = moe.tier;
   if (moe.domaintier) trueTier -= moe.domaintier;
 

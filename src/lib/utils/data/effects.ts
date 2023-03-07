@@ -10,6 +10,8 @@ import { sense } from "../spells/functions/effects/sense";
 import { temporaryBodySideEffect } from "../spells/functions/effects/temporaryBodySideEffect";
 import { thoughts } from "../spells/functions/effects/thoughts";
 import { volume } from "../spells/functions/effects/volume";
+import { noise } from "../spells/functions/effects/noise";
+import { sound } from "../spells/functions/effects/sound";
 
 export const availableEffects: Effect[] = [
   {
@@ -741,7 +743,10 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'causes noise {noise([tier])}'
+    description: 'causes noise {1}',
+    descriptionFunctions: [
+      noise
+    ]
   },
   {
     id: 69,
@@ -751,7 +756,10 @@ export const availableEffects: Effect[] = [
     amount: 1,
     hasTiers: true,
     maxTier: 3,
-    description: 'creates sounds that {sound([tier])}'
+    description: 'creates sounds that {1}',
+    descriptionFunctions: [
+      sound
+    ],
   },
   {
     id: 70,
@@ -761,7 +769,10 @@ export const availableEffects: Effect[] = [
     amount: 'sound',
     hasTiers: true,
     maxTier: 3,
-    description: 'at a volume of {volume([tier])}'
+    description: 'at a volume of {1}',
+    descriptionFunctions: [
+      volume
+    ]
   },
   {
     id: 71,
@@ -860,7 +871,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {tier]*3} points to INT-{meta|consider}'
+    description: 'Add [tier*3] points to INT-{meta|consider}'
   },
   {
     id: 81,
