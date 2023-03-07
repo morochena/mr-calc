@@ -1,6 +1,8 @@
-import type { Domain } from "../../../../../types/types";
+import type { CombinedEffect, Domain, Effect, Spell } from "../../../../../../types/types";
 
-export function damagingCondition(domain: Domain) {
+export function damagingCondition(spell: Spell, effect: CombinedEffect) {
+  const domain = spell.domain
+
   switch (domain) {
     case "Fire":
       return "catches on Fire, Burning";

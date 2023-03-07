@@ -1,4 +1,4 @@
-import type { CombinedModifier, Domain, Spell } from "../../../../../types/types";
+import type { CombinedModifier, Domain, Spell } from "../../../../../../types/types";
 
 export function thwartStat(spell: Spell, modifier: CombinedModifier) {
   const domain = spell.domain

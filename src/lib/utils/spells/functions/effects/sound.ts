@@ -1,4 +1,8 @@
-export function sound(tier: number) {
+import type { Spell, CombinedEffect } from "../../../../../../types/types";
+
+export function sound(spell: Spell, effect: CombinedEffect) {
+  const tier = effect.tier;
+
   switch (tier) {
     case 1:
       return "heard during the spell casting or preparation";

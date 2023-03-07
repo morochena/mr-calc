@@ -1,4 +1,4 @@
-import type { CombinedModifier, Spell } from "../../../../../types/types";
+import type { CombinedModifier, Spell } from "../../../../../../types/types";
 
 export function rangeMeters(_spell: Spell, modifier: CombinedModifier) {
   const tier = modifier.tier;

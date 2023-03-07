@@ -1,6 +1,15 @@
 import type { Effect } from "../../../../types/types";
-import { elementAmount } from "../spells/functions/elementAmount";
-import { sense } from "../spells/functions/sense";
+import { comms } from "../spells/functions/effects/comms";
+import { damagingCondition } from "../spells/functions/effects/damagingCondition";
+import { madnessDescription } from "../spells/functions/effects/madnessDescription";
+import { plagueDescription } from "../spells/functions/effects/plagueDescription";
+import { elementAmount } from "../spells/functions/effects/elementAmount";
+import { light } from "../spells/functions/effects/light";
+import { movementConditionDesc } from "../spells/functions/effects/movementConditionDesc";
+import { sense } from "../spells/functions/effects/sense";
+import { temporaryBodySideEffect } from "../spells/functions/effects/temporaryBodySideEffect";
+import { thoughts } from "../spells/functions/effects/thoughts";
+import { volume } from "../spells/functions/effects/volume";
 
 export const createElement = (tier: number) => {
   return tier + 2;
@@ -141,7 +150,10 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'destroys {elementAmount([tier],[domain])}'
+    description: 'destroys {1}',
+    descriptionFunctions: [
+      elementAmount
+    ]
   },
   {
     id: 4,
@@ -375,7 +387,10 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 7,
     hasTiers: true,
-    description: '{damagingCondition([domain])}, the highest of [tier]d10 damage per round for [tier] minutes or until they pass an action against difficulty [resist] to stop the condition'
+    description: '{1}, the highest of [tier]d10 damage per round for [tier] minutes or until they pass an action against difficulty [resist] to stop the condition',
+    descriptionFunctions: [
+      damagingCondition
+    ]
   },
   {
     id: 30,
@@ -403,7 +418,10 @@ export const availableEffects: Effect[] = [
     amount: 'movementCondition',
     hasTiers: true,
     maxTier: 3,
-    description: 'is trapped, {movementConditionDesc([tier])}'
+    description: 'is trapped, {1}',
+    descriptionFunctions: [
+      movementConditionDesc
+    ]
   },
   {
     id: 33,
@@ -412,7 +430,10 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'adds [tier] Body point(s) and {temporaryBodySideEffect([domain])} until the end of the spell'
+    description: 'adds [tier] Body point(s) and {1} until the end of the spell',
+    descriptionFunctions: [
+      temporaryBodySideEffect
+    ]
   },
   {
     id: 34,
@@ -421,7 +442,10 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 5,
     hasTiers: true,
-    description: 'adds [tier]d10 Body and {temporaryBodySideEffect([domain])} points until the end of the spell'
+    description: 'adds [tier]d10 Body and {1} points until the end of the spell',
+    descriptionFunctions: [
+      temporaryBodySideEffect
+    ]
   },
   {
     id: 35,
@@ -508,7 +532,10 @@ export const availableEffects: Effect[] = [
     amount: 3,
     hasTiers: true,
     maxTier: 4,
-    description: 'has their {thoughts([tier])} read if they are willing or have been reduced to 0 Mind, and lose 2 Mind if they resist'
+    description: 'has their {1} read if they are willing or have been reduced to 0 Mind, and lose 2 Mind if they resist',
+    descriptionFunctions: [
+      thoughts
+    ]
   },
   {
     id: 44,
@@ -518,7 +545,10 @@ export const availableEffects: Effect[] = [
     amount: 3,
     hasTiers: true,
     maxTier: 3,
-    description: 'communicate {comms([tier])} to the caster,talk to another living thing within range of the spell, whether that be a human, animal or any other creature. The caster and target do not need to share a language, or even be able to speak a language. If they are unaware of the caster, count as an attack against the mind with damage 1'
+    description: 'communicate {1} to the caster,talk to another living thing within range of the spell, whether that be a human, animal or any other creature. The caster and target do not need to share a language, or even be able to speak a language. If they are unaware of the caster, count as an attack against the mind with damage 1',
+    descriptionFunctions: [
+      comms
+    ]
   },
   {
     id: 45,
@@ -683,7 +713,10 @@ export const availableEffects: Effect[] = [
     modifierType: 'function',
     amount: 'warplight',
     hasTiers: true,
-    description: 'Dampens the volume of noises up to {volume([tier])}, If used to hide or become silent, gives a [tier-1] advantage. Making a caster character silent means they can only use spells with the Stealth modifier or Cantrips until the silence ends'
+    description: 'Dampens the volume of noises up to {1}, If used to hide or become silent, gives a [tier-1] advantage. Making a caster character silent means they can only use spells with the Stealth modifier or Cantrips until the silence ends',
+    descriptionFunctions: [
+      volume
+    ]
   },
   {
     id: 58,
@@ -737,7 +770,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 4,
     hasTiers: false,
-    description: 'Automatically count as a passed medical check against a disease but the target loses 1d10 Body points as their  infected cells and the ones around it become devoid of life'
+    description: 'Automatically count as a passed medical check against a disease but the target loses 1d10 Body points as their infected cells and the ones around it become devoid of life'
   },
   {
     id: 64,
@@ -746,7 +779,7 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 4,
     hasTiers: false,
-    description: 'Automatically count as a passed medical check against an infection but the target loses 1d10 Body points as their  infected cells and the ones around it become devoid of life'
+    description: 'Automatically count as a passed medical check against an infection but the target loses 1d10 Body points as their infected cells and the ones around it become devoid of life'
   },
   {
     id: 65,
@@ -756,7 +789,10 @@ export const availableEffects: Effect[] = [
     amount: 'plague',
     hasTiers: true,
     maxTier: 3,
-    description: 'must make a Physique - Constitution  or Lore Medicine check  of difficulty {plague([tier])} at their next rest or be infected with Disease as if they have just been exposed to it'
+    description: 'must make a Physique - Constitution or Lore Medicine check of difficulty {1} at their next rest or be infected with Disease as if they have just been exposed to it',
+    descriptionFunctions: [
+      plagueDescription
+    ]
   },
   {
     id: 66,
@@ -766,7 +802,10 @@ export const availableEffects: Effect[] = [
     amount: 'madness',
     hasTiers: true,
     maxTier: 3,
-    description: 'Makes an immediate roll of Willpower - Self Control of diffculty {Math.ceil(madness([tier])/2)} or suffers a Madness attack as if they had a Madness of [tier]'
+    description: 'Makes an immediate roll of Willpower - Self Control of diffculty {1} or suffers a Madness attack as if they had a Madness of [tier]',
+    descriptionFunctions: [
+      madnessDescription
+    ]
   },
   {
     id: 67,
@@ -775,7 +814,10 @@ export const availableEffects: Effect[] = [
     modifierType: 'add',
     amount: 1,
     hasTiers: true,
-    description: 'illuminates {light([tier])}'
+    description: 'illuminates {1}',
+    descriptionFunctions: [
+      light
+    ]
   },
   {
     id: 68,
@@ -839,7 +881,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*2} points to STR-{meta|physique}'
+    description: 'Add [tier*2] points to STR-{meta|physique}'
   },
   {
     id: 74,
@@ -849,7 +891,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*3} points to STR-{meta|armor}'
+    description: 'Add [tier*3] points to STR-{meta|armor}'
   },
   {
     id: 75,
@@ -869,7 +911,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*2} points to DEX-{meta|stealth}'
+    description: 'Add [tier*2] points to DEX-{meta|stealth}'
   },
   {
     id: 77,
@@ -879,7 +921,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*3} points to DEX-{meta|dodge}'
+    description: 'Add [tier*3] points to DEX-{meta|dodge}'
   },
   {
     id: 78,
@@ -899,7 +941,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*2} points to INT-{meta|reasoning}'
+    description: 'Add [tier*2] points to INT-{meta|reasoning}'
   },
   {
     id: 80,
@@ -929,7 +971,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*2} points to EMP-{meta|willpower}'
+    description: 'Add [tier*2] points to EMP-{meta|willpower}'
   },
   {
     id: 83,
@@ -939,7 +981,7 @@ export const availableEffects: Effect[] = [
     amount: 'help',
     hasTiers: true,
     maxTier: 5,
-    description: 'Add {[tier]*3} points to EMP-{meta|mind points}'
+    description: 'Add [tier*3] points to EMP-{meta|mind points}'
   },
   {
     id: 84,

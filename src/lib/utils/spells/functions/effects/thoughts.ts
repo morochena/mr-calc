@@ -1,4 +1,9 @@
-export function thoughts(tier: number) {
+import type { CombinedEffect, Spell } from "../../../../../../types/types";
+
+export function thoughts(spell: Spell, effect: CombinedEffect) {
+
+  const tier = effect.tier
+
   switch (tier) {
     case 1:
       return "surface thoughts";

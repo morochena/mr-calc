@@ -1,5 +1,5 @@
-import type { CombinedModifier, Spell } from '../../../../../types/types';
-import { getCombinedModifiers } from '../getCombinedEffects';
+import type { CombinedModifier, Spell } from '../../../../../../types/types';
+import { getCombinedModifiers } from '../../getCombinedEffects';
 
 export function aoeArea(spell: Spell, modifier: CombinedModifier) {
   let area = 0;

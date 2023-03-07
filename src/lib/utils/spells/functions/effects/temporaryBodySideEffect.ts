@@ -1,6 +1,9 @@
-import type { Domain } from "../../../../../types/types";
+import type { CombinedEffect, Domain, Spell } from "../../../../../../types/types";
 
-export function temporaryBodySideEffect(domain: Domain) {
+export function temporaryBodySideEffect(spell: Spell, effect: CombinedEffect) {
+
+  const domain = spell.domain
+
   switch (domain) {
     case "Holy":
       return "starts glowing with holy protection";

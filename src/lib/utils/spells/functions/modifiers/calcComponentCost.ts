@@ -1,4 +1,8 @@
-export function calcComponentCost(tier: number) {
+import type { CombinedModifier, Spell } from "../../../../../../types/types";
+
+export function calcComponentCost(spell: Spell, modifier: CombinedModifier) {
+  const tier = modifier.tier;
+
   let cost = 1;
   const ftier = tier - 1;
   if (ftier < 5)

@@ -1,4 +1,4 @@
-import type { Domain, Spell, CombinedEffect } from "../../../../../types/types";
+import type { Domain, Spell, CombinedEffect } from "../../../../../../types/types";
 
 export function elementAmount(spell: Spell, effect: CombinedEffect) {
 

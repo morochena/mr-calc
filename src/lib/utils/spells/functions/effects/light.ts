@@ -1,4 +1,10 @@
-export function light(tier: number) {
+import type { Spell, CombinedEffect } from "../../../../../../types/types";
+
+
+export function light(spell: Spell, effect: CombinedEffect) {
+
+  const tier = effect.tier;
+
   if (tier == 1) {
     return "a small room with light";
   }

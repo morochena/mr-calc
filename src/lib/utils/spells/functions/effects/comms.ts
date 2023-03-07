@@ -1,4 +1,9 @@
-export function comms(tier: number) {
+import type { Spell, CombinedEffect } from "../../../../../../types/types";
+
+export function comms(spell: Spell, effect: CombinedEffect) {
+
+  const tier = effect.tier
+
   switch (tier) {
     case 1:
       return "words";

@@ -1,4 +1,8 @@
-export function noise(tier: number) {
+import type { CombinedEffect, Spell } from "../../../../../../types/types";
+
+export function noise(spell: Spell, effect: CombinedEffect) {
+  const tier = effect.tier;
+
   if (tier < 4) {
     return 90 + 10 * tier + " DB";
   }

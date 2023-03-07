@@ -1,4 +1,4 @@
-import type { CombinedModifier, Spell } from "../../../../../types/types";
+import type { CombinedModifier, Spell } from "../../../../../../types/types";
 import { aoeArea } from "./aoeArea";
 
 export function rectWidthCalc(spell: Spell, modifier: CombinedModifier) {

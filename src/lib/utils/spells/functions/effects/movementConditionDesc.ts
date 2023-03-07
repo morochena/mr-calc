@@ -1,4 +1,8 @@
-export function movementConditionDesc(tier: number) {
+import type { CombinedEffect, Spell } from "../../../../../../types/types";
+
+export function movementConditionDesc(spell: Spell, effect: CombinedEffect) {
+  const tier = effect.tier
+
   switch (tier) {
     case 1:
       return "unable to Run";

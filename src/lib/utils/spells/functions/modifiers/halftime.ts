@@ -1,9 +1,10 @@
 import { get } from 'svelte/store'
 import { currentSpell } from "$lib/stores/currentSpellStore"
+import type { CombinedModifier, Spell } from '../../../../../../types/types'
+import { getCombinedModifiers } from '../../getCombinedEffects'
 
-export function halftime() {
-  const spell = get(currentSpell)
-  const modifiers = spell.spell_data.modifiers
+export function halftime(spell: Spell, modifier: CombinedModifier) {
+  const modifiers = getCombinedModifiers(spell)
 
   const lastingModifiers = modifiers.filter(mod => mod.name.includes("Lasting"))
   if (lastingModifiers.length < 1) {

@@ -1,4 +1,4 @@
-import type { CombinedEffect, Spell } from "../../../../../types/types";
+import type { CombinedEffect, Spell } from "../../../../../../types/types";
 
 export function sense(spell: Spell, effect: CombinedEffect) {
   const tier = effect.tier;

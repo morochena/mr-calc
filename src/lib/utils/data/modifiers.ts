@@ -1,8 +1,10 @@
 import type { Modifier } from "../../../../types/types";
-import { radiusCalc } from "../spells/functions/radiusCalc";
-import { rangeMeters, rangeMetersTimesThree } from "../spells/functions/rangeMeters";
-import { rectWidthCalc } from "../spells/functions/rectWidthCalc";
-import { thwartStat } from "../spells/functions/thwartStat";
+import { halftime } from "../spells/functions/modifiers/halftime";
+import { calcComponentCost } from "../spells/functions/modifiers/calcComponentCost";
+import { radiusCalc } from "../spells/functions/modifiers/radiusCalc";
+import { rangeMeters, rangeMetersTimesThree } from "../spells/functions/modifiers/rangeMeters";
+import { rectWidthCalc } from "../spells/functions/modifiers/rectWidthCalc";
+import { thwartStat } from "../spells/functions/modifiers/thwartStat";
 
 export const splitModifier = (tier: number) => {
   if (tier == 1) return 8;
@@ -349,7 +351,10 @@ export const availableModifiers: Modifier[] = [
     hasTiers: false,
     modifierType: 'multiply',
     amount: 0.333,
-    description: "doesn't activate immediately, but instead goes off after {halftime()}"
+    description: "doesn't activate immediately, but instead goes off after {1}",
+    descriptionFunctions: [
+      halftime
+    ]
   },
   {
     id: 24,
@@ -399,7 +404,10 @@ export const availableModifiers: Modifier[] = [
     hasTiers: true,
     modifierType: 'function',
     amount: 'componentModifier',
-    description: 'requires a {meta|component}, of at least cost {calcComponentCost([tier])} Denar'
+    description: 'requires a {meta|component}, of at least cost {1} Denar',
+    descriptionFunctions: [
+      calcComponentCost
+    ]
   },
   {
     id: 30,

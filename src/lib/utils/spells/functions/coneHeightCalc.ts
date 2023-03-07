@@ -1,4 +1,4 @@
-import { aoeArea } from "./aoeArea";
+import { aoeArea } from "./modifiers/aoeArea";
 
 export function coneHeightCalc(tier: number, notes: string) {
   const area = aoeArea(tier);
