@@ -3,6 +3,22 @@
 @tailwind components;
 @tailwind utilities;
 
+body>div {
+  position: relative;
+  min-height: 100vh;
+}
+
+main {
+  padding-bottom: 96px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-radius: 0 !important;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
 }

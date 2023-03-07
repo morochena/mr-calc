@@ -124,8 +124,7 @@
 					</TableBodyCell>
 					<TableBodyCell
 						><Badge
-							class="dark:text-black text-black"
-							style="background-color: {colorHash(item.profiles.username)}"
+							style="background-color: {colorHash(item.profiles.username)}; color: black;"
 							>{item.profiles.username}</Badge
 						>
 					</TableBodyCell>
