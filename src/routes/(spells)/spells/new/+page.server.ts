@@ -1,6 +1,7 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { error } from '@sveltejs/kit';
 import type { Actions } from './$types';
+import { redirect } from '@sveltejs/kit';
 
 export const actions: Actions = {
 
@@ -24,16 +25,15 @@ export const actions: Actions = {
 
     const { error: createSpellError, data: newSpellData } = await supabaseClient
       .from('spells')
-      .insert(newSpell);
+      .insert(newSpell)
+      .select()
+      .single();
 
     if (createSpellError) {
       console.error(createSpellError);
       return error(500, createSpellError.message);
     }
 
-    return {
-      headers: { Location: `/spells` },
-      status: 302
-    };
+    throw redirect(303, `/spells/${newSpellData.id}`);
   }
 };

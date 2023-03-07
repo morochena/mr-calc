@@ -1,4 +1,4 @@
-import type { Domain } from "../../../../../types/fromSupabase";
+import type { Domain } from "../../../../../types/types";
 
 export function elementAmount(tier: number, domain: Domain) {
   switch (domain) {

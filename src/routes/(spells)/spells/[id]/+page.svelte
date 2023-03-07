@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { saveEntity } from '$lib/utils/operations';
+	import { deleteEntity, saveEntity } from '$lib/utils/operations';
 	import { Button, ButtonGroup } from 'flowbite-svelte';
 	import 'toastify-js/src/toastify.css';
-	import type { Effect, Modifier } from '../../../../../types/fromSupabase';
+	import type { Effect, Modifier } from '../../../../../types/types';
 	import Calculation from './Calculation.svelte';
 	import Effects from './Effects.svelte';
 	import Meta from './Meta.svelte';
@@ -10,23 +10,27 @@
 
 	export let data;
 
-	$: ({ spell, disableInputs } = data);
+	let { spell, disableInputs } = data;
 
 	export const save = async () => {
 		saveEntity('spells', spell);
 	};
 	export const makeACopy = async () => {};
-	export const deleteSpell = async () => {};
+	export const deleteSpell = async () => await deleteEntity('spells', spell);
 
 	const addModifier = (modifier: Modifier) => {
+		const modifierToAdd = {
+			id: modifier.id,
+			tier: 1,
+			meta: ''
+		};
+
 		spell = {
 			...spell,
-			spell_data: {
-				...spell.spell_data,
-				modifiers: [...spell.spell_data.modifiers, modifier]
-			}
+			selected_modifiers: [...spell.selected_modifiers, modifierToAdd]
 		};
 	};
+
 	const removeModifier = (modifier: Modifier) => {
 		spell = {
 			...spell,
@@ -38,14 +42,18 @@
 	};
 
 	const addEffect = (effect: Effect) => {
+		const effectToAdd = {
+			id: effect.id,
+			tier: 1,
+			meta: ''
+		};
+
 		spell = {
 			...spell,
-			spell_data: {
-				...spell.spell_data,
-				effects: [...spell.spell_data.effects, effect]
-			}
+			selected_effects: [...spell.selected_effects, effectToAdd]
 		};
 	};
+
 	const removeEffect = (effect: Effect) => {
 		spell = {
 			...spell,
@@ -70,6 +78,6 @@
 </div>
 
 <Meta bind:spell {disableInputs} />
+<Calculation bind:spell {disableInputs} />
 <Modifiers bind:spell {disableInputs} {addModifier} {removeModifier} />
 <Effects bind:spell {disableInputs} {addEffect} {removeEffect} />
-<Calculation {spell} {disableInputs} />

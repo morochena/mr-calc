@@ -16,17 +16,55 @@
 	import { XCircle } from 'svelte-heros';
 
 	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
-	import type { Effect, Spell } from '../../../../../types/fromSupabase';
+	import type { Effect, Spell } from '../../../../../types/types';
 
 	export let spell: Spell;
 	export let disableInputs: boolean;
 	export let addEffect: (effect: Effect) => void;
 	export let removeEffect: (effect: Effect) => void;
 
-	let availableEffectOptions = availableEffects.map((effect) => ({
-		name: effect.name,
-		value: effect
-	}));
+	$: availableEffectOptions = availableEffects
+		.filter((effect) => {
+			let selectedMOEs = spell.spell_data.modifiers
+				.map((m) => m.name)
+				.concat(spell.spell_data.effects.map((e) => e.name));
+			if (spell.spell_data.isAlchemy) selectedMOEs.push('Alchemy');
+			if (spell.spell_data.isRunesmith) selectedMOEs.push('Runesmith');
+
+			// if any prereqs aren't met, return false
+			if (effect.prerequisite) {
+				effect.prerequisite.forEach((prerequisite) => {
+					if (!selectedMOEs.includes(prerequisite)) {
+						return false;
+					}
+				});
+			}
+
+			// if any incompatible are set, return false
+			if (effect.incompatible) {
+				effect.incompatible.forEach((incompatible) => {
+					if (selectedMOEs.includes(incompatible)) {
+						return false;
+					}
+				});
+			}
+
+			// if effect domains are not of the spell's domain, return false
+			if (effect.domains && !effect.domains.includes(spell.spell_data.domain)) {
+				return false;
+			}
+
+			// if effect already is set, return false
+			if (selectedMOEs.includes(effect.name)) {
+				return false;
+			}
+
+			return true;
+		})
+		.map((effect) => ({
+			name: effect.name,
+			value: effect
+		}));
 
 	let selectedEffect: Effect | null = null;
 
@@ -51,7 +89,7 @@
 	>Add Effect</Button
 >
 
-<Table class="mt-2">
+<!-- <Table class="mt-2">
 	<TableHead>
 		<TableHeadCell>Name</TableHeadCell>
 		<TableHeadCell>Tier</TableHeadCell>
@@ -91,4 +129,4 @@
 			</TableBodyRow>
 		{/each}
 	</TableBody>
-</Table>
+</Table> -->

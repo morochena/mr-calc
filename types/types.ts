@@ -14,19 +14,28 @@ export type ItemType = "npcs" | "equipment" | "spells"
 export type Domain = 'Sorcery' | 'Fire' | 'Water' | 'Earth' | 'Air' | 'Necromancy' | 'Holy' | 'Mind' | 'Illusion' | 'Nature';
 
 export type Effect = {
+  id: number;
   name: string;
   domains: Domain[];
   modifierType: 'add' | 'multiply' | 'function' | 'functionMultiply';
   amount: string | number;
+  prerequisite?: string[];
+  incompatible?: string[];
   hasTiers: boolean;
   description: string;
   maxTier?: number;
   notes?: string;
 };
 
+export type SelectedEffect = {
+  id: number;
+  tier: number;
+  meta?: string;
+};
+
 export type Modifier = {
+  id: number;
   name: string;
-  tier?: number;
   hasTiers?: boolean;
   incompatible?: string[];
   prerequisite?: string[];
@@ -35,6 +44,12 @@ export type Modifier = {
   description: string;
   types?: string[];
   maxTier?: number;
+};
+
+export type SelectedModifier = {
+  id: number;
+  tier: number;
+  meta?: string;
 };
 
 export type ModifierOrEffect = Modifier | Effect;
@@ -46,7 +61,7 @@ export type Spell = {
   inserted_at: string;
   spell_data: {
     description: string;
-    domain: string;
+    domain: Domain;
     mode: string;
     effects: Effect[];
     modifiers: Modifier[];

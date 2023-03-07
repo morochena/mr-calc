@@ -1,4 +1,4 @@
-import type { Spell } from "../../../../types/fromSupabase";
+import type { Spell } from "../../../../types/types";
 import { calculateTotalSP } from "./calculateSpellSP";
 
 export function calculateSpellCost(spell: Spell) {

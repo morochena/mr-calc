@@ -1,6 +1,6 @@
 import { get } from 'svelte/store'
 import { currentSpell } from "$lib/stores/currentSpellStore"
-import type { Spell } from '../../../../../types/fromSupabase';
+import type { Spell } from '../../../../../types/types';
 
 export function aoeArea(tier: number) {
   let area = 0;

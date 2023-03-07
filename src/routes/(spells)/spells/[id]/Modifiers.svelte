@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { availableModifiers } from '$lib/utils/data/modifiers';
 	import { range } from '$lib/utils/range';
 	import {
@@ -16,25 +16,60 @@
 	import { XCircle } from 'svelte-heros';
 
 	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
+	import type { Modifier, Spell } from '../../../../../types/types';
 
-	export let spell;
-	export let disableInputs;
-	export let addModifier;
-	export let removeModifier;
+	export let spell: Spell;
+	export let disableInputs: boolean;
+	export let addModifier: (modifier: Modifier) => void;
+	export let removeModifier: (modifier: Modifier) => void;
 
-	const availableModifierOptions = availableModifiers.map((modifier) => ({
-		name: modifier.name,
-		value: modifier
-	}));
+	$: availableModifierOptions = availableModifiers
+		.filter((modifier) => {
+			let selectedMOEs = spell.spell_data.modifiers
+				.map((m) => m.name)
+				.concat(spell.spell_data.effects.map((e) => e.name));
+			if (spell.spell_data.isAlchemy) selectedMOEs.push('Alchemy');
+			if (spell.spell_data.isRunesmith) selectedMOEs.push('Runesmith');
 
-	let selectedModifier = null;
+			// if any prereqs aren't met, return false
+			if (modifier.prerequisite) {
+				modifier.prerequisite.forEach((prerequisite) => {
+					if (!selectedMOEs.includes(prerequisite)) {
+						return false;
+					}
+				});
+			}
+
+			// if any incompatible are set, return false
+			if (modifier.incompatible) {
+				modifier.incompatible.forEach((incompatible) => {
+					if (selectedMOEs.includes(incompatible)) {
+						return false;
+					}
+				});
+			}
+
+			// if modifier already is set, return false
+			if (selectedMOEs.includes(modifier.name)) {
+				return false;
+			}
+
+			return true;
+		})
+		.map((modifier) => ({
+			name: modifier.name,
+			value: modifier
+		}));
+
+	let selectedModifier: Modifier | null = null;
+
 	const tryAddModifier = () => {
 		if (!selectedModifier) return;
 		addModifier(selectedModifier);
 		selectedModifier = null;
 	};
 
-	const tryRemoveModifier = (modifier) => {
+	const tryRemoveModifier = (modifier: Modifier) => {
 		if (disableInputs) return;
 		removeModifier(modifier);
 	};
@@ -49,7 +84,7 @@
 	>Add Modifier</Button
 >
 
-<Table class="mt-2">
+<!-- <Table class="mt-2">
 	<TableHead>
 		<TableHeadCell>Name</TableHeadCell>
 		<TableHeadCell>Tier</TableHeadCell>
@@ -89,4 +124,4 @@
 			</TableBodyRow>
 		{/each}
 	</TableBody>
-</Table>
+</Table> -->

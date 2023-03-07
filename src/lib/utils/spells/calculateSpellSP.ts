@@ -1,4 +1,4 @@
-import type { Modifier, Spell } from "../../../../types/fromSupabase";
+import type { Modifier, Spell } from "../../../../types/types";
 import { createElement, movementCondition, geas, sound, plague, madness, help, hinder, illusion, warplight } from "../data/effects";
 import { splitModifier, rangeModifier, aoeModifier, lastingModifier, componentModifier } from "../data/modifiers";
 

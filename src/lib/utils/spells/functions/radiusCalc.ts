@@ -1,4 +1,4 @@
-import type { Spell } from "../../../../../types/fromSupabase";
+import type { Spell } from "../../../../../types/types";
 import { aoeArea } from "./aoeArea";
 import { get } from 'svelte/store'
 import { currentSpell } from "$lib/stores/currentSpellStore"

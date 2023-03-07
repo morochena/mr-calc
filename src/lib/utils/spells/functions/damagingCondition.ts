@@ -1,4 +1,4 @@
-import type { Domain } from "../../../../../types/fromSupabase";
+import type { Domain } from "../../../../../types/types";
 
 export function damagingCondition(domain: Domain) {
   switch (domain) {

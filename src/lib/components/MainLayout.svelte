@@ -14,7 +14,7 @@
 		TableSearch,
 		Toggle
 	} from 'flowbite-svelte';
-	import type { ItemType } from '../../../types/fromSupabase';
+	import type { ItemType } from '../../../types/types';
 
 	export let items;
 	export let itemType: ItemType;

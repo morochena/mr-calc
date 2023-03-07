@@ -20,7 +20,7 @@ import { volume } from "./functions/volume";
 
 import { currentSpell } from "$lib/stores/currentSpellStore";
 import { calculateSpellCost } from "./calculateSpellCost";
-import type { Spell } from "../../../../types/fromSupabase";
+import type { Spell } from "../../../../types/types";
 
 // this is used to dynamically evaluate functions while maintaining their name in minified builds
 const functionMap = {

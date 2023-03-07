@@ -2,22 +2,33 @@ import { get } from 'svelte/store'
 import { currentSpell } from "$lib/stores/currentSpellStore"
 
 export function halftime() {
-
   const spell = get(currentSpell)
   const modifiers = spell.spell_data.modifiers
 
-  const modList = modifiers.filter(mod => mod.name.includes("Lasting"));
-  if (modList.length <= 0) {
+  const lastingModifiers = modifiers.filter(mod => mod.name.includes("Lasting"))
+  if (lastingModifiers.length < 1) {
     return "Lasting modifier not found";
   }
 
-  const increment = modList[0].name.match(/\((.*?)\)/g)[0];
-  if (increment.includes("Rounds")) {
-    const time = Math.ceil((modList[0].tier + 1) / 2);
-    return time + " " + increment;
+  const lastingModifier = lastingModifiers[0];
+
+  const unitMatch = lastingModifier.name.match(/\((.*?)\)/g);
+  if (!unitMatch) {
+    return "Lasting modifier not found";
   }
-  else {
-    const time = (modList[0].tier) / 2;
-    return time + " " + increment;
+
+  const unit = unitMatch[0];
+
+  if (!lastingModifier.tier) {
+    return "no tier set";
+  }
+
+  if (unit.includes("Rounds")) {
+    const time = Math.ceil((lastingModifier.tier + 1) / 2);
+    return time + " " + unit;
+  } else {
+    const time = (lastingModifier.tier) / 2;
+
+    return time + " " + unit;
   }
 }

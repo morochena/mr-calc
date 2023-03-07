@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Checkbox, Input, Label, Select, Textarea } from 'flowbite-svelte';
-	import type { Spell } from '../../../../../types/fromSupabase';
+	import type { Spell } from '../../../../../types/types';
 
 	export let spell: Spell;
 	export let disableInputs: boolean;

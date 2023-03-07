@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+	import FillInBlanks from '$lib/components/FillInBlanks.svelte';
 	import { calculateMOECostText } from '$lib/utils/spells/calculateMOECostText';
 	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
 	import { calculateSpellCost } from '$lib/utils/spells/calculateSpellCost';
@@ -16,9 +17,10 @@
 		TableHead,
 		TableHeadCell
 	} from 'flowbite-svelte';
+	import type { Spell } from '../../../../../types/types';
 
-	export let spell;
-	export let disableInputs;
+	export let spell: Spell;
+	export let disableInputs: boolean;
 </script>
 
 <h2 class="text-xl mt-8">Summary</h2>
@@ -57,7 +59,7 @@
 					{/if}{modifier.name}
 				</TableBodyCell>
 				<TableBodyCell>{calculateMOECostText(modifier)}</TableBodyCell>
-				<TableBodyCell>{modifier.tier}</TableBodyCell>
+				<TableBodyCell>{modifier.tier || 1}</TableBodyCell>
 				<TableBodyCell>{modifier.notes}</TableBodyCell>
 				<TableBodyCell>{calculateMOEDescription(spell, modifier)}</TableBodyCell>
 			</TableBodyRow>
@@ -72,7 +74,12 @@
 				<TableBodyCell>{calculateMOECostText(effect)}</TableBodyCell>
 				<TableBodyCell>{effect.tier}</TableBodyCell>
 				<TableBodyCell>{effect.notes}</TableBodyCell>
-				<TableBodyCell>{calculateMOEDescription(spell, effect)}</TableBodyCell>
+				<TableBodyCell
+					><FillInBlanks
+						baseText={calculateMOEDescription(spell, effect)}
+						bind:replacementValue={effect.meta}
+					/></TableBodyCell
+				>
 			</TableBodyRow>
 		{/each}
 		<TableBodyRow>
