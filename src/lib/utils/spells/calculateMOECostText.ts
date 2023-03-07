@@ -1,6 +1,19 @@
 import type { ModifierOrEffect } from "../../../../types/types";
-import { createElement, movementCondition, geas, sound, plague, madness, help, hinder, illusion, warplight } from "../data/effects";
-import { aoeModifier, componentModifier, lastingModifier, rangeModifier, splitModifier } from "../data/modifiers";
+import { illusion } from "./valueFunctions/effects/illusion";
+import { warplight } from "./valueFunctions/effects/warplight";
+import { hinder } from "./valueFunctions/effects/hinder";
+import { help } from "./valueFunctions/effects/help";
+import { geas } from "./valueFunctions/effects/geas";
+import { madness } from "./valueFunctions/effects/madness";
+import { plague } from "./valueFunctions/effects/plague";
+import { sound } from "./valueFunctions/effects/sound";
+import { movementCondition } from "./valueFunctions/effects/movementCondition";
+import { createElement } from "./valueFunctions/effects/createElement";
+import { componentModifier } from "./valueFunctions/modifiers/componentModifier";
+import { lastingModifier } from "./valueFunctions/modifiers/lastingModifier";
+import { aoeModifier } from "./valueFunctions/modifiers/aoeModifier";
+import { rangeModifier } from "./valueFunctions/modifiers/rangeModifier";
+import { splitModifier } from "./valueFunctions/modifiers/splitModifier";
 
 export const calculateMOECostText = (moe: ModifierOrEffect) => {
   let truetier = moe.tier || 1;
