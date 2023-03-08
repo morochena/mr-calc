@@ -622,7 +622,7 @@ export const availableEffects: Effect[] = [
   {
     id: 56,
     name: 'Illusion',
-    domains: ['Illusion'],
+    domains: ['Illusion', 'Sorcery', 'Mind', 'Sorcery'],
     modifierType: 'function',
     amount: illusion,
     hasTiers: true,
