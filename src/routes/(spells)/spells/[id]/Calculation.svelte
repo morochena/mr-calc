@@ -3,7 +3,7 @@
 	import { range } from '$lib/utils/range';
 	import { calcSPValueText } from '$lib/utils/spells/SPCalculations';
 	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
-	import { calculateSpellCost } from '$lib/utils/spells/mentalCostCalculations';
+	import { calculateMentalCost } from '$lib/utils/spells/descriptionFunctions/mentalCostCalculation';
 	import { calculateSpellDescription } from '$lib/utils/spells/calculateSpellDescription';
 	import { calculateTotalSP } from '$lib/utils/spells/SPCalculations';
 	import {
@@ -88,7 +88,7 @@
 		<p><strong>Domain:</strong> {spell.domain}</p>
 		<p><strong>Mode:</strong> {spell.mode}</p>
 		<p><strong>Spell Difficulty: {calculateTotalSP(spell).cost}</strong></p>
-		<p><strong>Mental Cost:</strong> {calculateSpellCost(spell)}</p>
+		<p><strong>Mental Cost:</strong> {calculateMentalCost(spell)}</p>
 	</div>
 	<hr class="my-3" />
 	<div>

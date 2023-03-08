@@ -46,7 +46,7 @@ export const calculateTotalSP = (spell: Spell) => {
 
 export const calcSPValue = (moe: ProcessedModifierOrEffect) => {
   let trueTier = moe.tier || 1;
-  if (moe.domainTier) trueTier -= moe.domainTier;
+  // if (moe.domainTier) trueTier -= moe.domainTier;
 
   let cost = 0;
   switch (moe.modifierType) {
@@ -68,7 +68,7 @@ export const calcSPValue = (moe: ProcessedModifierOrEffect) => {
 
 export const calcSPValueText = (moe: ProcessedModifierOrEffect) => {
   let trueTier = moe.tier || 1;
-  if (moe.domainTier) trueTier -= moe.domainTier;
+  // if (moe.domainTier) trueTier -= moe.domainTier;
 
   let amount;
   let operator;
@@ -93,7 +93,7 @@ export const calcSPValueText = (moe: ProcessedModifierOrEffect) => {
 
 const functionSPValue = (moe: ProcessedModifierOrEffect) => {
   let trueTier = moe.tier;
-  if (moe.domainTier) trueTier -= moe.domainTier;
+  // if (moe.domainTier) trueTier -= moe.domainTier;
 
   if (typeof moe.amount === "function")
     return moe.amount(moe, trueTier)

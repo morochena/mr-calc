@@ -1,4 +1,4 @@
-import type { Spell, CombinedEffect, CombinedModifier, ProcessedModifier, CombinedModifierOrEffect, ProcessedEffect, ProcessedModifierOrEffect } from "../../../../types/types";
+import type { Spell, CombinedEffect, CombinedModifier, ProcessedModifier, CombinedModifierOrEffect, ProcessedEffect, ProcessedModifierOrEffect, Effect } from "../../../../types/types";
 import { availableEffectsById } from "../data/effects";
 import { availableModifiersById } from "../data/modifiers";
 import { cloneDeep } from 'lodash-es'
@@ -45,52 +45,7 @@ export function processDomainEffects(spell: Spell) {
 
   switch (spell.domain) {
     case "Fire":
-      let x = processedEffects.find((x) => x.id === damageId);
-      if (x && (!x.domainTier || x.domainTier <= 0)) {
-        x.domainTier = 2;
-        x.notes = "+2 Fire Domain Damage";
-        x.prerequisite = ["Fire"];
-      } else if (!x)
-        processedEffects.push({
-          ...damageEffect,
-          tier: 2,
-          domainTier: 2,
-          notes: "Fire Domain",
-          description: "+2 DMG",
-          fromDomain: true
-        });
-      let y = processedEffects.find((y) => y.id === lightId);
-      if (y && (!y.domainTier || y.domainTier <= 0)) {
-        y.tier += 2;
-        y.domainTier = 2;
-        y.notes = "+2 Fire Domain Light";
-        y.prerequisite = ["Fire"];
-      } else if (!y)
-        processedEffects.push({
-          ...lightEffect,
-          tier: 2,
-          domainTier: 2,
-          notes: "Fire Domain",
-          description: "Flickers with enough light to brighten a dark room",
-          fromDomain: true,
-        });
-      let z = processedEffects.find((z) => z.id === createElementId);
-      if (!z) {
-        processedEffects.push({
-          id: 0,
-          name: "Require Element",
-          tier: 1,
-          domains: ["Fire"],
-          domainTier: 0,
-          hasTiers: true,
-          prerequisite: ["Fire"],
-          notes: "Fire Domain",
-          modifierType: "add",
-          amount: 0,
-          description: "Requires the presence of Fire or the spell fails",
-          fromDomain: true,
-        });
-      }
+      processFireDomain(processedEffects, damageId, damageEffect, lightId, lightEffect, createElementId);
       break;
     case "Air":
       let air = processedEffects.find((air) => air.id === createElementId);
@@ -153,8 +108,10 @@ export function processDomainEffects(spell: Spell) {
       let earth = processedEffects.find((earth) => earth.name === "Create Element");
       if (!earth) {
         processedEffects.push({
+          id: 0,
           name: "Require Element",
           tier: 0,
+          domains: [],
           domainTier: 0,
           hasTiers: true,
           prerequisite: ["Earth"],
@@ -162,13 +119,16 @@ export function processDomainEffects(spell: Spell) {
           modifierType: "add",
           amount: 0,
           description: "Requires the presence of Earth or the spell fails",
+          fromDomain: true,
         });
       }
       break;
     case "Mind":
       processedEffects.push({
+        id: 0,
         name: "Require Mind",
         tier: 0,
+        domains: [],
         domainTier: 0,
         hasTiers: true,
         prerequisite: ["Mind"],
@@ -176,12 +136,15 @@ export function processDomainEffects(spell: Spell) {
         modifierType: "add",
         amount: 0,
         description: "Requires the presence of a Mind or the spell fails",
+        fromDomain: true,
       });
       break;
     case "Nature":
       processedEffects.push({
+        id: 0,
         name: "Require Nature",
         tier: 0,
+        domains: [],
         domainTier: 0,
         hasTiers: true,
         prerequisite: ["Nature"],
@@ -189,12 +152,15 @@ export function processDomainEffects(spell: Spell) {
         modifierType: "add",
         amount: 0,
         description: "Requires the presence of a Life or the spell fails",
+        fromDomain: true,
       });
       break;
     case "Illusion":
       processedEffects.push({
+        id: 0,
         name: "Illusion Discount",
         tier: 1,
+        domains: [],
         domainTier: 0,
         hasTiers: true,
         prerequisite: ["Illusion"],
@@ -242,6 +208,57 @@ export function processDomainModifiers(spell: Spell) {
   }
   return modifiers;
 }
+
+
+function processFireDomain(processedEffects: ProcessedEffect[], damageId: number, damageEffect: Effect, lightId: number, lightEffect: Effect, createElementId: number) {
+  let x = processedEffects.find((x) => x.id === damageId);
+  if (x && (!x.domainTier || x.domainTier <= 0)) {
+    x.domainTier = 2;
+    x.notes = "+2 Fire Domain Damage";
+    x.prerequisite = ["Fire"];
+  } else if (!x)
+    processedEffects.push({
+      ...damageEffect,
+      tier: 2,
+      domainTier: 2,
+      notes: "Fire Domain",
+      description: "+2 DMG",
+      fromDomain: true
+    });
+  let y = processedEffects.find((y) => y.id === lightId);
+  if (y && (!y.domainTier || y.domainTier <= 0)) {
+    y.tier += 2;
+    y.domainTier = 2;
+    y.notes = "+2 Fire Domain Light";
+    y.prerequisite = ["Fire"];
+  } else if (!y)
+    processedEffects.push({
+      ...lightEffect,
+      tier: 2,
+      domainTier: 2,
+      notes: "Fire Domain",
+      description: "Flickers with enough light to brighten a dark room",
+      fromDomain: true,
+    });
+  let z = processedEffects.find((z) => z.id === createElementId);
+  if (!z) {
+    processedEffects.push({
+      id: 0,
+      name: "Require Element",
+      tier: 1,
+      domains: ["Fire"],
+      domainTier: 0,
+      hasTiers: true,
+      prerequisite: ["Fire"],
+      notes: "Fire Domain",
+      modifierType: "add",
+      amount: 0,
+      description: "Requires the presence of Fire or the spell fails",
+      fromDomain: true,
+    });
+  }
+}
+
 
 // should only be used to processedDomainModifiers
 const getCombinedModifiers = (spell: Spell): CombinedModifier[] => {

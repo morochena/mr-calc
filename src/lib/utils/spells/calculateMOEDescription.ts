@@ -1,18 +1,20 @@
-import { calculateSpellCost } from "./mentalCostCalculations";
-import type { ModifierOrEffect, Spell } from "../../../../types/types";
-import { calculateSpellResist } from "./calculateSpellResist";
+import { calculateMentalCost } from "./descriptionFunctions/mentalCostCalculation";
+import type { ModifierOrEffect, ProcessedModifierOrEffect, Spell } from "../../../../types/types";
+import { calculateSpellResist } from "./descriptionFunctions/calculateSpellResist";
 
-export const calculateMOEDescription = (spell: Spell, moe: ModifierOrEffect) => {
+export const calculateMOEDescription = (spell: Spell, moe: ProcessedModifierOrEffect) => {
   let formattedDescription = moe.description;
   let evalMatch = formattedDescription.match(/\[(.*?)\]/g);
+
+  const combinedTier = moe.domainTier + moe.tier;
 
   if (evalMatch) {
     evalMatch.forEach(e => {
       let evalString = e;
-      evalString = evalString.replace("tier", "moe.tier");
+      evalString = evalString.replace("tier", `${combinedTier}`);
       evalString = evalString.replace("notes", "moe.notes");
       evalString = evalString.replace("domain", "spell.domain");
-      evalString = evalString.replace("cost", String(calculateSpellCost(spell)));
+      evalString = evalString.replace("cost", String(calculateMentalCost(spell)));
       evalString = evalString.replace("resist", String(calculateSpellResist(spell)));
       evalString = evalString.replace("[", "");
       evalString = evalString.replace("]", "");

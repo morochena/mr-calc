@@ -1,8 +1,8 @@
-import type { Spell } from "../../../../types/types";
-import { calculateTotalSP } from "./SPCalculations";
-import { processDomainModifiers } from "./getCombinedEffects";
+import type { Spell } from "../../../../../types/types";
+import { calculateTotalSP } from "../SPCalculations";
+import { processDomainModifiers } from "../getCombinedEffects";
 
-export function calculateSpellCost(spell: Spell) {
+export function calculateMentalCost(spell: Spell) {
   const SP = calculateTotalSP(spell).cost;
   let cost = Math.ceil(SP / 10.0) + 1;
 

@@ -1,5 +1,5 @@
 import type { Spell } from "../../../../types/types";
-import { calculateSpellCost } from "./mentalCostCalculations";
+import { calculateMentalCost } from "./descriptionFunctions/mentalCostCalculation";
 
 
 export const calculateSpellDescription = (spell) => {
