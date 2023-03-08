@@ -19,7 +19,8 @@
 	import type { Modifier, Spell } from '../../../../../types/types';
 	import {
 		getProcessedEffects,
-		getProcessedModifiers
+		getProcessedModifiers,
+		getProcessedModifiersAndEffects
 	} from '$lib/utils/spells/getModifiersAndEffects';
 
 	export let spell: Spell;
@@ -30,9 +31,7 @@
 	let selectedCombinedModifiersOrEffects = [];
 
 	$: {
-		selectedCombinedModifiersOrEffects = getProcessedModifiers(spell)
-			.concat(getProcessedEffects(spell))
-			.map((m) => m.name);
+		selectedCombinedModifiersOrEffects = getProcessedModifiersAndEffects(spell).map((m) => m.name);
 
 		if (spell.is_alchemy && !selectedCombinedModifiersOrEffects.includes('Alchemy'))
 			selectedCombinedModifiersOrEffects.push('Alchemist');
@@ -46,24 +45,18 @@
 
 			// if any prereqs aren't met, return false
 			if (modifier.prerequisite) {
-				let shouldReturnFalse = false;
-				modifier.prerequisite.forEach((prerequisite) => {
-					if (!selectedMOEs.includes(prerequisite)) {
-						shouldReturnFalse = true;
-					}
-				});
-				if (shouldReturnFalse) return false;
+				const hasAllPrerequisites = modifier.prerequisite.every((prerequisite) =>
+					selectedMOEs.some((moe) => moe.includes(prerequisite))
+				);
+				if (!hasAllPrerequisites) return false;
 			}
 
 			// if any incompatible are set, return false
 			if (modifier.incompatible) {
-				let shouldReturnFalse = false;
-				modifier.incompatible.forEach((incompatible) => {
-					if (selectedMOEs.includes(incompatible)) {
-						shouldReturnFalse = true;
-					}
-				});
-				if (shouldReturnFalse) return false;
+				const hasAnyIncompatible = modifier.incompatible.some((incompatible) =>
+					selectedMOEs.some((moe) => moe.includes(incompatible))
+				);
+				if (hasAnyIncompatible) return false;
 			}
 
 			// if modifier already is set, return false
