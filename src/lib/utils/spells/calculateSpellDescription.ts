@@ -1,4 +1,4 @@
-import type { ProcessedModifier, Spell, SpellMode } from "../../../../types/types";
+import type { ProcessedEffect, ProcessedModifier, Spell, SpellMode } from "../../../../types/types";
 import { calculateMOEDescription } from "./calculateMOEDescription";
 import { calculateMentalCost } from "./descriptionFunctions/mentalCostCalculation";
 import { getProcessedModifiersAndEffects, getProcessedEffects, getProcessedModifiers } from "./getModifiersAndEffects";
@@ -15,17 +15,33 @@ export const calculateSpellDescription = (spell: Spell) => {
 
 const casterText = (spell: Spell) => {
   const mode = modeText(spell.mode)
-  const modifierText = getProcessedModifiers(spell).map((mod: ProcessedModifier) => calculateMOEDescription(spell, mod)).join(' and ');
+  const modifierText = getProcessedModifiers(spell)
+    .map((modifier: ProcessedModifier) => {
+      const baseText = calculateMOEDescription(spell, modifier)
+      // replace {meta|example text} with the meta value
+      return baseText.replace(/{meta\|([^}]+)}/g, (match, p1) => {
+        return modifier.meta || '';
+      })
+    })
+    .join(' and ');
+
 
   return `The caster ${mode} that ${modifierText}`;
 }
 
 const targetText = (spell: Spell) => {
-  const effectText = getProcessedEffects(spell).map((mod: ProcessedModifier) => calculateMOEDescription(spell, mod)).join(' and ');
+  const effectText = getProcessedEffects(spell)
+    .map((effect: ProcessedEffect) => {
+      const baseText = calculateMOEDescription(spell, effect)
+      // replace {meta|example text} with the meta value
+      return baseText.replace(/{meta\|([^}]+)}/g, (match, p1) => {
+        return effect.meta || '';
+      })
+    })
+    .join(' and ');
 
   return `the target ${effectText}`;
 }
-
 
 const craftedPreamble = (spell: Spell) => {
   const modifiers = getProcessedModifiers(spell)
