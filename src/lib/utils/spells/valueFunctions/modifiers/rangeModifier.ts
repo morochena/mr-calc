@@ -1,5 +1,7 @@
+import type { CombinedModifier } from "../../../../../../types/types";
 
-export const rangeModifier = (tier: number) => {
+export const rangeModifier = (modifier: CombinedModifier, trueTier?: number) => {
+  let tier = trueTier || modifier.tier;
   let cost = 0;
 
   for (let i = 0; i < tier; i++) {

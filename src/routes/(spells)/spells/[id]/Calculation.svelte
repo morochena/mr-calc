@@ -1,15 +1,15 @@
 <script lang="ts">
 	import FillInBlanks from '$lib/components/FillInBlanks.svelte';
 	import { range } from '$lib/utils/range';
-	import { calculateMOECostText } from '$lib/utils/spells/calculateMOECostText';
+	import { calcSPValueText } from '$lib/utils/spells/SPCalculations';
 	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
-	import { calculateSpellCost } from '$lib/utils/spells/calculateSpellCost';
+	import { calculateSpellCost } from '$lib/utils/spells/mentalCostCalculations';
 	import { calculateSpellDescription } from '$lib/utils/spells/calculateSpellDescription';
-	import { calculateTotalSP } from '$lib/utils/spells/calculateSpellSP';
+	import { calculateTotalSP } from '$lib/utils/spells/SPCalculations';
 	import {
 		processDomainEffects,
 		processDomainModifiers
-	} from '$lib/utils/spells/moreSpellCalculations';
+	} from '$lib/utils/spells/getCombinedEffects';
 	import {
 		Select,
 		Table,
@@ -117,9 +117,9 @@
 						{/if}{modifier.name}
 					</div>
 				</TableBodyCell>
-				<TableBodyCell>{calculateMOECostText(modifier)}</TableBodyCell>
+				<TableBodyCell>{calcSPValueText(modifier)}</TableBodyCell>
 				<TableBodyCell>
-					{#if modifier.hasTiers}
+					{#if modifier.hasTiers && !modifier.fromDomain}
 						<Select
 							disabled={disableInputs}
 							size="sm"
@@ -127,6 +127,8 @@
 							on:change={(e) => updateModifierTier(modifier.id, e.target.value)}
 							value={modifier.tier}
 						/>
+					{:else}
+						{modifier.tier}
 					{/if}
 				</TableBodyCell>
 				<TableBodyCell>{modifier.notes || ''}</TableBodyCell>
@@ -157,9 +159,9 @@
 						{/if}{effect.name}
 					</div>
 				</TableBodyCell>
-				<TableBodyCell>{calculateMOECostText(effect)}</TableBodyCell>
+				<TableBodyCell>{calcSPValueText(effect)}</TableBodyCell>
 				<TableBodyCell>
-					{#if effect.hasTiers}
+					{#if effect.hasTiers && !effect.fromDomain}
 						<Select
 							disabled={disableInputs}
 							size="sm"
@@ -167,6 +169,8 @@
 							on:change={(e) => updateEffectTier(effect.id, e.target.value)}
 							value={effect.tier}
 						/>
+					{:else}
+						{effect.tier}
 					{/if}
 				</TableBodyCell>
 				<TableBodyCell>{effect.notes || ''}</TableBodyCell>

@@ -1,4 +1,4 @@
-import { calculateSpellCost } from "./calculateSpellCost";
+import { calculateSpellCost } from "./mentalCostCalculations";
 import type { Spell } from "../../../../types/types";
 
 export function calculateSpellResist(spell: Spell) {

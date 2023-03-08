@@ -1,10 +1,10 @@
 import type { CombinedModifier, Spell } from '../../../../../../types/types';
-import { getCombinedModifiers } from '../../getCombinedEffects';
+import { processDomainModifiers } from '../../getCombinedEffects';
 
 export function aoeArea(spell: Spell, modifier: CombinedModifier) {
   let area = 0;
 
-  const modifiers = getCombinedModifiers(spell)
+  const modifiers = processDomainModifiers(spell)
   const domain = spell.domain
   const tier = modifier.tier
 

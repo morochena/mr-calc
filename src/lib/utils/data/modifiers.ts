@@ -1,11 +1,16 @@
 import type { Modifier } from "../../../../types/types";
-import { halftime } from "../spells/functions/modifiers/halftime";
-import { calcComponentCost } from "../spells/functions/modifiers/calcComponentCost";
-import { radiusCalc } from "../spells/functions/modifiers/radiusCalc";
-import { rangeMeters, rangeMetersTimesThree } from "../spells/functions/modifiers/rangeMeters";
-import { rectWidthCalc } from "../spells/functions/modifiers/rectWidthCalc";
-import { thwartStat } from "../spells/functions/modifiers/thwartStat";
-import { aoeArea } from "../spells/functions/modifiers/aoeArea";
+import { halftime } from "../spells/descriptionFunctions/modifiers/halftime";
+import { calcComponentCost } from "../spells/descriptionFunctions/modifiers/calcComponentCost";
+import { radiusCalc } from "../spells/descriptionFunctions/modifiers/radiusCalc";
+import { rangeMeters, rangeMetersTimesThree } from "../spells/descriptionFunctions/modifiers/rangeMeters";
+import { rectWidthCalc } from "../spells/descriptionFunctions/modifiers/rectWidthCalc";
+import { thwartStat } from "../spells/descriptionFunctions/modifiers/thwartStat";
+import { aoeArea } from "../spells/descriptionFunctions/modifiers/aoeArea";
+import { splitModifier } from "../spells/valueFunctions/modifiers/splitModifier";
+import { rangeModifier } from "../spells/valueFunctions/modifiers/rangeModifier";
+import { aoeModifier } from "../spells/valueFunctions/modifiers/aoeModifier";
+import { lastingModifier } from "../spells/valueFunctions/modifiers/lastingModifier";
+import { componentModifier } from "../spells/valueFunctions/modifiers/componentModifier";
 
 export const availableModifiers: Modifier[] = [
   {
@@ -104,7 +109,7 @@ export const availableModifiers: Modifier[] = [
     name: 'Split',
     hasTiers: true,
     modifierType: 'function',
-    amount: 'splitModifier',
+    amount: splitModifier,
     types: ['Concentrated Power'],
     description: 'split into [tier+1] effects, each of which'
   },
@@ -113,7 +118,7 @@ export const availableModifiers: Modifier[] = [
     name: 'Range',
     hasTiers: true,
     modifierType: 'function',
-    amount: 'rangeModifier',
+    amount: rangeModifier,
     description: 'has a range of {1} meters or {2} with disadvantage',
     descriptionFunctions: [
       rangeMeters,
@@ -144,7 +149,7 @@ export const availableModifiers: Modifier[] = [
     name: 'Area of Effect (Sphere)',
     hasTiers: true,
     modifierType: 'function',
-    amount: 'aoeModifier',
+    amount: aoeModifier,
     description: 'covers a continuous Sphere with radius {1}.',
     descriptionFunctions: [
       radiusCalc
@@ -155,7 +160,7 @@ export const availableModifiers: Modifier[] = [
     name: 'Area of Effect (Rectangle)',
     hasTiers: true,
     modifierType: 'function',
-    amount: 'aoeModifier',
+    amount: aoeModifier,
     description: 'covers a continuous Rectangle with length {meta|0} and width {1}',
     descriptionFunctions: [
       rectWidthCalc
@@ -166,7 +171,7 @@ export const availableModifiers: Modifier[] = [
     name: 'Area of Effect (Cone)',
     hasTiers: true,
     modifierType: 'function',
-    amount: 'aoeModifier',
+    amount: aoeModifier,
     description: 'covers a continuous Cone with length {meta|0} and width {1}.',
     descriptionFunctions: [
       rectWidthCalc
@@ -177,7 +182,7 @@ export const availableModifiers: Modifier[] = [
     name: 'Area of Effect (Custom)',
     hasTiers: true,
     modifierType: 'function',
-    amount: 'aoeModifier',
+    amount: aoeModifier,
     description: 'covers a continuous polygon with area {1} meters Sq.',
     descriptionFunctions: [
       aoeArea
@@ -194,7 +199,7 @@ export const availableModifiers: Modifier[] = [
     ],
     hasTiers: true,
     modifierType: 'functionMultiply',
-    amount: 'lastingModifier',
+    amount: lastingModifier,
     maxTier: 4,
     description: 'lasts for [tier+1] rounds'
   },
@@ -209,7 +214,7 @@ export const availableModifiers: Modifier[] = [
     ],
     hasTiers: true,
     modifierType: 'functionMultiply',
-    amount: 'lastingModifier',
+    amount: lastingModifier,
     maxTier: 15,
     description: 'lasts for [tier] minutes'
   },
@@ -224,7 +229,7 @@ export const availableModifiers: Modifier[] = [
     ],
     hasTiers: true,
     modifierType: 'functionMultiply',
-    amount: 'lastingModifier',
+    amount: lastingModifier,
     maxTier: 24,
     description: 'lasts for [tier] hours'
   },
@@ -239,7 +244,7 @@ export const availableModifiers: Modifier[] = [
     ],
     hasTiers: true,
     modifierType: 'functionMultiply',
-    amount: 'lastingModifier',
+    amount: lastingModifier,
     maxTier: 7,
     description: 'lasts for [tier] days'
   },
@@ -254,7 +259,7 @@ export const availableModifiers: Modifier[] = [
     ],
     hasTiers: true,
     modifierType: 'functionMultiply',
-    amount: 'lastingModifier',
+    amount: lastingModifier,
     description: 'lasts for [tier] weeks'
   },
   {
@@ -316,7 +321,7 @@ export const availableModifiers: Modifier[] = [
     name: 'Requires Component',
     hasTiers: true,
     modifierType: 'function',
-    amount: 'componentModifier',
+    amount: componentModifier,
     description: 'requires a {meta|component}, of at least cost {1} Denar',
     descriptionFunctions: [
       calcComponentCost
@@ -423,7 +428,7 @@ export const availableModifiers: Modifier[] = [
     modifierType: 'add',
     amount: 2,
     description: 'keeps for [tier+1] months'
-  }
+  },
 ]
 
 export const availableModifiersById = availableModifiers.reduce((acc: Record<number, Modifier>, modifier) => {

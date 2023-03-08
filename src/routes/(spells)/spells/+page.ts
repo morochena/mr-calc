@@ -1,7 +1,7 @@
 import type { PageLoad } from './$types';
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { redirect } from '@sveltejs/kit';
-import { calculateTotalSP } from '$lib/utils/spells/calculateSpellSP';
+import { calculateTotalSP } from '$lib/utils/spells/SPCalculations';
 
 export const load: PageLoad = async (event) => {
 

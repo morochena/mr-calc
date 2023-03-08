@@ -18,7 +18,7 @@ export type Effect = {
   name: string;
   domains: Domain[];
   modifierType: 'add' | 'multiply' | 'function' | 'functionMultiply';
-  amount: string | number;
+  amount: number | Function;
   prerequisite?: string[];
   incompatible?: string[];
   hasTiers: boolean;
@@ -43,7 +43,7 @@ export type Modifier = {
   incompatible?: string[];
   prerequisite?: string[];
   modifierType: 'add' | 'reduce' | 'multiply' | 'function' | 'functionMultiply';
-  amount: number | string;
+  amount: number | Function;
   description: string;
   types?: string[];
   maxTier?: number;
@@ -60,6 +60,11 @@ export type CombinedModifier = Modifier & SelectedModifier
 
 export type ModifierOrEffect = Modifier | Effect;
 export type CombinedModifierOrEffect = CombinedModifier | CombinedEffect
+
+export type ProcessedModifier = CombinedModifier & { domainTier: number }
+export type ProcessedEffect = CombinedEffect & { domainTier: number, fromDomain?: boolean }
+export type ProcessedModifierOrEffect = CombinedModifierOrEffect & { domainTier: number }
+
 
 
 export type Spell = {

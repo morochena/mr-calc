@@ -1,5 +1,8 @@
+import type { CombinedModifier } from "../../../../../../types/types";
 
-export const splitModifier = (tier: number) => {
+export const splitModifier = (modifier: CombinedModifier, trueTier?: number) => {
+  let tier = trueTier || modifier.tier;
+
   if (tier == 1)
     return 8;
   if (tier == 2)

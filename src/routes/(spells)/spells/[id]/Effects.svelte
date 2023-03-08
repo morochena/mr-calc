@@ -17,7 +17,10 @@
 
 	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
 	import type { CombinedModifierOrEffect, Effect, Spell } from '../../../../../types/types';
-	import { getCombinedEffects, getCombinedModifiers } from '$lib/utils/spells/getCombinedEffects';
+	import {
+		processDomainEffects,
+		processDomainModifiers
+	} from '$lib/utils/spells/getCombinedEffects';
 
 	export let spell: Spell;
 	export let disableInputs: boolean;
@@ -27,8 +30,8 @@
 	let selectedCombinedModifiersOrEffects: string[] = [];
 
 	$: {
-		selectedCombinedModifiersOrEffects = getCombinedModifiers(spell)
-			.concat(getCombinedEffects(spell))
+		selectedCombinedModifiersOrEffects = processDomainModifiers(spell)
+			.concat(processDomainEffects(spell))
 			.map((m) => m.name);
 
 		if (spell.is_alchemy && !selectedCombinedModifiersOrEffects.includes('Alchemy'))

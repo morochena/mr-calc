@@ -1,4 +1,4 @@
-import { calculateSpellCost } from "./calculateSpellCost";
+import { calculateSpellCost } from "./mentalCostCalculations";
 import type { ModifierOrEffect, Spell } from "../../../../types/types";
 import { calculateSpellResist } from "./calculateSpellResist";
 

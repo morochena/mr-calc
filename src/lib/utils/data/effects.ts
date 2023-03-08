@@ -1,17 +1,26 @@
 import type { Effect } from "../../../../types/types";
-import { comms } from "../spells/functions/effects/comms";
-import { damagingCondition } from "../spells/functions/effects/damagingCondition";
-import { madnessDescription } from "../spells/functions/effects/madnessDescription";
-import { plagueDescription } from "../spells/functions/effects/plagueDescription";
-import { elementAmount } from "../spells/functions/effects/elementAmount";
-import { light } from "../spells/functions/effects/light";
-import { movementConditionDesc } from "../spells/functions/effects/movementConditionDesc";
-import { sense } from "../spells/functions/effects/sense";
-import { temporaryBodySideEffect } from "../spells/functions/effects/temporaryBodySideEffect";
-import { thoughts } from "../spells/functions/effects/thoughts";
-import { volume } from "../spells/functions/effects/volume";
-import { noise } from "../spells/functions/effects/noise";
-import { sound } from "../spells/functions/effects/sound";
+import { comms } from "../spells/descriptionFunctions/effects/comms";
+import { damagingCondition } from "../spells/descriptionFunctions/effects/damagingCondition";
+import { madnessDescription } from "../spells/descriptionFunctions/effects/madnessDescription";
+import { plagueDescription } from "../spells/descriptionFunctions/effects/plagueDescription";
+import { elementAmount } from "../spells/descriptionFunctions/effects/elementAmount";
+import { light } from "../spells/descriptionFunctions/effects/light";
+import { movementConditionDesc } from "../spells/descriptionFunctions/effects/movementConditionDesc";
+import { sense } from "../spells/descriptionFunctions/effects/sense";
+import { temporaryBodySideEffect } from "../spells/descriptionFunctions/effects/temporaryBodySideEffect";
+import { thoughts } from "../spells/descriptionFunctions/effects/thoughts";
+import { volume } from "../spells/descriptionFunctions/effects/volume";
+import { noise } from "../spells/descriptionFunctions/effects/noise";
+import { sound } from "../spells/descriptionFunctions/effects/sound";
+import { createElement } from "../spells/valueFunctions/effects/createElement";
+import { geas } from "../spells/valueFunctions/effects/geas";
+import { help } from "../spells/valueFunctions/effects/help";
+import { hinder } from "../spells/valueFunctions/effects/hinder";
+import { illusion } from "../spells/valueFunctions/effects/illusion";
+import { madness } from "../spells/valueFunctions/effects/madness";
+import { movementCondition } from "../spells/valueFunctions/effects/movementCondition";
+import { plague } from "../spells/valueFunctions/effects/plague";
+import { warplight } from "../spells/valueFunctions/effects/warplight";
 
 export const availableEffects: Effect[] = [
   {
@@ -46,7 +55,7 @@ export const availableEffects: Effect[] = [
     maxTier: 3,
     domains: ['Air', 'Earth', 'Fire', 'Water'],
     modifierType: 'function',
-    amount: 'createElement',
+    amount: createElement,
     hasTiers: true,
     description: 'creates {1}',
     descriptionFunctions: [
@@ -326,7 +335,7 @@ export const availableEffects: Effect[] = [
     name: 'Apply Movement Condition',
     domains: ['Water', 'Necromancy', 'Nature'],
     modifierType: 'function',
-    amount: 'movementCondition',
+    amount: movementCondition,
     hasTiers: true,
     maxTier: 3,
     description: 'is trapped, {1}',
@@ -363,7 +372,7 @@ export const availableEffects: Effect[] = [
     name: 'Geas (Conscious Actions)',
     domains: ['Mind', 'Necromancy'],
     modifierType: 'function',
-    amount: 'geas',
+    amount: geas,
     hasTiers: true,
     maxTier: 4,
     description: 'is forced to {meta|perform a conscious action}  if they have less than d10+[tier] Mind Points, or otherwise they lose [tier] Mind Points'
@@ -373,7 +382,7 @@ export const availableEffects: Effect[] = [
     name: 'Geas (Unconscious Actions)',
     domains: ['Water', 'Nature', 'Necromancy'],
     modifierType: 'function',
-    amount: 'geas',
+    amount: geas,
     hasTiers: true,
     maxTier: 4,
     description: 'is forced to {meta|perform an unconscious action} if they have less than d10+[tier] Mind Points, or otherwise they lose [tier] Mind Points'
@@ -383,7 +392,7 @@ export const availableEffects: Effect[] = [
     name: 'Geas (Inanimate Object)',
     domains: ['Nature', 'Earth', 'Sorcery'],
     modifierType: 'function',
-    amount: 'geas',
+    amount: geas,
     hasTiers: true,
     maxTier: 4,
     description: 'is forced to {meta|inanimate object} if they have less than d10+[tier] Mind Points, or otherwise they lose [tier] Mind Points'
@@ -466,7 +475,7 @@ export const availableEffects: Effect[] = [
     name: 'Sense Magic',
     domains: ['Sorcery', 'Holy'],
     modifierType: 'function',
-    amount: 'createElement',
+    amount: createElement,
     hasTiers: true,
     maxTier: 3,
     description: "Sense {meta|something}{1} magic, and only execute the rest of the spell once it's sensed",
@@ -479,7 +488,7 @@ export const availableEffects: Effect[] = [
     name: 'Sense Life(Animal)',
     domains: ['Mind', 'Nature'],
     modifierType: 'function',
-    amount: 'createElement',
+    amount: createElement,
     hasTiers: true,
     maxTier: 3,
     description: "Sense {meta|something}{1} living things, and only execute the rest of the spell once it's sensed",
@@ -492,7 +501,7 @@ export const availableEffects: Effect[] = [
     name: 'Sense Gods, Good and Evil',
     domains: ['Necromancy', 'Holy'],
     modifierType: 'function',
-    amount: 'createElement',
+    amount: createElement,
     hasTiers: true,
     maxTier: 3,
     description: "Sense {meta|something}{1} intent, and only execute the rest of the spell once it's sensed",
@@ -505,7 +514,7 @@ export const availableEffects: Effect[] = [
     name: 'Sense souls',
     domains: ['Nature', 'Necromancy'],
     modifierType: 'function',
-    amount: 'createElement',
+    amount: createElement,
     hasTiers: true,
     maxTier: 3,
     description: "Sense {meta|something}{1} soul, and only execute the rest of the spell once it's sensed",
@@ -518,7 +527,7 @@ export const availableEffects: Effect[] = [
     name: 'Sense liquids',
     domains: ['Water'],
     modifierType: 'function',
-    amount: 'createElement',
+    amount: createElement,
     hasTiers: true,
     maxTier: 3,
     description: "Sense {meta|something}{1} liquid, and only execute the rest of the spell once it's sensed",
@@ -531,7 +540,7 @@ export const availableEffects: Effect[] = [
     name: 'Sense temperature',
     domains: ['Fire'],
     modifierType: 'function',
-    amount: 'createElement',
+    amount: createElement,
     hasTiers: true,
     maxTier: 3,
     description: "Sense {meta|something}{1} temperature, and only execute the rest of the spell once it's sensed",
@@ -544,7 +553,7 @@ export const availableEffects: Effect[] = [
     name: 'Sense gases',
     domains: ['Air'],
     modifierType: 'function',
-    amount: 'createElement',
+    amount: createElement,
     hasTiers: true,
     maxTier: 3,
     description: "Sense {meta|something}{1} gas, and only execute the rest of the spell once it's sensed",
@@ -557,7 +566,7 @@ export const availableEffects: Effect[] = [
     name: 'Sense plants and minerals',
     domains: ['Nature', 'Earth'],
     modifierType: 'function',
-    amount: 'createElement',
+    amount: createElement,
     hasTiers: true,
     maxTier: 3,
     description: "Sense {meta|something}{1} plants and minerals, and only execute the rest of the spell once it's sensed",
@@ -604,7 +613,7 @@ export const availableEffects: Effect[] = [
     name: 'Warp Light',
     domains: ['Air', 'Illusion'],
     modifierType: 'function',
-    amount: 'warplight',
+    amount: warplight,
     hasTiers: true,
     description: 'hides something or causes it to glow, or reveal something visible elsewhere in range. If used to hide or become invisible, gives a disavdantage to finding the target, gives [tier-1] advantage to anyone using it'
   },
@@ -613,7 +622,7 @@ export const availableEffects: Effect[] = [
     name: 'Illusion',
     domains: ['Illusion'],
     modifierType: 'function',
-    amount: 'illusion',
+    amount: illusion,
     hasTiers: true,
     description: 'create a ficticious image,  gives [tier-1] advantage to anyone using it'
   },
@@ -622,7 +631,7 @@ export const availableEffects: Effect[] = [
     name: 'Silence',
     domains: ['Air', 'Illusion'],
     modifierType: 'function',
-    amount: 'warplight',
+    amount: warplight,
     hasTiers: true,
     description: 'Dampens the volume of noises up to {1}, If used to hide or become silent, gives a [tier-1] advantage. Making a caster character silent means they can only use spells with the Stealth modifier or Cantrips until the silence ends',
     descriptionFunctions: [
@@ -697,7 +706,7 @@ export const availableEffects: Effect[] = [
     name: 'Induce Plague',
     domains: ['Necromancy', 'Holy'],
     modifierType: 'function',
-    amount: 'plague',
+    amount: plague,
     hasTiers: true,
     maxTier: 3,
     description: 'must make a Physique - Constitution or Lore Medicine check of difficulty {1} at their next rest or be infected with Disease as if they have just been exposed to it',
@@ -710,7 +719,7 @@ export const availableEffects: Effect[] = [
     name: 'Induce Madness',
     domains: ['Mind'],
     modifierType: 'function',
-    amount: 'madness',
+    amount: madness,
     hasTiers: true,
     maxTier: 3,
     description: 'Makes an immediate roll of Willpower - Self Control of diffculty {1} or suffers a Madness attack as if they had a Madness of [tier]',
@@ -766,7 +775,7 @@ export const availableEffects: Effect[] = [
     name: 'Sound (Volume)',
     domains: ['Sorcery', 'Illusion', 'Mind'],
     modifierType: 'function',
-    amount: 'sound',
+    amount: sound,
     hasTiers: true,
     maxTier: 3,
     description: 'at a volume of {1}',
@@ -788,7 +797,7 @@ export const availableEffects: Effect[] = [
     name: 'Help Strength Attribute',
     domains: ['Holy', 'Necromancy', 'Earth', 'Air', 'Nature'],
     modifierType: 'function',
-    amount: 'help',
+    amount: help,
     hasTiers: true,
     maxTier: 5,
     description: 'Add [tier] points to Strength'
@@ -798,7 +807,7 @@ export const availableEffects: Effect[] = [
     name: 'Help Strength Skill',
     domains: ['Holy', 'Necromancy', 'Earth', 'Air', 'Nature'],
     modifierType: 'function',
-    amount: 'help',
+    amount: help,
     hasTiers: true,
     maxTier: 5,
     description: 'Add [tier*2] points to STR-{meta|physique}'
@@ -808,7 +817,7 @@ export const availableEffects: Effect[] = [
     name: 'Help Strength Speciality',
     domains: ['Holy', 'Necromancy', 'Earth', 'Air', 'Nature'],
     modifierType: 'function',
-    amount: 'help',
+    amount: help,
     hasTiers: true,
     maxTier: 5,
     description: 'Add [tier*3] points to STR-{meta|armor}'
@@ -818,7 +827,7 @@ export const availableEffects: Effect[] = [
     name: 'Help Dexterity Attribute',
     domains: ['Holy', 'Necromancy', 'Air', 'Illusion'],
     modifierType: 'function',
-    amount: 'help',
+    amount: help,
     hasTiers: true,
     maxTier: 5,
     description: 'Add [tier] points to Dexterity'
@@ -828,7 +837,7 @@ export const availableEffects: Effect[] = [
     name: 'Help Dexterity Skill',
     domains: ['Holy', 'Necromancy', 'Air', 'Illusion'],
     modifierType: 'function',
-    amount: 'help',
+    amount: help,
     hasTiers: true,
     maxTier: 5,
     description: 'Add [tier*2] points to DEX-{meta|stealth}'
@@ -838,7 +847,7 @@ export const availableEffects: Effect[] = [
     name: 'Help Dexterity Speciality',
     domains: ['Holy', 'Necromancy', 'Air', 'Illusion'],
     modifierType: 'function',
-    amount: 'help',
+    amount: help,
     hasTiers: true,
     maxTier: 5,
     description: 'Add [tier*3] points to DEX-{meta|dodge}'
@@ -848,7 +857,7 @@ export const availableEffects: Effect[] = [
     name: 'Help Intelligence Attribute',
     domains: ['Mind', 'Necromancy', 'Nature'],
     modifierType: 'function',
-    amount: 'help',
+    amount: help,
     hasTiers: true,
     maxTier: 5,
     description: 'Add [tier] points to Intelligence'
@@ -858,7 +867,7 @@ export const availableEffects: Effect[] = [
     name: 'Help Intelligence Skill',
     domains: ['Mind', 'Necromancy', 'Nature'],
     modifierType: 'function',
-    amount: 'help',
+    amount: help,
     hasTiers: true,
     maxTier: 5,
     description: 'Add [tier*2] points to INT-{meta|reasoning}'
@@ -868,7 +877,7 @@ export const availableEffects: Effect[] = [
     name: 'Help Intelligence Speciality',
     domains: ['Mind', 'Necromancy', 'Nature'],
     modifierType: 'function',
-    amount: 'help',
+    amount: help,
     hasTiers: true,
     maxTier: 5,
     description: 'Add [tier*3] points to INT-{meta|consider}'
@@ -878,7 +887,7 @@ export const availableEffects: Effect[] = [
     name: 'Help Empathy Attribute',
     domains: ['Mind', 'Holy', 'Water', 'Illusion', 'Nature'],
     modifierType: 'function',
-    amount: 'help',
+    amount: help,
     hasTiers: true,
     maxTier: 5,
     description: 'Add [tier] points to Empathy'
@@ -888,7 +897,7 @@ export const availableEffects: Effect[] = [
     name: 'Help Empathy Skill',
     domains: ['Mind', 'Holy', 'Water', 'Illusion', 'Nature'],
     modifierType: 'function',
-    amount: 'help',
+    amount: help,
     hasTiers: true,
     maxTier: 5,
     description: 'Add [tier*2] points to EMP-{meta|willpower}'
@@ -898,7 +907,7 @@ export const availableEffects: Effect[] = [
     name: 'Help Empathy Speciality',
     domains: ['Mind', 'Holy', 'Water', 'Illusion', 'Nature'],
     modifierType: 'function',
-    amount: 'help',
+    amount: help,
     hasTiers: true,
     maxTier: 5,
     description: 'Add [tier*3] points to EMP-{meta|mind points}'
@@ -908,7 +917,7 @@ export const availableEffects: Effect[] = [
     name: 'Hinder Strength Skill',
     domains: ['Holy', 'Necromancy', 'Earth', 'Nature'],
     modifierType: 'function',
-    amount: 'hinder',
+    amount: hinder,
     hasTiers: true,
     maxTier: 5,
     description: 'Subtract [tier] points from Strength-{meta|physique}'
@@ -918,7 +927,7 @@ export const availableEffects: Effect[] = [
     name: 'Hinder Strength Speciality',
     domains: ['Holy', 'Necromancy', 'Earth', 'Nature'],
     modifierType: 'function',
-    amount: 'hinder',
+    amount: hinder,
     hasTiers: true,
     maxTier: 5,
     description: 'Subtract [tier*2] points from Strength-{meta|armor}'
@@ -928,7 +937,7 @@ export const availableEffects: Effect[] = [
     name: 'Hinder Dexterity Skill',
     domains: ['Holy', 'Necromancy', 'Air', 'Illusion', 'Nature'],
     modifierType: 'function',
-    amount: 'hinder',
+    amount: hinder,
     hasTiers: true,
     maxTier: 5,
     description: 'Subtract [tier] points from Dexterity-{meta|stealth}'
@@ -938,7 +947,7 @@ export const availableEffects: Effect[] = [
     name: 'Hinder Dexterity Speciality',
     domains: ['Holy', 'Necromancy', 'Air', 'Illusion', 'Nature'],
     modifierType: 'function',
-    amount: 'hinder',
+    amount: hinder,
     hasTiers: true,
     maxTier: 5,
     description: 'Subtract [tier*2] points from Dexterity-{meta|dodge}'
@@ -948,7 +957,7 @@ export const availableEffects: Effect[] = [
     name: 'Hinder Intelligence Skill',
     domains: ['Mind', 'Necromancy', 'Nature'],
     modifierType: 'function',
-    amount: 'hinder',
+    amount: hinder,
     hasTiers: true,
     maxTier: 5,
     description: 'Subtract [tier] points from Intelligence-{meta|reasoning}'
@@ -958,7 +967,7 @@ export const availableEffects: Effect[] = [
     name: 'Hinder Intelligence Speciality',
     domains: ['Mind', 'Necromancy', 'Nature'],
     modifierType: 'function',
-    amount: 'hinder',
+    amount: hinder,
     hasTiers: true,
     maxTier: 5,
     description: 'Subtract [tier*2] points from Intelligence-{meta|consider}'
@@ -968,7 +977,7 @@ export const availableEffects: Effect[] = [
     name: 'Hinder Empathy Skill',
     domains: ['Mind', 'Holy', 'Water', 'Illusion', 'Nature'],
     modifierType: 'function',
-    amount: 'hinder',
+    amount: hinder,
     hasTiers: true,
     maxTier: 5,
     description: 'Subtract [tier] points from Empathy-{meta|willpower}'
@@ -978,7 +987,7 @@ export const availableEffects: Effect[] = [
     name: 'Hinder Empathy Speciality',
     domains: ['Mind', 'Holy', 'Water', 'Illusion', 'Nature'],
     modifierType: 'function',
-    amount: 'hinder',
+    amount: hinder,
     hasTiers: true,
     maxTier: 5,
     description: 'Subtract [tier*2] points from Empathy-{meta|mind points}'

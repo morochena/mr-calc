@@ -1,5 +1,8 @@
+import type { CombinedModifier } from "../../../../../../types/types";
 
-export const lastingModifier = (tier: number, type = null) => {
+export const lastingModifier = (modifier: CombinedModifier, trueTier?: number) => {
+  let tier = trueTier || modifier.tier;
+  let type = modifier.name
   let baseCost = 0;
   let cost = 0;
   let multiplier = 0;

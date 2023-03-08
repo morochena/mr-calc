@@ -1,5 +1,8 @@
+import type { CombinedEffect } from "../../../../../../types/types";
 
-export const madness = (tier: number) => {
+export const madness = (effect: CombinedEffect, trueTier?: number) => {
+  let tier = trueTier || effect.tier;
+
   switch (tier) {
     case 1:
       return 20;
