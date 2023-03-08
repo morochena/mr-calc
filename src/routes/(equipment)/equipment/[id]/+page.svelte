@@ -1,7 +1,7 @@
 <script>
 	import { supabaseClient } from '$lib/db';
 	import { copyEntity, saveEntity } from '$lib/utils/operations';
-	import { Button, ButtonGroup, Input, Label } from 'flowbite-svelte';
+	import { Button, ButtonGroup, Input, Label, Toggle } from 'flowbite-svelte';
 
 	import 'toastify-js/src/toastify.css';
 	export let data;
@@ -13,21 +13,23 @@
 	};
 </script>
 
-<div class="flex justify-end">
-	<ButtonGroup class="space-x-px my-4">
-		{#if !disableInputs}
-			<Button
-				on:click={() => saveEntity('equipment', equipment)}
-				color="purple"
-				disabled={disableInputs}>Save</Button
-			>
-		{/if}
-		<Button on:click={() => copyEntity('equipment', equipment)} color="purple">Make a Copy</Button>
-		{#if !disableInputs}
-			<Button on:click={deleteEquipment} color="purple" disabled={disableInputs}>Delete</Button>
-		{/if}
-	</ButtonGroup>
+<div class="my-4 float-right">
+	<Toggle disabled={disableInputs} bind:checked={equipment.is_public}>Public</Toggle>
 </div>
+
+<ButtonGroup class="space-x-px my-4">
+	{#if !disableInputs}
+		<Button
+			on:click={() => saveEntity('equipment', equipment)}
+			color="primary"
+			disabled={disableInputs}>Save</Button
+		>
+	{/if}
+	<Button on:click={() => copyEntity('equipment', equipment)} color="primary">Make a Copy</Button>
+	{#if !disableInputs}
+		<Button on:click={deleteEquipment} color="primary" disabled={disableInputs}>Delete</Button>
+	{/if}
+</ButtonGroup>
 
 <form class="mt-4" method="POST">
 	<div class="grid gap-6 mb-6 md:grid-cols-2 mt-4">

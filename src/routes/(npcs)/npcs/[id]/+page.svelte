@@ -39,6 +39,9 @@
 	import 'toastify-js/src/toastify.css';
 
 	import { Tooltip } from 'flowbite-svelte';
+	import { calculateTotalSP } from '$lib/utils/spells/SPCalculations';
+	import { calculateMentalCost } from '$lib/utils/spells/descriptionFunctions/mentalCostCalculation';
+	import { calculateSpellDescription } from '$lib/utils/spells/calculateSpellDescription';
 
 	export let data = {};
 
@@ -53,8 +56,8 @@
 		monster.spell_ids.push(selectedSpellId.value);
 
 		const { data: spell } = await supabaseClient
-			.from('spells')
-			.select('name')
+			.from('spells_v2')
+			.select('*')
 			.eq('id', selectedSpellId.value)
 			.single();
 
@@ -66,7 +69,7 @@
 
 	const fetchSpells = async (spellFilterText) => {
 		const { data: spells, error } = await supabaseClient
-			.from('spells')
+			.from('spells_v2')
 			.select('id, name')
 			.ilike('name', `%${spellFilterText}%`)
 			.order('name', { ascending: true })
@@ -439,15 +442,25 @@
 </div>
 
 <h1 class="text-4xl dark:text-white pb-8">Spells</h1>
-<Table striped={true}>
-	<TableBody class="divide-y">
-		{#each monster.spells || [] as { id, name }}
-			<TableBodyRow>
-				<TableBodyCell>{name}</TableBodyCell>
-			</TableBodyRow>
-		{/each}
-	</TableBody>
-</Table>
+
+{#each monster.spells || [] as spell}
+	<div class="mt-2 bg-gray-100 rounded-lg py-5 px-6 mb-4 text-sm dark:text-white mb-3">
+		<div>
+			<p><strong>Name:</strong> {spell.name}</p>
+			<p><strong>Description:</strong> {spell.description}</p>
+			<p><strong>Domain:</strong> {spell.domain}</p>
+			<p><strong>Mode:</strong> {spell.mode}</p>
+			<p><strong>Spell Difficulty: {calculateTotalSP(spell).cost}</strong></p>
+			<p><strong>Mental Cost:</strong> {calculateMentalCost(spell)}</p>
+		</div>
+		<hr class="my-3" />
+		<div>
+			<p>
+				{calculateSpellDescription(spell)}
+			</p>
+		</div>
+	</div>
+{/each}
 <div class="mt-4">
 	<Label
 		>Add Spells
