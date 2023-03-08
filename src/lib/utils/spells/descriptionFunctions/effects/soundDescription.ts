@@ -1,6 +1,6 @@
 import type { Spell, CombinedEffect } from "../../../../../../types/types";
 
-export function sound(spell: Spell, effect: CombinedEffect) {
+export function soundDescription(spell: Spell, effect: CombinedEffect) {
   const tier = effect.tier;
 
   switch (tier) {

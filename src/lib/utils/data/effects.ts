@@ -11,7 +11,7 @@ import { temporaryBodySideEffect } from "../spells/descriptionFunctions/effects/
 import { thoughts } from "../spells/descriptionFunctions/effects/thoughts";
 import { volume } from "../spells/descriptionFunctions/effects/volume";
 import { noise } from "../spells/descriptionFunctions/effects/noise";
-import { sound } from "../spells/descriptionFunctions/effects/sound";
+import { soundDescription } from "../spells/descriptionFunctions/effects/soundDescription";
 import { createElement } from "../spells/valueFunctions/effects/createElement";
 import { geas } from "../spells/valueFunctions/effects/geas";
 import { help } from "../spells/valueFunctions/effects/help";
@@ -22,6 +22,7 @@ import { movementCondition } from "../spells/valueFunctions/effects/movementCond
 import { plague } from "../spells/valueFunctions/effects/plague";
 import { warplight } from "../spells/valueFunctions/effects/warplight";
 import { forEach } from "lodash";
+import { sound } from "../spells/valueFunctions/effects/sound";
 
 export const availableEffects: Effect[] = [
   {
@@ -768,7 +769,7 @@ export const availableEffects: Effect[] = [
     maxTier: 3,
     description: 'creates sounds that {1}',
     descriptionFunctions: [
-      sound
+      soundDescription
     ],
   },
   {
