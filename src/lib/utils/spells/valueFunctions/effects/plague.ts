@@ -1,6 +1,6 @@
-import type { CombinedEffect } from "../../../../../../types/types";
+import type { CombinedEffect, Spell } from "../../../../../../types/types";
 
-export const plague = (effect: CombinedEffect, trueTier?: number) => {
+export const plague = (spell: Spell, effect: CombinedEffect, trueTier?: number) => {
   let tier = trueTier || effect.tier;
 
   switch (tier) {

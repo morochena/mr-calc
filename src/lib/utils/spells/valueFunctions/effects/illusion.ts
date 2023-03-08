@@ -1,6 +1,6 @@
-import type { CombinedEffect } from "../../../../../../types/types";
+import type { CombinedEffect, Spell } from "../../../../../../types/types";
 
-export const illusion = (effect: CombinedEffect, trueTier?: number) => {
+export const illusion = (spell: Spell, effect: CombinedEffect, trueTier?: number) => {
   let tier = trueTier || effect.tier;
 
   return (tier - 1) * 6 + 3;

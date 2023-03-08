@@ -118,7 +118,7 @@
 						{/if}{modifier.name}
 					</div>
 				</TableBodyCell>
-				<TableBodyCell>{calcSPValueText(modifier)}</TableBodyCell>
+				<TableBodyCell>{calcSPValueText(spell, modifier)}</TableBodyCell>
 				<TableBodyCell>
 					{#if modifier.hasTiers && !modifier.fromDomain}
 						<Select
@@ -160,7 +160,7 @@
 						{/if}{effect.name}
 					</div>
 				</TableBodyCell>
-				<TableBodyCell>{calcSPValueText(effect)}</TableBodyCell>
+				<TableBodyCell>{calcSPValueText(spell, effect)}</TableBodyCell>
 				<TableBodyCell>
 					{#if effect.hasTiers && !effect.fromDomain}
 						<Select

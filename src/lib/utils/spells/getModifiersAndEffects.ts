@@ -167,9 +167,10 @@ export function getProcessedEffects(spell: Spell) {
         prerequisite: ["Illusion"],
         notes:
           "When Taking Illusion Powers in a spell as well as the “Help Statistic/Skill/Specialty” Power, Ignore the spell points of the Illusion Powers up to the amount spent on the “Help Statistic/Skill/Specialty” Power",
-        modifierType: "add",
-        amount: 0,
+        modifierType: "function",
+        amount: calcIllusionDiscount,
         description: "",
+        fromDomain: true,
       });
       break;
     default:
@@ -263,22 +264,21 @@ function processFireDomain(processedEffects: ProcessedEffect[], damageId: number
   }
 }
 
-function calcIllusionDiscount(effect: CombinedEffect, trueTier?: number) {
+function calcIllusionDiscount(spell: Spell, effect: CombinedEffect, trueTier?: number) {
   // generally don't want to use getCombinedEffects but it would be circular otherwise
-  // const effects = getCombinedEffects(spell);
-  // let helpEffects = effects.filter((x) => x.name.includes("Help"));
-  // let helpSP = 0;
+  const effects = getCombinedEffects(spell);
+  let helpEffects = effects.filter((x) => x.name.includes("Help"));
+  let helpSP = 0;
 
+  helpEffects.forEach((effect) => {
+    effect = { ...effect, domainTier: 0 } as ProcessedEffect;
+    helpSP += calcSPValue(spell, effect);
+  });
 
-  // helpEffects.forEach((effect) => {
-  //   effect = { ...effect, domainTier: 0 } as ProcessedEffect;
-  //   helpSP += calcSPValue(effect);
-  // });
+  let illusionDiscount = helpSP
+  if (spell.mode === "Unpredictable") illusionDiscount -= 4;
 
-  // let illusionDiscount = Math.min(helpSP, Math.max(0 - helpSP, 0));
-  // if (spell.mode === "Unpredictable") illusionDiscount -= 4;
-
-  return 0;
+  return Math.min(illusionDiscount * -1, 0);
 }
 
 

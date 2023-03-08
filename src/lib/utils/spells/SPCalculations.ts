@@ -7,7 +7,7 @@ export const calculateTotalSP = (spell: Spell) => {
   let totalSPMults = 1;
 
   let modifierCost = effectsAndModifiers.reduce((total: number, modifier) => {
-    return total + calcSPValue(modifier);
+    return total + calcSPValue(spell, modifier);
   }, 0);
 
   if (spell.domain === "Illusion")
@@ -29,8 +29,8 @@ export const calculateTotalSP = (spell: Spell) => {
 
   spMultipliers.forEach((modifier) => {
     if (modifier.modifierType === "functionMultiply") {
-      paramSPCost *= functionSPValue(modifier)[1];
-      totalSPMults *= functionSPValue(modifier)[1];
+      paramSPCost *= functionSPValue(spell, modifier)[1];
+      totalSPMults *= functionSPValue(spell, modifier)[1];
     } else {
       paramSPCost *= modifier.amount;
       totalSPMults *= modifier.amount;
@@ -44,9 +44,8 @@ export const calculateTotalSP = (spell: Spell) => {
 }
 
 
-export const calcSPValue = (moe: ProcessedModifierOrEffect) => {
+export const calcSPValue = (spell: Spell, moe: ProcessedModifierOrEffect) => {
   let trueTier = moe.tier || 1;
-  // if (moe.domainTier) trueTier -= moe.domainTier;
 
   let cost = 0;
   switch (moe.modifierType) {
@@ -57,18 +56,17 @@ export const calcSPValue = (moe: ProcessedModifierOrEffect) => {
       cost = Number(moe.amount) * trueTier * -1;
       break;
     case "function":
-      cost = functionSPValue(moe);
+      cost = functionSPValue(spell, moe);
       break;
     case "functionMultiply":
-      cost = functionSPValue(moe)[0];
+      cost = functionSPValue(spell, moe)[0];
       break;
   }
   return cost;
 }
 
-export const calcSPValueText = (moe: ProcessedModifierOrEffect) => {
+export const calcSPValueText = (spell: Spell, moe: ProcessedModifierOrEffect) => {
   let trueTier = moe.tier || 1;
-  // if (moe.domainTier) trueTier -= moe.domainTier;
 
   let amount;
   let operator;
@@ -81,22 +79,21 @@ export const calcSPValueText = (moe: ProcessedModifierOrEffect) => {
     case "multiply":
       return `x${Number(moe.amount) * trueTier}`;
     case "function":
-      amount = functionSPValue(moe);
+      amount = functionSPValue(spell, moe);
       operator = amount > 0 ? "+" : "";
       return `${operator}${amount}`;
     case "functionMultiply":
-      amount = functionSPValue(moe)[0];
+      amount = functionSPValue(spell, moe)[0];
       operator = amount > 0 ? "+" : "";
-      return `x${functionSPValue(moe)[1]} and ${operator}${functionSPValue(moe)[0]}`;
+      return `x${functionSPValue(spell, moe)[1]} and ${operator}${functionSPValue(spell, moe)[0]}`;
   }
 };
 
-const functionSPValue = (moe: ProcessedModifierOrEffect) => {
+const functionSPValue = (spell: Spell, moe: ProcessedModifierOrEffect) => {
   let trueTier = moe.tier;
-  // if (moe.domainTier) trueTier -= moe.domainTier;
 
   if (typeof moe.amount === "function")
-    return moe.amount(moe, trueTier)
+    return moe.amount(spell, moe, trueTier)
 
   console.warn("modifier case not handled: ", moe.name);
 
@@ -108,7 +105,7 @@ function calcIllusionDiscount(spell: Spell, modifierCost: number, effectsAndModi
   let helpSP = 0;
 
   helpEffects.forEach((effect) => {
-    helpSP += calcSPValue(effect);
+    helpSP += calcSPValue(spell, effect);
   });
 
   let illusionDiscount = Math.min(helpSP, Math.max(modifierCost - helpSP, 0));

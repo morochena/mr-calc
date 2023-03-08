@@ -1,6 +1,6 @@
-import type { CombinedModifier } from "../../../../../../types/types";
+import type { CombinedModifier, Spell } from "../../../../../../types/types";
 
-export const lastingModifier = (modifier: CombinedModifier, trueTier?: number) => {
+export const lastingModifier = (spell: Spell, modifier: CombinedModifier, trueTier?: number) => {
   let tier = trueTier || modifier.tier;
   let type = modifier.name
   let baseCost = 0;
