@@ -21,6 +21,7 @@ import { madness } from "../spells/valueFunctions/effects/madness";
 import { movementCondition } from "../spells/valueFunctions/effects/movementCondition";
 import { plague } from "../spells/valueFunctions/effects/plague";
 import { warplight } from "../spells/valueFunctions/effects/warplight";
+import { forEach } from "lodash";
 
 export const availableEffects: Effect[] = [
   {
@@ -991,7 +992,17 @@ export const availableEffects: Effect[] = [
     hasTiers: true,
     maxTier: 5,
     description: 'Subtract [tier*2] points from Empathy-{meta|mind points}'
-  }
+  },
+  { id: 92, name: "Apply Dazed Condition", domains: ["Illusion", "Nature"], modifierType: 'add', amount: 16, hasTiers: true, maxTier: 5, description: "gets disadvantage -[tier*2] to EMP and STR" },
+  { id: 93, name: "Apply Blinded Condition", domains: ["Illusion", "Nature"], modifierType: 'add', amount: 16, hasTiers: true, maxTier: 5, description: "gets disadvantage -[tier*2] to DEX and INT" },
+  { id: 94, name: "Apply Deafened Condition", domains: ["Illusion", "Nature"], modifierType: 'add', amount: 16, hasTiers: true, maxTier: 5, description: "gets disadvantage -[tier*2] to DEX and EMP" },
+  { id: 95, name: "Apply Confused Condition", domains: ["Mind", "Necromancy"], modifierType: 'add', amount: 16, hasTiers: true, maxTier: 5, description: "gets disadvantage -[tier*2] to EMP and INT" },
+  { id: 96, name: "Apply Enfeebled Condition", domains: ["Mind", "Necromancy"], modifierType: 'add', amount: 16, hasTiers: true, maxTier: 5, description: "gets disadvantage -[tier*2] to DEX and STR" },
+  { id: 97, name: "Apply Befuddled Condition", domains: ["Mind", "Necromancy"], modifierType: 'add', amount: 16, hasTiers: true, maxTier: 5, description: "gets disadvantage -[tier*2] to INT and STR" },
+  { id: 98, name: "Armor - All", domains: ["Sorcery", "Earth", "Nature"], modifierType: 'add', amount: 2, hasTiers: true, description: "gains [tier] Armor point(s) on every body part" },
+  { id: 99, name: "Armor - Specific", domains: ["Sorcery", "Earth", "Nature"], modifierType: 'add', amount: 5, hasTiers: true, description: "gains [tier*4] Armor point(s) to {meta|helmet}" },
+  { id: 100, name: "Weaken Item", domains: ["Fire", "Water", "Earth"], modifierType: 'add', amount: 5, hasTiers: true, description: "Subtracts [tier] structure points to the {meta|targeted} item" },
+  { id: 101, name: "Weaken Item (Necro)", domains: ["Necromancy"], modifierType: 'add', amount: 3, hasTiers: true, description: "Subtracts [tier] structure points to the {meta|targeted} item" },
 ]
 
 export const availableEffectsById = availableEffects.reduce((acc: Record<number, Effect>, effect) => {

@@ -429,9 +429,12 @@ export const availableModifiers: Modifier[] = [
     amount: 2,
     description: 'keeps for [tier+1] months'
   },
+  { id: 41, name: "Mobile Origin", prerequisite: ["Lasting"], hasTiers: true, modifierType: 'add', amount: 1, description: "origin can be moved between turns by the caster up to [tier*5]m" },
+
 ]
 
 export const availableModifiersById = availableModifiers.reduce((acc: Record<number, Modifier>, modifier) => {
   acc[modifier.id] = modifier
   return acc
 }, {})
+
