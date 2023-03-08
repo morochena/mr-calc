@@ -87,15 +87,25 @@ export const copyEntity = async (entityType, entity) => {
 }
 
 export const deleteEntity = async (entityType: ItemType, entity: Spell | any) => {
+
+  // alert window to confirm
+  const confirmed = confirm(`Are you sure you want to delete ${entity.name}?`);
+  if (!confirmed) {
+    return;
+  }
+
   if (entityType === 'spells') {
     entityType = 'spells_v2';
   }
 
   const { error } = await supabaseClient.from(entityType).delete().eq('id', entity.id);
 
-  let location = "/"
+  let location = `/${entityType}`
   if (entityType == 'monsters') {
     location = "/npcs"
+  }
+  if (entityType == 'spells_v2') {
+    location = "/spells"
   }
 
   if (!error) {
@@ -128,7 +138,7 @@ export const createEntity = async (entityType, entity) => {
 
   let location = "/"
   if (entityType === 'monsters') {
-    location = `/npcs/${data[0].id}`
+    location = `/ npcs / ${data[0].id}`
   }
 
   if (!error) {
