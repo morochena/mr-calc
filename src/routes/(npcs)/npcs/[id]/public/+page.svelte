@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import skillPool from '$lib/utils/data/skills';
 	import {
 		calcBody,
@@ -15,6 +15,10 @@
 		formattedValue
 	} from '$lib/utils/npcs/statCalculations';
 	import { damageCalculation, toHit } from '$lib/utils/npcs/weaponCalculations';
+	import { calculateSpellDescription } from '$lib/utils/spells/calculateSpellDescription';
+	import { calculateMentalCost } from '$lib/utils/spells/descriptionFunctions/mentalCostCalculation';
+	import { calculateTotalSP } from '$lib/utils/spells/SPCalculations';
+	import type { Spell } from '../../../../../../types/types';
 
 	export let data;
 	let { monster } = data;
@@ -107,6 +111,20 @@
 	};
 
 	const printSpells = () => {
+		return monster.spells
+			.map((spell: Spell) => {
+				return `
+Name: ${spell.name}
+Description: ${spell.description || ''}
+Domain: ${spell.domain}
+Mode: ${spell.mode}
+Spell Difficulty: ${calculateTotalSP(spell).cost}
+Mental Cost: ${calculateMentalCost(spell)}
+${cleanDescription(calculateSpellDescription(spell))}
+			`;
+			})
+			.join('\n');
+
 		return '';
 	};
 

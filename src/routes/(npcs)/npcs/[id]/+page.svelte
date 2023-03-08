@@ -442,12 +442,11 @@
 </div>
 
 <h1 class="text-4xl dark:text-white pb-8">Spells</h1>
-
 {#each monster.spells || [] as spell}
 	<div class="mt-2 bg-gray-100 rounded-lg py-5 px-6 mb-4 text-sm dark:text-white mb-3">
 		<div>
 			<p><strong>Name:</strong> {spell.name}</p>
-			<p><strong>Description:</strong> {spell.description}</p>
+			<p><strong>Description:</strong> {spell.description || ''}</p>
 			<p><strong>Domain:</strong> {spell.domain}</p>
 			<p><strong>Mode:</strong> {spell.mode}</p>
 			<p><strong>Spell Difficulty: {calculateTotalSP(spell).cost}</strong></p>
