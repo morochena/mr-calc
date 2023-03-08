@@ -1,4 +1,5 @@
 import type { CombinedModifier, Spell } from "../../../../../../types/types";
+import { getProcessedModifiers } from "../../getModifiersAndEffects";
 
 export const lastingModifier = (spell: Spell, modifier: CombinedModifier, trueTier?: number) => {
   let tier = trueTier || modifier.tier;
@@ -26,16 +27,17 @@ export const lastingModifier = (spell: Spell, modifier: CombinedModifier, trueTi
     baseCost = 6;
     multiplier = 8;
   }
-  // const { selectedModifiers } = modifiers;
-  // const modList = get(selectedModifiers)
-  // if (modList.filter(mod => mod.name === "Concentration").length > 0) {
-  //   cost -= 1;
-  //   baseCost -= 1;
-  // }
-  // if (modList.filter(mod => mod.name === "Channelling").length > 0) {
-  //   cost -= 3;
-  //   baseCost -= 3;
-  // }
+  const selectedModifiers = getProcessedModifiers(spell);
+
+  if (selectedModifiers.filter(mod => mod.name === "Concentration").length > 0) {
+    cost -= 1;
+    baseCost -= 1;
+  }
+  if (selectedModifiers.filter(mod => mod.name === "Channelling").length > 0) {
+    cost -= 3;
+    baseCost -= 3;
+  }
+
   for (let i = 0; i < tier; i++) {
     if (i < 1) {
     } else if (i < 5) {
