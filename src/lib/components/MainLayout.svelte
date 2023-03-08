@@ -120,11 +120,13 @@
 						</TableBodyCell>
 					{/if}
 					<TableBodyCell>
+						{#if item.is_public}
+							<Badge class="mx-1">public</Badge>
+						{/if}
 						{#each item.tags || [] as tag}<Badge class="mx-1">{tag}</Badge>{/each}
 					</TableBodyCell>
 					<TableBodyCell
-						><Badge
-							style="background-color: {colorHash(item.profiles.username)}; color: black;"
+						><Badge style="background-color: {colorHash(item.profiles.username)}; color: black;"
 							>{item.profiles.username}</Badge
 						>
 					</TableBodyCell>
