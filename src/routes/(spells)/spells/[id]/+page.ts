@@ -9,7 +9,7 @@ export const load: PageLoad = async (event) => {
     throw redirect(303, '/');
   }
 
-  const { data: spell } = await supabaseClient.from('spells').select('*').eq('id', event.params.id).single();
+  const { data: spell } = await supabaseClient.from('spells_v2').select('*').eq('id', event.params.id).single();
   const disableInputs = spell.user_id == session.user.id ? false : true;
 
   return {

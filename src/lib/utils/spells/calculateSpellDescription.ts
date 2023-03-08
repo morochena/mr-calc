@@ -1,53 +1,66 @@
-import { calculateSpellCost } from "./calculateSpellCost";
+import type { ProcessedModifier, Spell, SpellMode } from "../../../../types/types";
+import { calculateMOEDescription } from "./calculateMOEDescription";
+import { calculateMentalCost } from "./descriptionFunctions/mentalCostCalculation";
+import { getProcessedModifiersAndEffects, getProcessedEffects, getProcessedModifiers } from "./getModifiersAndEffects";
 
 
-export const calculateSpellDescription = (spell) => {
-  const preamble = calculatePreamble(spell);
+export const calculateSpellDescription = (spell: Spell) => {
+  const preamble = craftedPreamble(spell);
+  const description = spell.description || '';
+  const caster = casterText(spell);
+  const target = targetText(spell)
 
+  return `${preamble} ${description} ${caster} ${target}`;
+}
 
-  return preamble;
+const casterText = (spell: Spell) => {
+  const mode = modeText(spell.mode)
+  const modifierText = getProcessedModifiers(spell).map((mod: ProcessedModifier) => calculateMOEDescription(spell, mod)).join(' and ');
+
+  return `The caster ${mode} that ${modifierText}`;
+}
+
+const targetText = (spell: Spell) => {
+  const effectText = getProcessedEffects(spell).map((mod: ProcessedModifier) => calculateMOEDescription(spell, mod)).join(' and ');
+
+  return `the target ${effectText}`;
 }
 
 
-// {craftedSpellPreamble(isAlchemyValue, isRunesmithValue, spellCost)}
-// 			{$description}. The caster {verboseSpellMode($selectedMode)} that {#each processDomainModifiers($selectedDomain, $selectedModifiers) as modifier}
-// 				{calculateDescription(modifier, $SPCost)} and&nbsp;
-// 			{/each} the target {#each processDomainEffects($selectedMode, $selectedDomain, $selectedEffects) as effect}
-// 				{calculateDescription(effect, $SPCost)}.&nbsp;
-// 			{/each}
+const craftedPreamble = (spell: Spell) => {
+  const modifiers = getProcessedModifiers(spell)
+  const alchemyBrewingId = 39
+  const runesmithId = 37
 
+  const baseHours = calculateMentalCost(spell)
+  const baseDays = 2
 
-const calculatePreamble = (spell) => {
-  const modifiers = spell.spell_data.modifiers;
-  const spellCost = calculateSpellCost(spell).cost;
-  const isAlchemy = spell.spell_data.isAlchemy;
-  const isRunesmith = spell.spell_data.isRunesmith;
-
-  let hours = spellCost;
-  let days = 2;
-  const alclist = modifiers.filter((mod) => mod.name.includes("brewing"));
-  const runelist = modifiers.filter((mod) => mod.name.includes("crafting"));
-
-  if (alclist.length > 0) {
-    hours += alclist[0].tier;
-  }
-  if (runelist.length > 0) {
-    days += runelist[0].tier;
+  if (spell.is_alchemy) {
+    const tier = modifiers.find(mod => mod.id === alchemyBrewingId)?.tier || 0
+    const totalHours = baseHours + (tier)
+    return `This is an alchemical creation that takes a day to craft, which includes working on it for ${totalHours} hours actively. Thereafter they can be used by anyone.`
   }
 
-  if (isAlchemy)
-    return (
-      "This is an alchemical creation that takes a day to craft, which includes working on it for " +
-      hours +
-      " hours actively. Thereafter they can be used by anyone."
-    );
-  if (isRunesmith) {
-    hours = days * hours;
-    return (
-      "This is an magical rune that takes " +
-      hours +
-      " in hours of intense labor to craft. Thereafter they can be used by anyone."
-    );
+  if (spell.is_runesmith) {
+    const tier = modifiers.find(mod => mod.id === runesmithId)?.tier || 0
+    const days = baseDays + (tier)
+    const totalHours = days * baseHours
+    return `This is an magical rune that takes ${totalHours} in hours of intense labor to craft. Thereafter they can be used by anyone.`
   }
+
   return "";
+}
+
+const modeText = (mode: SpellMode) => {
+  switch (mode) {
+    case `Unpredictable`:
+      return "casts an unstable spell by rolling a skill check and doubling the dice numbers versus the Spell Difficulty and Winds of Magic";
+    case "Stable":
+      return "casts a stable spell ";
+    case "Imbue":
+      return "Imbues an item. The item casts a stable spell";
+    case "Spell":
+    default:
+      return "casts a spell by rolling a skill check versus the Spell Difficulty and Winds of Magic";
+  }
 }

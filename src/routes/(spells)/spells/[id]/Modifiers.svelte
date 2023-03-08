@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { availableModifiers } from '$lib/utils/data/modifiers';
 	import { range } from '$lib/utils/range';
 	import {
@@ -16,31 +16,83 @@
 	import { XCircle } from 'svelte-heros';
 
 	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
+	import type { Modifier, Spell } from '../../../../../types/types';
+	import {
+		getProcessedEffects,
+		getProcessedModifiers
+	} from '$lib/utils/spells/getModifiersAndEffects';
 
-	export let spell;
-	export let disableInputs;
-	export let addModifier;
-	export let removeModifier;
+	export let spell: Spell;
+	export let disableInputs: boolean;
+	export let addModifier: (modifier: Modifier) => void;
+	export let removeModifier: (modifier: Modifier) => void;
 
-	const availableModifierOptions = availableModifiers.map((modifier) => ({
-		name: modifier.name,
-		value: modifier
-	}));
+	let selectedCombinedModifiersOrEffects = [];
 
-	let selectedModifier = null;
+	$: {
+		selectedCombinedModifiersOrEffects = getProcessedModifiers(spell)
+			.concat(getProcessedEffects(spell))
+			.map((m) => m.name);
+
+		if (spell.is_alchemy && !selectedCombinedModifiersOrEffects.includes('Alchemy'))
+			selectedCombinedModifiersOrEffects.push('Alchemist');
+		if (spell.is_runesmith && !selectedCombinedModifiersOrEffects.includes('Runesmith'))
+			selectedCombinedModifiersOrEffects.push('Runesmith');
+	}
+
+	$: availableModifierOptions = availableModifiers
+		.filter((modifier) => {
+			let selectedMOEs = selectedCombinedModifiersOrEffects;
+
+			// if any prereqs aren't met, return false
+			if (modifier.prerequisite) {
+				let shouldReturnFalse = false;
+				modifier.prerequisite.forEach((prerequisite) => {
+					if (!selectedMOEs.includes(prerequisite)) {
+						shouldReturnFalse = true;
+					}
+				});
+				if (shouldReturnFalse) return false;
+			}
+
+			// if any incompatible are set, return false
+			if (modifier.incompatible) {
+				let shouldReturnFalse = false;
+				modifier.incompatible.forEach((incompatible) => {
+					if (selectedMOEs.includes(incompatible)) {
+						shouldReturnFalse = true;
+					}
+				});
+				if (shouldReturnFalse) return false;
+			}
+
+			// if modifier already is set, return false
+			if (selectedMOEs.includes(modifier.name)) {
+				return false;
+			}
+
+			return true;
+		})
+		.map((modifier) => ({
+			name: modifier.name,
+			value: modifier
+		}));
+
+	let selectedModifier: Modifier | null = null;
+
 	const tryAddModifier = () => {
 		if (!selectedModifier) return;
 		addModifier(selectedModifier);
 		selectedModifier = null;
 	};
 
-	const tryRemoveModifier = (modifier) => {
+	const tryRemoveModifier = (modifier: Modifier) => {
 		if (disableInputs) return;
 		removeModifier(modifier);
 	};
 </script>
 
-<h2 class="text-xl mt-8">Modifiers</h2>
+<h2 class="text-xl mt-8 dark:text-white">Modifiers</h2>
 <Select items={availableModifierOptions} disabled={disableInputs} bind:value={selectedModifier} />
 {#if selectedModifier?.description}
 	<Alert class="mt-2"><span>{selectedModifier.description}</span></Alert>
@@ -49,7 +101,7 @@
 	>Add Modifier</Button
 >
 
-<Table class="mt-2">
+<!-- <Table class="mt-2">
 	<TableHead>
 		<TableHeadCell>Name</TableHeadCell>
 		<TableHeadCell>Tier</TableHeadCell>
@@ -89,4 +141,4 @@
 			</TableBodyRow>
 		{/each}
 	</TableBody>
-</Table>
+</Table> -->

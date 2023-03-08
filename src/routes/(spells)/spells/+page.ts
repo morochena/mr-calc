@@ -1,7 +1,7 @@
 import type { PageLoad } from './$types';
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import { redirect } from '@sveltejs/kit';
-import { calculateTotalSP } from '$lib/utils/spells/calculateSpellSP';
+import { calculateTotalSP } from '$lib/utils/spells/SPCalculations';
 
 export const load: PageLoad = async (event) => {
 
@@ -11,7 +11,7 @@ export const load: PageLoad = async (event) => {
   }
 
   let { data: spells } = await supabaseClient
-    .from('spells')
+    .from('spells_v2')
     .select(`
       *,
       profiles (id, username)
@@ -22,8 +22,6 @@ export const load: PageLoad = async (event) => {
   spells = spells?.map(spell => (
     {
       ...spell,
-      domain: spell.spell_data.domain,
-      mode: spell.spell_data.mode,
       sp: calculateTotalSP(spell).cost,
       owner: spell.profiles.username
     })) || []

@@ -16,17 +16,72 @@
 	import { XCircle } from 'svelte-heros';
 
 	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
-	import type { Effect, Spell } from '../../../../../types/fromSupabase';
+	import type { CombinedModifierOrEffect, Effect, Spell } from '../../../../../types/types';
+	import {
+		getProcessedEffects,
+		getProcessedModifiers
+	} from '$lib/utils/spells/getModifiersAndEffects';
 
 	export let spell: Spell;
 	export let disableInputs: boolean;
 	export let addEffect: (effect: Effect) => void;
 	export let removeEffect: (effect: Effect) => void;
 
-	let availableEffectOptions = availableEffects.map((effect) => ({
-		name: effect.name,
-		value: effect
-	}));
+	let selectedCombinedModifiersOrEffects: string[] = [];
+
+	$: {
+		selectedCombinedModifiersOrEffects = getProcessedModifiers(spell)
+			.concat(getProcessedEffects(spell))
+			.map((m) => m.name);
+
+		if (spell.is_alchemy && !selectedCombinedModifiersOrEffects.includes('Alchemy'))
+			selectedCombinedModifiersOrEffects.push('Alchemist');
+		if (spell.is_runesmith && !selectedCombinedModifiersOrEffects.includes('Runesmith'))
+			selectedCombinedModifiersOrEffects.push('Runesmith');
+	}
+
+	$: availableEffectOptions = availableEffects
+		.filter((effect) => {
+			let selectedMOEs = selectedCombinedModifiersOrEffects;
+
+			// if any prereqs aren't met, return false
+			if (effect.prerequisite) {
+				let shouldReturnFalse = false;
+				effect.prerequisite.forEach((prerequisite) => {
+					if (!selectedMOEs.includes(prerequisite)) {
+						shouldReturnFalse = true;
+					}
+				});
+				if (shouldReturnFalse) return false;
+			}
+
+			// if any incompatible are set, return false
+			if (effect.incompatible) {
+				let shouldReturnFalse = false;
+				effect.incompatible.forEach((incompatible) => {
+					if (selectedMOEs.includes(incompatible)) {
+						shouldReturnFalse = true;
+					}
+				});
+				if (shouldReturnFalse) return false;
+			}
+
+			// if effect domains are not of the spell's domain, return false
+			if (effect.domains && !effect.domains.includes(spell.domain)) {
+				return false;
+			}
+
+			// if effect already is set, return false
+			if (selectedMOEs.includes(effect.name)) {
+				return false;
+			}
+
+			return true;
+		})
+		.map((effect) => ({
+			name: effect.name,
+			value: effect
+		}));
 
 	let selectedEffect: Effect | null = null;
 
@@ -42,7 +97,7 @@
 	};
 </script>
 
-<h2 class="text-xl mt-8">Effects</h2>
+<h2 class="text-xl mt-8 dark:text-white">Effects</h2>
 <Select items={availableEffectOptions} disabled={disableInputs} bind:value={selectedEffect} />
 {#if selectedEffect?.description}
 	<Alert class="mt-2"><span>{selectedEffect.description}</span></Alert>
@@ -51,7 +106,7 @@
 	>Add Effect</Button
 >
 
-<Table class="mt-2">
+<!-- <Table class="mt-2">
 	<TableHead>
 		<TableHeadCell>Name</TableHeadCell>
 		<TableHeadCell>Tier</TableHeadCell>
@@ -91,4 +146,4 @@
 			</TableBodyRow>
 		{/each}
 	</TableBody>
-</Table>
+</Table> -->

@@ -14,7 +14,7 @@
 		TableSearch,
 		Toggle
 	} from 'flowbite-svelte';
-	import type { ItemType } from '../../../types/fromSupabase';
+	import type { ItemType } from '../../../types/types';
 
 	export let items;
 	export let itemType: ItemType;
@@ -124,8 +124,7 @@
 					</TableBodyCell>
 					<TableBodyCell
 						><Badge
-							class="dark:text-black text-black"
-							style="background-color: {colorHash(item.profiles.username)}"
+							style="background-color: {colorHash(item.profiles.username)}; color: black;"
 							>{item.profiles.username}</Badge
 						>
 					</TableBodyCell>

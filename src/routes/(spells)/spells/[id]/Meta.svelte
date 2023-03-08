@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Checkbox, Input, Label, Select, Textarea } from 'flowbite-svelte';
-	import type { Spell } from '../../../../../types/fromSupabase';
+	import type { Spell } from '../../../../../types/types';
 
 	export let spell: Spell;
 	export let disableInputs: boolean;
@@ -20,7 +20,7 @@
 
 	const modes = [
 		{ value: `Spell`, name: `Spell` },
-		{ value: `Unpredicable`, name: `Unpredicable` },
+		{ value: `Unpredictable`, name: `Unpredictable` },
 		{ value: `Stable`, name: `Stable` },
 		{ value: `Imbue`, name: `Imbue` }
 	];
@@ -35,18 +35,18 @@
 
 		<Label class="mt-2"
 			>Description
-			<Textarea rows="4" bind:value={spell.spell_data.description} disabled={disableInputs} />
+			<Textarea rows="4" bind:value={spell.description} disabled={disableInputs} />
 		</Label>
 	</div>
 	<div>
 		<Label class="mt-2">
 			Domain
-			<Select items={domains} bind:value={spell.spell_data.domain} disabled={disableInputs} />
+			<Select items={domains} bind:value={spell.domain} disabled={disableInputs} />
 		</Label>
 
 		<Label class="mt-2"
 			>Mode
-			<Select items={modes} bind:value={spell.spell_data.mode} disabled={disableInputs} />
+			<Select items={modes} bind:value={spell.mode} disabled={disableInputs} />
 		</Label>
 
 		<Label class="mt-2">
@@ -61,9 +61,7 @@
 	</div>
 </div>
 
-<Checkbox class="mt-2" disabled={disableInputs} bind:checked={spell.spell_data.isAlchemy}
-	>Alchemy</Checkbox
->
-<Checkbox class="mt-2" disabled={disableInputs} bind:checked={spell.spell_data.isRunesmith}
+<Checkbox class="mt-2" disabled={disableInputs} bind:checked={spell.is_alchemy}>Alchemy</Checkbox>
+<Checkbox class="mt-2" disabled={disableInputs} bind:checked={spell.is_runesmith}
 	>Runesmithing</Checkbox
 >

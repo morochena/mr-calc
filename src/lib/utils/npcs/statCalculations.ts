@@ -1,4 +1,4 @@
-import type { Monster, MonsterSkill, MonsterStat } from "../../../../types/fromSupabase";
+import type { Monster, MonsterSkill, MonsterStat } from "../../../../types/types";
 import emptySkillPool from "../data/skills";
 
 export const calcStatBonus = (stat) => {

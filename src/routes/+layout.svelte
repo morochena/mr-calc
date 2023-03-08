@@ -34,9 +34,7 @@
 
 <Navbar let:hidden let:toggle>
 	<NavBrand href="/">
-		<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-			MR Calc
-		</span>
+		<img src={logo} width="96" alt="Mortal Reins" />
 	</NavBrand>
 	<NavHamburger on:click={toggle} />
 	<NavUl {hidden}>
@@ -58,7 +56,6 @@
 	<slot />
 </main>
 
-<br />
 <Footer>
 	<FooterCopyright
 		href="https://www.mythicvisionsgames.com"
