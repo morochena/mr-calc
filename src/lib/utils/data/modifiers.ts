@@ -37,7 +37,7 @@ export const availableModifiers: Modifier[] = [
     id: 2,
     name: 'Reaction',
     hasTiers: false,
-    incompatible: ['Charge Up'],
+    incompatible: ['Charge Up', 'Delay'],
     modifierType: 'add',
     amount: 3,
     description: 'as a Reaction'
@@ -315,6 +315,14 @@ export const availableModifiers: Modifier[] = [
     modifierType: 'add',
     amount: 2,
     description: 'will not target anyone chosen by the caster.'
+  },
+  {
+    id: 42,
+    name: 'Sculpted (Exclusive)',
+    hasTiers: false,
+    modifierType: 'reduce',
+    amount: 2,
+    description: 'will only target someone chosen at spell creation by some physical criteria: {meta|self}'
   },
   {
     id: 29,
