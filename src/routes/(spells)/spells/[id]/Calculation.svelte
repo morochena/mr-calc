@@ -7,9 +7,9 @@
 	import { calculateSpellDescription } from '$lib/utils/spells/calculateSpellDescription';
 	import { calculateTotalSP } from '$lib/utils/spells/SPCalculations';
 	import {
-		processDomainEffects,
-		processDomainModifiers
-	} from '$lib/utils/spells/getCombinedEffects';
+		getProcessedEffects,
+		getProcessedModifiers
+	} from '$lib/utils/spells/getModifiersAndEffects';
 	import {
 		Select,
 		Table,
@@ -109,7 +109,7 @@
 		<TableHeadCell />
 	</TableHead>
 	<TableBody>
-		{#each processDomainModifiers(spell) as modifier}
+		{#each getProcessedModifiers(spell) as modifier}
 			<TableBodyRow>
 				<TableBodyCell>
 					<div class="flex items-center">
@@ -151,7 +151,7 @@
 				</TableBodyCell>
 			</TableBodyRow>
 		{/each}
-		{#each processDomainEffects(spell) as effect}
+		{#each getProcessedEffects(spell) as effect}
 			<TableBodyRow>
 				<TableBodyCell>
 					<div class="flex items-center">

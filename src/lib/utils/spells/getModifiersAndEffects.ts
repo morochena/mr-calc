@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash-es'
 import { calcSPValue } from "./SPCalculations";
 
 export const getProcessedModifiersAndEffects = (spell: Spell): ProcessedModifierOrEffect[] => {
-  return [...processDomainModifiers(spell), ...processDomainEffects(spell)]
+  return [...getProcessedModifiers(spell), ...getProcessedEffects(spell)]
 }
 
 // when processing effects for a domain
@@ -14,7 +14,7 @@ export const getProcessedModifiersAndEffects = (spell: Spell): ProcessedModifier
 
 // when calculating descriptions, tier + domainTier
 // when calculating cost, only take into account tier
-export function processDomainEffects(spell: Spell) {
+export function getProcessedEffects(spell: Spell) {
   let processedEffects = cloneDeep(getCombinedEffects(spell)) as ProcessedEffect[];
 
   if (spell.mode === "Unpredictable") {
@@ -179,7 +179,7 @@ export function processDomainEffects(spell: Spell) {
 }
 
 
-export function processDomainModifiers(spell: Spell) {
+export function getProcessedModifiers(spell: Spell) {
   let modifiers = getCombinedModifiers(spell) as ProcessedModifier[];
 
   switch (spell.domain) {

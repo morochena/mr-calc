@@ -1,5 +1,5 @@
 import type { ProcessedModifierOrEffect, Spell } from "../../../../types/types";
-import { getProcessedModifiersAndEffects } from "./getCombinedEffects";
+import { getProcessedModifiersAndEffects } from "./getModifiersAndEffects";
 
 export const calculateTotalSP = (spell: Spell) => {
   const effectsAndModifiers = getProcessedModifiersAndEffects(spell);

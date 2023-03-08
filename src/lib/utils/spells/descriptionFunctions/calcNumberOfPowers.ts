@@ -1,5 +1,5 @@
 import type { Spell } from "../../../../../types/types";
-import { getProcessedModifiersAndEffects } from "../getCombinedEffects";
+import { getProcessedModifiersAndEffects } from "../getModifiersAndEffects";
 
 export function calcNumberOfPowers(spell: Spell) {
 
