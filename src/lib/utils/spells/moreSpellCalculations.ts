@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
 import type { CombinedEffect, Modifier, ProcessedEffect, ProcessedModifier, Spell } from '../../../../types/types';
 import { availableEffectsById } from '../data/effects';
 import { availableModifiers } from '../data/modifiers';

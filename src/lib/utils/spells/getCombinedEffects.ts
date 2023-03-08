@@ -1,7 +1,7 @@
 import type { Spell, CombinedEffect, CombinedModifier, ProcessedModifier, CombinedModifierOrEffect, ProcessedEffect, ProcessedModifierOrEffect } from "../../../../types/types";
 import { availableEffectsById } from "../data/effects";
 import { availableModifiersById } from "../data/modifiers";
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
 
 export const getProcessedModifiersAndEffects = (spell: Spell): ProcessedModifierOrEffect[] => {
   return [...processDomainModifiers(spell), ...processDomainEffects(spell)]
