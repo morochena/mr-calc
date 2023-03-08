@@ -53,7 +53,7 @@ const craftedPreamble = (spell: Spell) => {
 
 const modeText = (mode: SpellMode) => {
   switch (mode) {
-    case `Unpredicable`:
+    case `Unpredictable`:
       return "casts an unstable spell by rolling a skill check and doubling the dice numbers versus the Spell Difficulty and Winds of Magic";
     case "Stable":
       return "casts a stable spell ";

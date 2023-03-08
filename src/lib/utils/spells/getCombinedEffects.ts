@@ -2,6 +2,7 @@ import type { Spell, CombinedEffect, CombinedModifier, ProcessedModifier, Combin
 import { availableEffectsById } from "../data/effects";
 import { availableModifiersById } from "../data/modifiers";
 import { cloneDeep } from 'lodash-es'
+import { calcSPValue } from "./SPCalculations";
 
 export const getProcessedModifiersAndEffects = (spell: Spell): ProcessedModifierOrEffect[] => {
   return [...processDomainModifiers(spell), ...processDomainEffects(spell)]
@@ -16,7 +17,7 @@ export const getProcessedModifiersAndEffects = (spell: Spell): ProcessedModifier
 export function processDomainEffects(spell: Spell) {
   let processedEffects = cloneDeep(getCombinedEffects(spell)) as ProcessedEffect[];
 
-  if (spell.mode === "Unpredicable") {
+  if (spell.mode === "Unpredictable") {
     processedEffects.push({
       id: 0,
       domains: [],
@@ -166,8 +167,8 @@ export function processDomainEffects(spell: Spell) {
         prerequisite: ["Illusion"],
         notes:
           "When Taking Illusion Powers in a spell as well as the “Help Statistic/Skill/Specialty” Power, Ignore the spell points of the Illusion Powers up to the amount spent on the “Help Statistic/Skill/Specialty” Power",
-        modifierType: "reduce",
-        amount: calcIllusionDiscount(0, processedEffects),
+        modifierType: "add",
+        amount: 0,
         description: "",
       });
       break;
@@ -176,6 +177,7 @@ export function processDomainEffects(spell: Spell) {
   }
   return processedEffects;
 }
+
 
 export function processDomainModifiers(spell: Spell) {
   let modifiers = getCombinedModifiers(spell) as ProcessedModifier[];
@@ -259,6 +261,24 @@ function processFireDomain(processedEffects: ProcessedEffect[], damageId: number
       fromDomain: true,
     });
   }
+}
+
+function calcIllusionDiscount(effect: CombinedEffect, trueTier?: number) {
+  // generally don't want to use getCombinedEffects but it would be circular otherwise
+  // const effects = getCombinedEffects(spell);
+  // let helpEffects = effects.filter((x) => x.name.includes("Help"));
+  // let helpSP = 0;
+
+
+  // helpEffects.forEach((effect) => {
+  //   effect = { ...effect, domainTier: 0 } as ProcessedEffect;
+  //   helpSP += calcSPValue(effect);
+  // });
+
+  // let illusionDiscount = Math.min(helpSP, Math.max(0 - helpSP, 0));
+  // if (spell.mode === "Unpredictable") illusionDiscount -= 4;
+
+  return 0;
 }
 
 

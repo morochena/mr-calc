@@ -51,30 +51,12 @@ function calcIllusionDiscount(total, effects) {
   });
   let illusionDiscount = Math.min(helpSP, Math.max(total - helpSP, 0));
 
-  let unpredicable = effects.filter((x) => x.name.includes("Unpredictable")).length > 0
-  if (unpredicable) illusionDiscount -= 4;
+  let Unpredictable = effects.filter((x) => x.name.includes("Unpredictable")).length > 0
+  if (Unpredictable) illusionDiscount -= 4;
 
   return illusionDiscount;
 }
 
 
 
-function calcNumberOfPowers(effects, modifiers) {
-  let sum = 0;
-  effects.forEach((element) => {
-    if (
-      (!element.prerequisite || element.prerequisite.length == 0) &&
-      (!element.domaintier || element.domaintier <= 0)
-    )
-      sum++;
-  });
-  modifiers.forEach((element) => {
-    if (
-      (!element.prerequisite || element.prerequisite.length == 0) &&
-      (!element.domaintier || element.domaintier <= 0)
-    )
-      sum++;
-  });
-  return sum;
-}
 

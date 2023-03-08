@@ -20,7 +20,7 @@
 
 	const modes = [
 		{ value: `Spell`, name: `Spell` },
-		{ value: `Unpredicable`, name: `Unpredicable` },
+		{ value: `Unpredictable`, name: `Unpredictable` },
 		{ value: `Stable`, name: `Stable` },
 		{ value: `Imbue`, name: `Imbue` }
 	];

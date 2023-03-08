@@ -1,5 +1,5 @@
 import type { ProcessedModifierOrEffect, Spell } from "../../../../types/types";
-import { getProcessedModifiersAndEffects, processDomainEffects, processDomainModifiers } from "./getCombinedEffects";
+import { getProcessedModifiersAndEffects } from "./getCombinedEffects";
 
 export const calculateTotalSP = (spell: Spell) => {
   const effectsAndModifiers = getProcessedModifiersAndEffects(spell);
@@ -13,7 +13,7 @@ export const calculateTotalSP = (spell: Spell) => {
   if (spell.domain === "Illusion")
     modifierCost -= calcIllusionDiscount(spell, modifierCost, effectsAndModifiers);
 
-  if (spell.mode === "Unpredicable") {
+  if (spell.mode === "Unpredictable") {
     modifierCost += 4;
   }
 
@@ -103,15 +103,22 @@ const functionSPValue = (moe: ProcessedModifierOrEffect) => {
   return 0;
 };
 
-function calcIllusionDiscount(spell: Spell, total: number, effects) {
-  const mode = spell.mode
-  //effects = effects.filter((x) => x.);
-  let help = effects.filter((x) => x.name.includes("Help"));
-  let helpSP = 0;
-  help.forEach((element) => {
-    helpSP += resolveCost(element);
-  });
-  let illusionDiscount = Math.min(helpSP, Math.max(total - helpSP, 0));
-  if (mode === "Unpredictable") illusionDiscount -= 4;
-  return illusionDiscount;
+function calcIllusionDiscount(spell, modifierCost, effectsAndModifiers) {
+  // generally don't want to use getCombinedEffects but it would be circular otherwise
+  // const effects = getCombinedEffects(spell);
+  // let helpEffects = effects.filter((x) => x.name.includes("Help"));
+  // let helpSP = 0;
+
+
+  // helpEffects.forEach((effect) => {
+  //   effect = { ...effect, domainTier: 0 } as ProcessedEffect;
+  //   helpSP += calcSPValue(effect);
+  // });
+
+  // let illusionDiscount = Math.min(helpSP, Math.max(0 - helpSP, 0));
+  // if (spell.mode === "Unpredictable") illusionDiscount -= 4;
+
+  return 0;
 }
+
+

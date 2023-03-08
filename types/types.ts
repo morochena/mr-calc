@@ -14,7 +14,7 @@ export type ItemType = "npcs" | "equipment" | "spells"
 export type Domain = 'Sorcery' | 'Fire' | 'Water' | 'Earth' | 'Air' | 'Necromancy' | 'Holy' | 'Mind' | 'Illusion' | 'Nature';
 
 
-export type SpellMode = 'Unpredicable' | 'Stable' | 'Imbue' | 'Spell';
+export type SpellMode = 'Unpredictable' | 'Stable' | 'Imbue' | 'Spell';
 
 export type Effect = {
   id: number;

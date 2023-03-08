@@ -21,6 +21,7 @@
 	} from 'flowbite-svelte';
 	import type { Spell } from '../../../../../types/types';
 	import { Fire, Beaker, Sparkles, XMark } from 'svelte-heros';
+	import { calcNumberOfPowers } from '$lib/utils/spells/descriptionFunctions/calcNumberOfPowers';
 
 	export let spell: Spell;
 	export let disableInputs: boolean;
@@ -199,7 +200,7 @@
 				>{calculateTotalSP(spell).adds} x {calculateTotalSP(spell).mults.toFixed(2)} =
 				<strong>{calculateTotalSP(spell).cost}</strong></TableBodyCell
 			>
-			<TableBodyCell />
+			<TableBodyCell># Powers: {calcNumberOfPowers(spell)}</TableBodyCell>
 			<TableBodyCell />
 			<TableBodyCell />
 			<TableBodyCell />
