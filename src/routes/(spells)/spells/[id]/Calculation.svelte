@@ -132,8 +132,8 @@
 						{modifier.tier}
 					{/if}
 				</TableBodyCell>
-				<TableBodyCell>{modifier.notes || ''}</TableBodyCell>
-				<TableBodyCell tdClass="px-6 py-4 font-medium ">
+				<TableBodyCell tdClass="px-6 py-4 font-medium">{modifier.notes || ''}</TableBodyCell>
+				<TableBodyCell tdClass="px-6 py-4 font-medium">
 					<FillInBlanks
 						moeId={modifier.id}
 						baseText={calculateMOEDescription(spell, modifier)}
@@ -174,8 +174,8 @@
 						{effect.tier}
 					{/if}
 				</TableBodyCell>
-				<TableBodyCell>{effect.notes || ''}</TableBodyCell>
-				<TableBodyCell tdClass="px-6 py-4 font-medium ">
+				<TableBodyCell tdClass="px-6 py-4 font-medium">{effect.notes || ''}</TableBodyCell>
+				<TableBodyCell tdClass="px-6 py-4 font-medium">
 					<FillInBlanks
 						moeId={effect.id}
 						baseText={calculateMOEDescription(spell, effect)}
