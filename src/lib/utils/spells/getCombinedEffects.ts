@@ -9,10 +9,10 @@ export const getProcessedModifiersAndEffects = (spell: Spell): ProcessedModifier
 
 // when processing effects for a domain
 // if effect already exists, add to domainTiers
-// if effect does not exist, add it but only add to domainTiers 
+// if effect does not exist, add it but ensure cost is 0 and tier is 0
 
-// when calculating description, tier + domainTier
-// when calculating cost, tier
+// when calculating descriptions, tier + domainTier
+// when calculating cost, only take into account tier
 export function processDomainEffects(spell: Spell) {
   let processedEffects = cloneDeep(getCombinedEffects(spell)) as ProcessedEffect[];
 
@@ -219,7 +219,8 @@ function processFireDomain(processedEffects: ProcessedEffect[], damageId: number
   } else if (!x)
     processedEffects.push({
       ...damageEffect,
-      tier: 2,
+      tier: 0,
+      amount: 0,
       domainTier: 2,
       notes: "Fire Domain",
       description: "+2 DMG",
@@ -234,7 +235,8 @@ function processFireDomain(processedEffects: ProcessedEffect[], damageId: number
   } else if (!y)
     processedEffects.push({
       ...lightEffect,
-      tier: 2,
+      tier: 0,
+      amount: 0,
       domainTier: 2,
       notes: "Fire Domain",
       description: "Flickers with enough light to brighten a dark room",
@@ -245,9 +247,9 @@ function processFireDomain(processedEffects: ProcessedEffect[], damageId: number
     processedEffects.push({
       id: 0,
       name: "Require Element",
-      tier: 1,
+      tier: 0,
       domains: ["Fire"],
-      domainTier: 0,
+      domainTier: 1,
       hasTiers: true,
       prerequisite: ["Fire"],
       notes: "Fire Domain",

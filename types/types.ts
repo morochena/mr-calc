@@ -13,6 +13,9 @@ export type ItemType = "npcs" | "equipment" | "spells"
 
 export type Domain = 'Sorcery' | 'Fire' | 'Water' | 'Earth' | 'Air' | 'Necromancy' | 'Holy' | 'Mind' | 'Illusion' | 'Nature';
 
+
+export type SpellMode = 'Unpredicable' | 'Stable' | 'Imbue' | 'Spell';
+
 export type Effect = {
   id: number;
   name: string;
@@ -61,7 +64,7 @@ export type CombinedModifier = Modifier & SelectedModifier
 export type ModifierOrEffect = Modifier | Effect;
 export type CombinedModifierOrEffect = CombinedModifier | CombinedEffect
 
-export type ProcessedModifier = CombinedModifier & { domainTier: number }
+export type ProcessedModifier = CombinedModifier & { domainTier: number, fromDomain?: boolean }
 export type ProcessedEffect = CombinedEffect & { domainTier: number, fromDomain?: boolean }
 export type ProcessedModifierOrEffect = CombinedModifierOrEffect & { domainTier: number }
 
@@ -74,7 +77,7 @@ export type Spell = {
   inserted_at: string;
   description: string;
   domain: Domain;
-  mode: string;
+  mode: SpellMode;
   selected_effects: SelectedEffect[];
   selected_modifiers: SelectedModifier[];
   is_alchemy: boolean;

@@ -6,7 +6,7 @@ export const calculateMOEDescription = (spell: Spell, moe: ProcessedModifierOrEf
   let formattedDescription = moe.description;
   let evalMatch = formattedDescription.match(/\[(.*?)\]/g);
 
-  const combinedTier = moe.domainTier + moe.tier;
+  const combinedTier = (moe.tier || 0) + (moe.domainTier || 0);
 
   if (evalMatch) {
     evalMatch.forEach(e => {
