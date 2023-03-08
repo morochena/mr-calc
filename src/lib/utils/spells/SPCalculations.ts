@@ -103,22 +103,18 @@ const functionSPValue = (moe: ProcessedModifierOrEffect) => {
   return 0;
 };
 
-function calcIllusionDiscount(spell, modifierCost, effectsAndModifiers) {
-  // generally don't want to use getCombinedEffects but it would be circular otherwise
-  // const effects = getCombinedEffects(spell);
-  // let helpEffects = effects.filter((x) => x.name.includes("Help"));
-  // let helpSP = 0;
+function calcIllusionDiscount(spell: Spell, modifierCost: number, effectsAndModifiers: ProcessedModifierOrEffect[]) {
+  let helpEffects = effectsAndModifiers.filter((x) => x.name.includes("Help"));
+  let helpSP = 0;
 
+  helpEffects.forEach((effect) => {
+    helpSP += calcSPValue(effect);
+  });
 
-  // helpEffects.forEach((effect) => {
-  //   effect = { ...effect, domainTier: 0 } as ProcessedEffect;
-  //   helpSP += calcSPValue(effect);
-  // });
+  let illusionDiscount = Math.min(helpSP, Math.max(modifierCost - helpSP, 0));
+  if (spell.mode === "Unpredictable") illusionDiscount -= 4;
 
-  // let illusionDiscount = Math.min(helpSP, Math.max(0 - helpSP, 0));
-  // if (spell.mode === "Unpredictable") illusionDiscount -= 4;
-
-  return 0;
+  return illusionDiscount;
 }
 
 
