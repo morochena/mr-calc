@@ -143,7 +143,7 @@
 					/>
 				</TableBodyCell>
 				<TableBodyCell>
-					{#if !disableInputs}
+					{#if !disableInputs && !modifier.fromDomain}
 						<button on:click={() => removeModifier(modifier.id)}>
 							<XMark />
 						</button>
@@ -186,7 +186,7 @@
 				>
 
 				<TableBodyCell>
-					{#if !disableInputs}
+					{#if !disableInputs && !effect.fromDomain}
 						<button on:click={() => removeEffect(effect.id)}>
 							<XMark />
 						</button>
