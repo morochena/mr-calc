@@ -28,10 +28,12 @@
 	export let addModifier: (modifier: Modifier) => void;
 	export let removeModifier: (modifier: Modifier) => void;
 
-	let selectedCombinedModifiersOrEffects = [];
+	let selectedCombinedModifiersOrEffects: string[] = [];
 
 	$: {
-		selectedCombinedModifiersOrEffects = getProcessedModifiersAndEffects(spell).map((m) => m.name);
+		selectedCombinedModifiersOrEffects = getProcessedModifiersAndEffects(spell)
+			.filter((m) => !m.fromDomain)
+			.map((m) => m.name);
 
 		if (spell.is_alchemy && !selectedCombinedModifiersOrEffects.includes('Alchemy'))
 			selectedCombinedModifiersOrEffects.push('Alchemist');

@@ -31,7 +31,9 @@
 	let selectedCombinedModifiersOrEffects: string[] = [];
 
 	$: {
-		selectedCombinedModifiersOrEffects = getProcessedModifiersAndEffects(spell).map((m) => m.name);
+		selectedCombinedModifiersOrEffects = getProcessedModifiersAndEffects(spell)
+			.filter((m) => !m.fromDomain)
+			.map((m) => m.name);
 
 		if (spell.is_alchemy && !selectedCombinedModifiersOrEffects.includes('Alchemy'))
 			selectedCombinedModifiersOrEffects.push('Alchemist');

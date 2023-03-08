@@ -66,7 +66,7 @@ export type CombinedModifierOrEffect = CombinedModifier | CombinedEffect
 
 export type ProcessedModifier = CombinedModifier & { domainTier: number, fromDomain?: boolean }
 export type ProcessedEffect = CombinedEffect & { domainTier: number, fromDomain?: boolean }
-export type ProcessedModifierOrEffect = CombinedModifierOrEffect & { domainTier: number }
+export type ProcessedModifierOrEffect = CombinedModifierOrEffect & { domainTier: number, fromDomain?: boolean }
 
 
 

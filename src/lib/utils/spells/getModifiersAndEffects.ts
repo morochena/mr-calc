@@ -89,9 +89,8 @@ export function getProcessedEffects(spell: Spell) {
     case "Earth":
       let force = processedEffects.find((force) => force.id === applyForceId);
       if (force && (!force.domainTier || force.domainTier <= 0)) {
-        force.tier += 2;
         force.domainTier = 2;
-        force.notes += " powered up by Earth Domain";
+        force.notes = "powered up by Earth Domain";
         force.prerequisite = ["Earth"];
       } else if (!force)
         processedEffects.push({
@@ -102,7 +101,7 @@ export function getProcessedEffects(spell: Spell) {
           prerequisite: ["Earth"],
           notes: "Earth Domain",
           modifierType: "add",
-          amount: 2,
+          amount: 0,
           description: "is moved 2 meters",
           fromDomain: true,
         });

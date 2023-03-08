@@ -67,7 +67,7 @@ export const availableModifiers: Modifier[] = [
     incompatible: ['Stealth'],
     modifierType: 'multiply',
     amount: 0.75,
-    description: 'taking 2 actions of obvious magical charging'
+    description: 'must be the only spell you cast this turn and your last action of the turn.'
   },
   {
     id: 6,
