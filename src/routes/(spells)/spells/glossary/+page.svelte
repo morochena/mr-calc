@@ -4,7 +4,7 @@
 	import { Card } from 'flowbite-svelte';
 
 	const modifiers = availableModifiers.sort((a, b) => (a.name > b.name ? 1 : -1));
-	const effects = availableEffects;
+	const effects = availableEffects.sort((a, b) => (a.name > b.name ? 1 : -1));
 </script>
 
 <h1 class="pt-8 py-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modifiers</h1>
