@@ -10,7 +10,7 @@ export const calculateSpellDescription = (spell: Spell) => {
   const caster = casterText(spell);
   const target = targetText(spell)
 
-  return `${preamble} ${description} ${caster} ${target}`;
+  return `${description} ${preamble} ${caster} ${target}`;
 }
 
 const casterText = (spell: Spell) => {

@@ -71,6 +71,7 @@
 	{#if !disableInputs}
 		<Button on:click={deleteSpell} color="primary" disabled={disableInputs}>Delete</Button>
 	{/if}
+	<Button href="/spells/glossary" target="_blank" color="primary">Glossary</Button>
 </ButtonGroup>
 
 <Meta bind:spell {disableInputs} />
