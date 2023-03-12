@@ -61,7 +61,7 @@
 <Footer>
 	<FooterCopyright
 		href="https://www.mythicvisionsgames.com"
-		by="Mythic Visions™"
+		by="A fan created product. Not associated with Mythic Visions™"
 		year={new Date().getFullYear()}
 	/>
 	<FooterLinkGroup

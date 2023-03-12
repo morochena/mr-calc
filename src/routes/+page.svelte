@@ -4,6 +4,9 @@
 	import { Button, Card } from 'flowbite-svelte';
 	import Auth from '$lib/components/Auth.svelte';
 	import logo from '$lib/assets/logo.png';
+	import spells from '$lib/assets/spells.png';
+	import npcs from '$lib/assets/npcs.png';
+	import equipment from '$lib/assets/equipment.png';
 
 	const signOut = async () => {
 		await supabaseClient.auth.signOut();
@@ -23,16 +26,17 @@
 						<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 							Spells
 						</h5>
-						<p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">
-							Create custom spells with specific effects and parameters to enhance your game
-							experience
+						<img class="rounded-md" src={spells} width="500" alt="Spells" />
+						<p class="mt-4 font-normal text-gray-700 dark:text-gray-400 leading-tight">
+							Create custom spells for your characters and NPCs
 						</p>
 					</Card>
 					<Card href="/npcs">
 						<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 							NPCs
 						</h5>
-						<p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">
+						<img class="rounded-md" src={npcs} width="500" alt="NPCs" />
+						<p class="mt-4 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 							Generate combat statistics for your custom monsters and NPCs
 						</p>
 					</Card>
@@ -40,7 +44,8 @@
 						<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 							Equipment
 						</h5>
-						<p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">
+						<img class="rounded-md" src={equipment} width="500" alt="Equipment" />
+						<p class="mt-4 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 							Design equipment with tailored stats and features for your NPCs
 						</p>
 					</Card>
