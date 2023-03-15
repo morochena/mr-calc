@@ -232,271 +232,281 @@
 	</div>
 </div>
 
-<h1 class="text-4xl dark:text-white pb-8">Skills</h1>
-<div class="grid gap-6 mb-6 sm:grid-cols-2 md:grid-cols-2">
-	<Table striped={true}>
-		<TableBody tableBodyClass="divide-y">
-			<StatInput
-				label="Strength"
-				bind:statValue={monster.str}
-				statBonus={calcBonusString(monster, 'str')}
-				disabled={disableInputs}
-				bold={true}
-			/>
-			<StatInput
-				label="Smash"
-				bind:statValue={monster.smash}
-				statBonus={calcBonusString(monster, 'str', 'smash')}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Launch"
-				bind:statValue={monster.launch}
-				statBonus={calcTotalSkillBonus(monster.str, monster.launch)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Athletics"
-				bind:statValue={monster.athletics}
-				statBonus={calcTotalSkillBonus(monster.str, monster.athletics)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Physique"
-				bind:statValue={monster.physique}
-				statBonus={calcTotalSkillBonus(monster.str, monster.physique)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Provoke"
-				bind:statValue={monster.provoke}
-				statBonus={calcTotalSkillBonus(monster.str, monster.provoke)}
-				disabled={disableInputs}
-			/>
-		</TableBody>
-	</Table>
-	<Table striped={true}>
-		<TableBody tableBodyClass="divide-y">
-			<StatInput
-				label="Dexterity"
-				bind:statValue={monster.dex}
-				statBonus={calcStatBonus(monster.dex)}
-				disabled={disableInputs}
-				bold={true}
-			/>
-			<StatInput
-				label="Accuracy"
-				bind:statValue={monster.accuracy}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.accuracy)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Mobility"
-				bind:statValue={monster.mobility}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.mobility)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Thievery"
-				bind:statValue={monster.thievery}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.thievery)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Notice"
-				bind:statValue={monster.notice}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.notice)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Stealth"
-				bind:statValue={monster.stealth}
-				statBonus={calcTotalSkillBonus(monster.dex, monster.stealth)}
-				disabled={disableInputs}
-			/>
-		</TableBody>
-	</Table>
-	<Table striped={true}>
-		<TableBody tableBodyClass="divide-y">
-			<StatInput
-				label="Empathy"
-				bind:statValue={monster.emp}
-				statBonus={calcStatBonus(monster.emp)}
-				disabled={disableInputs}
-				bold={true}
-			/>
-			<StatInput
-				label="Animal Handling"
-				bind:statValue={monster.animal_handling}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.animal_handling)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Deceive"
-				bind:statValue={monster.deceive}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.deceive)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Rapport"
-				bind:statValue={monster.rapport}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.rapport)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Willpower"
-				bind:statValue={monster.willpower}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.willpower)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Mysticism"
-				bind:statValue={monster.mysticism}
-				statBonus={calcTotalSkillBonus(monster.emp, monster.mysticism)}
-				disabled={disableInputs}
-			/>
-		</TableBody>
-	</Table>
-	<Table striped={true}>
-		<TableBody tableBodyClass="divide-y">
-			<StatInput
-				label="Intelligence"
-				bind:statValue={monster.int}
-				statBonus={calcStatBonus(monster.int)}
-				disabled={disableInputs}
-				bold={true}
-			/>
-			<StatInput
-				label="Craft"
-				bind:statValue={monster.craft}
-				statBonus={calcTotalSkillBonus(monster.int, monster.craft)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Travel"
-				bind:statValue={monster.travel}
-				statBonus={calcTotalSkillBonus(monster.int, monster.travel)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Reasoning"
-				bind:statValue={monster.reasoning}
-				statBonus={calcTotalSkillBonus(monster.int, monster.reasoning)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Lore"
-				bind:statValue={monster.lore}
-				statBonus={calcTotalSkillBonus(monster.int, monster.lore)}
-				disabled={disableInputs}
-			/>
-			<StatInput
-				label="Resourcefulness"
-				bind:statValue={monster.resourcefulness}
-				statBonus={calcTotalSkillBonus(monster.int, monster.resourcefulness)}
-				disabled={disableInputs}
-			/>
-		</TableBody>
-	</Table>
-</div>
-
-<div class="grid gap-6 mb-6 md:grid-cols-2">
-	<div>
-		<h1 class="text-4xl dark:text-white pb-8">Specialties</h1>
-		<Table striped={true}>
-			<TableBody class="divide-y">
-				{#each Object.keys(monster.specialties || {}) as specialty}
-					<SpecialtyInput
-						label={specialty}
-						statSkill={monster.specialties[specialty].skill}
-						bind:statValue={monster.specialties[specialty].value}
-						statBonus={calcSpecialtyBonus(monster, monster.specialties[specialty])}
-						removeSpeciality={() => removeSpeciality(specialty)}
-						disabled={disableInputs}
-					/>
-				{/each}
-			</TableBody>
-		</Table>
-
-		<form class="mt-4" on:submit|preventDefault={addSpecialty}>
-			<div class="grid gap-6 mb-6 md:grid-cols-2">
-				<Label class="space-y-2">
-					<span>New Specialty</span>
-					<Input name="name" type="text" bind:value={specialtyName} required />
-				</Label>
-				<Label class="space-y-2">
-					<span>Skill</span>
-					<Select
-						name="skill"
-						items={skillPool().map((e) => ({ name: e.name, value: e.name }))}
-						required
-						bind:value={specialtySkill}
-					/>
-				</Label>
-			</div>
-			<Button type="submit" disabled={disableInputs} color="primary">Add</Button>
-		</form>
-	</div>
-	<div>
-		<h1 class="text-4xl dark:text-white pb-8">Equipment</h1>
-
+<div class="bg-white dark:bg-gray-800 shadow-md rounded-md p-4 md:p-6 mb-6">
+	<h1 class="text-2xl dark:text-white pb-4">Skills</h1>
+	<div class="grid gap-6 mb-6 sm:grid-cols-2 md:grid-cols-2">
 		<Table striped={true}>
 			<TableBody tableBodyClass="divide-y">
-				{#each monster.equipment as { id, name, roll_bonus, damage_formula, skills, specialties }}
-					<WeaponRow {monster} {id} {name} {roll_bonus} {damage_formula} {skills} {specialties} />
-				{/each}
+				<StatInput
+					label="Strength"
+					bind:statValue={monster.str}
+					statBonus={calcBonusString(monster, 'str')}
+					disabled={disableInputs}
+					bold={true}
+				/>
+				<StatInput
+					label="Smash"
+					bind:statValue={monster.smash}
+					statBonus={calcBonusString(monster, 'str', 'smash')}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Launch"
+					bind:statValue={monster.launch}
+					statBonus={calcTotalSkillBonus(monster.str, monster.launch)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Athletics"
+					bind:statValue={monster.athletics}
+					statBonus={calcTotalSkillBonus(monster.str, monster.athletics)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Physique"
+					bind:statValue={monster.physique}
+					statBonus={calcTotalSkillBonus(monster.str, monster.physique)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Provoke"
+					bind:statValue={monster.provoke}
+					statBonus={calcTotalSkillBonus(monster.str, monster.provoke)}
+					disabled={disableInputs}
+				/>
 			</TableBody>
 		</Table>
-
-		<div class="mt-4">
-			<Label class="pt-2"
-				>Add equipment
-				<SSelect
-					class="mt-4"
-					id="equipment"
-					loadOptions={fetchEquipment}
-					bind:value={selectedEquipmentId}
-					placeholder="Search equipment"
+		<Table striped={true}>
+			<TableBody tableBodyClass="divide-y">
+				<StatInput
+					label="Dexterity"
+					bind:statValue={monster.dex}
+					statBonus={calcStatBonus(monster.dex)}
+					disabled={disableInputs}
+					bold={true}
 				/>
-			</Label>
-			<Button class="mt-4" on:click={() => addEquipment()} disabled={disableInputs} color="primary"
-				>Add</Button
-			>
+				<StatInput
+					label="Accuracy"
+					bind:statValue={monster.accuracy}
+					statBonus={calcTotalSkillBonus(monster.dex, monster.accuracy)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Mobility"
+					bind:statValue={monster.mobility}
+					statBonus={calcTotalSkillBonus(monster.dex, monster.mobility)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Thievery"
+					bind:statValue={monster.thievery}
+					statBonus={calcTotalSkillBonus(monster.dex, monster.thievery)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Notice"
+					bind:statValue={monster.notice}
+					statBonus={calcTotalSkillBonus(monster.dex, monster.notice)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Stealth"
+					bind:statValue={monster.stealth}
+					statBonus={calcTotalSkillBonus(monster.dex, monster.stealth)}
+					disabled={disableInputs}
+				/>
+			</TableBody>
+		</Table>
+		<Table striped={true}>
+			<TableBody tableBodyClass="divide-y">
+				<StatInput
+					label="Empathy"
+					bind:statValue={monster.emp}
+					statBonus={calcStatBonus(monster.emp)}
+					disabled={disableInputs}
+					bold={true}
+				/>
+				<StatInput
+					label="Animal Handling"
+					bind:statValue={monster.animal_handling}
+					statBonus={calcTotalSkillBonus(monster.emp, monster.animal_handling)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Deceive"
+					bind:statValue={monster.deceive}
+					statBonus={calcTotalSkillBonus(monster.emp, monster.deceive)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Rapport"
+					bind:statValue={monster.rapport}
+					statBonus={calcTotalSkillBonus(monster.emp, monster.rapport)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Willpower"
+					bind:statValue={monster.willpower}
+					statBonus={calcTotalSkillBonus(monster.emp, monster.willpower)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Mysticism"
+					bind:statValue={monster.mysticism}
+					statBonus={calcTotalSkillBonus(monster.emp, monster.mysticism)}
+					disabled={disableInputs}
+				/>
+			</TableBody>
+		</Table>
+		<Table striped={true}>
+			<TableBody tableBodyClass="divide-y">
+				<StatInput
+					label="Intelligence"
+					bind:statValue={monster.int}
+					statBonus={calcStatBonus(monster.int)}
+					disabled={disableInputs}
+					bold={true}
+				/>
+				<StatInput
+					label="Craft"
+					bind:statValue={monster.craft}
+					statBonus={calcTotalSkillBonus(monster.int, monster.craft)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Travel"
+					bind:statValue={monster.travel}
+					statBonus={calcTotalSkillBonus(monster.int, monster.travel)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Reasoning"
+					bind:statValue={monster.reasoning}
+					statBonus={calcTotalSkillBonus(monster.int, monster.reasoning)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Lore"
+					bind:statValue={monster.lore}
+					statBonus={calcTotalSkillBonus(monster.int, monster.lore)}
+					disabled={disableInputs}
+				/>
+				<StatInput
+					label="Resourcefulness"
+					bind:statValue={monster.resourcefulness}
+					statBonus={calcTotalSkillBonus(monster.int, monster.resourcefulness)}
+					disabled={disableInputs}
+				/>
+			</TableBody>
+		</Table>
+	</div>
+</div>
+
+<div class="bg-white dark:bg-gray-800 shadow-md rounded-md p-4 md:p-6 mb-6">
+	<div class="grid gap-6 mb-6 md:grid-cols-2">
+		<div>
+			<h1 class="text-2xl dark:text-white pb-4">Specialties</h1>
+			<Table striped={true}>
+				<TableBody class="divide-y">
+					{#each Object.keys(monster.specialties || {}) as specialty}
+						<SpecialtyInput
+							label={specialty}
+							statSkill={monster.specialties[specialty].skill}
+							bind:statValue={monster.specialties[specialty].value}
+							statBonus={calcSpecialtyBonus(monster, monster.specialties[specialty])}
+							removeSpeciality={() => removeSpeciality(specialty)}
+							disabled={disableInputs}
+						/>
+					{/each}
+				</TableBody>
+			</Table>
+
+			<form class="mt-4" on:submit|preventDefault={addSpecialty}>
+				<div class="grid gap-6 mb-6 md:grid-cols-2">
+					<Label class="space-y-2">
+						<span>New Specialty</span>
+						<Input name="name" type="text" bind:value={specialtyName} required />
+					</Label>
+					<Label class="space-y-2">
+						<span>Skill</span>
+						<Select
+							name="skill"
+							items={skillPool().map((e) => ({ name: e.name, value: e.name }))}
+							required
+							bind:value={specialtySkill}
+						/>
+					</Label>
+				</div>
+				<Button type="submit" disabled={disableInputs} color="primary">Add</Button>
+			</form>
+		</div>
+		<div>
+			<h1 class="text-2xl dark:text-white pb-4">Equipment</h1>
+
+			<Table striped={true}>
+				<TableBody tableBodyClass="divide-y">
+					{#each monster.equipment as { id, name, roll_bonus, damage_formula, skills, specialties }}
+						<WeaponRow {monster} {id} {name} {roll_bonus} {damage_formula} {skills} {specialties} />
+					{/each}
+				</TableBody>
+			</Table>
+
+			<div class="mt-4">
+				<Label class="pt-2"
+					>Add equipment
+					<SSelect
+						class="mt-4"
+						id="equipment"
+						loadOptions={fetchEquipment}
+						bind:value={selectedEquipmentId}
+						placeholder="Search equipment"
+					/>
+				</Label>
+				<Button
+					class="mt-4"
+					on:click={() => addEquipment()}
+					disabled={disableInputs}
+					color="primary">Add</Button
+				>
+			</div>
 		</div>
 	</div>
 </div>
 
-<h1 class="text-4xl dark:text-white pb-8">Spells</h1>
-{#each monster.spells || [] as spell}
-	<div class="mt-2 bg-gray-100 rounded-lg py-5 px-6 mb-4 text-sm dark:text-white mb-3">
-		<div>
-			<p><strong>Name:</strong> {spell.name}</p>
-			<p><strong>Description:</strong> {spell.description || ''}</p>
-			<p><strong>Domain:</strong> {spell.domain}</p>
-			<p><strong>Mode:</strong> {spell.mode}</p>
-			<p><strong>Spell Difficulty: {calculateTotalSP(spell).cost}</strong></p>
-			<p><strong>Mental Cost:</strong> {calculateMentalCost(spell)}</p>
+<div class="bg-white dark:bg-gray-800 shadow-md rounded-md p-4 md:p-6 mb-6">
+	<h1 class="text-2xl dark:text-white pb-4">Spells</h1>
+
+	{#each monster.spells || [] as spell}
+		<div class="mt-2 bg-gray-100 rounded-lg py-5 px-6 mb-4 text-sm dark:text-white mb-3">
+			<div>
+				<p><strong>Name:</strong> {spell.name}</p>
+				<p><strong>Description:</strong> {spell.description || ''}</p>
+				<p><strong>Domain:</strong> {spell.domain}</p>
+				<p><strong>Mode:</strong> {spell.mode}</p>
+				<p><strong>Spell Difficulty: {calculateTotalSP(spell).cost}</strong></p>
+				<p><strong>Mental Cost:</strong> {calculateMentalCost(spell)}</p>
+			</div>
+			<hr class="my-3" />
+			<div>
+				<p>
+					{calculateSpellDescription(spell)}
+				</p>
+			</div>
 		</div>
-		<hr class="my-3" />
-		<div>
-			<p>
-				{calculateSpellDescription(spell)}
-			</p>
-		</div>
+	{/each}
+	<div class="mt-4">
+		<Label
+			>Add Spells
+			<SSelect
+				class="mt-4"
+				id="spells"
+				loadOptions={fetchSpells}
+				bind:value={selectedSpellId}
+				placeholder="Search spells"
+			/>
+		</Label>
+		<Button class="mt-4" color="primary" on:click={addSpell} disabled={disableInputs}>Add</Button>
 	</div>
-{/each}
-<div class="mt-4">
-	<Label
-		>Add Spells
-		<SSelect
-			class="mt-4"
-			id="spells"
-			loadOptions={fetchSpells}
-			bind:value={selectedSpellId}
-			placeholder="Search spells"
-		/>
-	</Label>
-	<Button class="mt-4" color="primary" on:click={addSpell} disabled={disableInputs}>Add</Button>
 </div>
 
 <style>
