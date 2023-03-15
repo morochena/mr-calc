@@ -154,42 +154,71 @@
 	{/if}
 </ButtonGroup>
 
-<div class="grid gap-2 mb-6 md:grid-rows-4 md:grid-cols-3">
-	<div class="grid gap-2 md:grid-cols-2 col-start-1 col-end-3">
-		<Label class="space-y-2">
-			<span>Name</span>
-			<Input type="text" size="sm" bind:value={monster.name} disabled={disableInputs} />
-		</Label>
-		<Label class="space-y-2">
-			<span>Tags</span>
-			<Input type="text" size="sm" bind:value={monster.tags} disabled={disableInputs} />
-		</Label>
+<div class="bg-white dark:bg-gray-800 shadow-md rounded-md p-4 md:p-6 mb-6">
+	<h1 class="text-2xl dark:text-white pb-4">General Information</h1>
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-4">
+		<div class="grid gap-2">
+			<Label class="space-y-1">
+				<span>Name</span>
+				<Input type="text" size="sm" bind:value={monster.name} disabled={disableInputs} />
+			</Label>
+			<Label class="space-y-1">
+				<span>Tags</span>
+				<Input type="text" size="sm" bind:value={monster.tags} disabled={disableInputs} />
+			</Label>
+		</div>
+
+		<div>
+			<Label class="space-y-1">
+				<span>Size</span>
+				<Select items={sizes} bind:value={monster.size} disabled={disableInputs} />
+			</Label>
+		</div>
+
+		<div class="border border-gray-300 dark:border-gray-600 rounded-md p-2">
+			<table class="w-full">
+				<tr>
+					<td class="dark:text-white">Body</td>
+					<td class="dark:text-white text-right">{calcBody(monster)}</td>
+				</tr>
+				<tr>
+					<td class="dark:text-white">Mind</td>
+					<td class="dark:text-white text-right">{calcMind(monster)}</td>
+				</tr>
+				<tr>
+					<td class="dark:text-white">Arcana</td>
+					<td class="dark:text-white text-right">{calcArcana(monster)}</td>
+				</tr>
+				<tr>
+					<td class="dark:text-white">Dodge</td>
+					<td class="dark:text-white text-right">{calcDodge(monster)}</td>
+				</tr>
+				<tr>
+					<td class="dark:text-white">Consider</td>
+					<td class="dark:text-white text-right">{calcConsider(monster)}</td>
+				</tr>
+				<tr>
+					<td class="dark:text-white">Perception</td>
+					<td class="dark:text-white text-right">{calcPerception(monster)}</td>
+				</tr>
+				<tr>
+					<td class="dark:text-white">Move</td>
+					<td class="dark:text-white text-right">{calcMove(monster)}</td>
+				</tr>
+				<tr>
+					<td class="dark:text-white">Run</td>
+					<td class="dark:text-white text-right">{calcRun(monster)}</td>
+				</tr>
+				<tr>
+					<td class="dark:text-white">~XP</td>
+					<td class="dark:text-white text-right">{calcLevel(monster)}</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 
-	<div class="row-span-3 dark:text-white">
-		<p>Body: {calcBody(monster)}</p>
-		<p>Mind: {calcMind(monster)}</p>
-		<p>Arcana: {calcArcana(monster)}</p>
-		<p>Dodge: {calcDodge(monster)}</p>
-		<p>Consider: {calcConsider(monster)}</p>
-		<p>Perception: {calcPerception(monster)}</p>
-		<p>Move: {calcMove(monster)}</p>
-		<p>Run: {calcRun(monster)}</p>
-		<p>~XP: {calcLevel(monster)}</p>
-	</div>
-	<Tooltip>
-		<ul>
-			<li>Dodge [Stealth-Dodge / 2 + 7] What people need to hit to physically hit you</li>
-			<li>Perception [Notice-Perception / 2 + 7] What people need to get to sneak past you</li>
-			<li>Consider [Reasoning-Consider / 2 + 7] What people need to hit to mentally affect you</li>
-			<li>Body [10 + Physique] How much abuse your body can take</li>
-			<li>Mind [10 + Willpower] How much abuse your mind can take</li>
-			<li>Arcana [Lore] Extra mind points to cast magic.</li>
-		</ul>
-	</Tooltip>
-
-	<Label for="description" class="mb-2 col-start-1 col-end-3 row-start-2 row-end-4"
-		>Description
+	<div class="mt-2">
+		<Label for="description" class="mb-1">Description</Label>
 		<Textarea
 			id="description"
 			placeholder=""
@@ -198,13 +227,9 @@
 			bind:value={monster.description}
 			disabled={disableInputs}
 			size="sm"
+			class="w-full resize-none"
 		/>
-	</Label>
-
-	<Label class="space-y-2  col-span-2">
-		<span>Size</span>
-		<Select items={sizes} bind:value={monster.size} disabled={disableInputs} />
-	</Label>
+	</div>
 </div>
 
 <h1 class="text-4xl dark:text-white pb-8">Skills</h1>
@@ -473,3 +498,9 @@
 	</Label>
 	<Button class="mt-4" color="primary" on:click={addSpell} disabled={disableInputs}>Add</Button>
 </div>
+
+<style>
+	.section-title {
+		text-align: center;
+	}
+</style>
