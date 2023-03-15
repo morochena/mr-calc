@@ -26,7 +26,6 @@
 	export let spell: Spell;
 	export let disableInputs: boolean;
 	export let addModifier: (modifier: Modifier) => void;
-	export let removeModifier: (modifier: Modifier) => void;
 
 	let selectedCombinedModifiersOrEffects: string[] = [];
 
@@ -87,14 +86,16 @@
 	};
 </script>
 
-<h2 class="text-xl mt-8 dark:text-white">Modifiers</h2>
-<Select items={availableModifierOptions} disabled={disableInputs} bind:value={selectedModifier} />
-{#if selectedModifier?.description}
-	<Alert class="mt-2"><span>{selectedModifier.description}</span></Alert>
-{/if}
-<Button on:click={tryAddModifier} class="mt-2" disabled={disableInputs || !selectedModifier}
-	>Add Modifier</Button
->
+<div class="bg-white dark:bg-gray-800 shadow-md rounded-md p-4 md:p-6 mb-6">
+	<h2 class="text-xl mt-8 dark:text-white">Modifiers</h2>
+	<Select items={availableModifierOptions} disabled={disableInputs} bind:value={selectedModifier} />
+	{#if selectedModifier?.description}
+		<Alert class="mt-2"><span>{selectedModifier.description}</span></Alert>
+	{/if}
+	<Button on:click={tryAddModifier} class="mt-2" disabled={disableInputs || !selectedModifier}
+		>Add Modifier</Button
+	>
+</div>
 
 <!-- <Table class="mt-2">
 	<TableHead>

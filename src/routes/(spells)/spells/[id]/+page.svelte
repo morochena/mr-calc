@@ -78,3 +78,5 @@
 <Calculation bind:spell {disableInputs} {removeModifier} {removeEffect} />
 <Modifiers bind:spell {disableInputs} {addModifier} />
 <Effects bind:spell {disableInputs} {addEffect} />
+
+<div class="mb-16" />
