@@ -65,10 +65,11 @@
 <Footer class="bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
 	<FooterCopyright
 		href="https://www.mythicvisionsgames.com"
-		by="A fan created product. Not associated with Mythic Visions™"
+		by="Mythic Visions™"
 		year={new Date().getFullYear()}
 	/>
 	<FooterLinkGroup ulClass="flex flex-wrap items-center mt-3 text-sm sm:mt-0">
+		<FooterLink>A fan created product. Not associated with Mythic Visions.</FooterLink>
 		<FooterLink href="https://github.com/morochena/mr-calc"
 			><svg
 				xmlns="http://www.w3.org/2000/svg"

@@ -1,6 +1,8 @@
 import { supabaseClient } from "$lib/db";
 import Toastify from 'toastify-js';
 import type { ItemType, Spell } from "../../../types/types";
+import { saveAs } from 'file-saver';
+
 
 export const saveEntity = async (entityType: string, entity) => {
   const entityToSave = { ...entity };
@@ -42,8 +44,32 @@ export const saveEntity = async (entityType: string, entity) => {
 };
 
 
-export const exportEntity = () => {
+export const exportEntity = (entityType, entity) => {
 
+  const removeFields = (obj, fieldsToRemove) => {
+    if (!obj || typeof obj !== 'object') {
+      return obj;
+    }
+
+    if (Array.isArray(obj)) {
+      return obj.map((item) => removeFields(item, fieldsToRemove));
+    }
+
+    const result = {};
+    for (const key in obj) {
+      if (fieldsToRemove.includes(key)) {
+        continue;
+      }
+      result[key] = removeFields(obj[key], fieldsToRemove);
+    }
+    return result;
+  };
+
+  const fieldsToRemove = ['user_id', 'inserted_at', 'created_at'];
+  const entityWithoutFields = removeFields(entity, fieldsToRemove);
+  const jsonStr = JSON.stringify(entityWithoutFields, null, 2);
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  saveAs(blob, `${entity.name || 'entity'}.json`);
 }
 
 export const copyEntity = async (entityType, entity) => {
