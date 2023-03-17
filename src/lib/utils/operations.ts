@@ -1,33 +1,53 @@
 import { supabaseClient } from "$lib/db";
 import Toastify from 'toastify-js';
-import type { EntityType, Spell } from "../../../types/types";
+import type { EntityType, Equipment, Monster, Spell } from "../../../types/types";
 import { saveAs } from 'file-saver';
 
+type Entity = Spell | Monster | Equipment;
 
-export const saveEntity = async (entityType: string, entity) => {
+function isMonster(entity: Entity): entity is Monster {
+  return 'spells' in entity && 'equipment' in entity;
+}
+
+function isEquipment(entity: Entity): entity is Equipment {
+  return 'skills' in entity && 'specialties' in entity;
+}
+
+export const saveEntity = async (entityType: EntityType, entity: Entity) => {
   const entityToSave = { ...entity };
 
   if (typeof entityToSave.tags === 'string') {
     entityToSave.tags = entityToSave.tags.split(',').map((t) => t.trim());
   }
-  if (typeof entityToSave.skills === 'string') {
-    entityToSave.skills = entityToSave.skills.split(',').map((t) => t.trim());
-  }
-  if (typeof entityToSave.specialties === 'string') {
-    entityToSave.specialties = entityToSave.specialties.split(',').map((t) => t.trim());
+
+  if (isEquipment(entityToSave)) {
+    if (typeof entityToSave.skills === 'string') {
+      entityToSave.skills = entityToSave.skills.split(',').map((t) => t.trim());
+    }
+    if (typeof entityToSave.specialties === 'string') {
+      entityToSave.specialties = entityToSave.specialties.split(',').map((t) => t.trim());
+    }
+
+    let table: string = entityType;
+    // if entityType is spells, rename to spells_v2
+    if (entityType === 'spells') {
+      table = 'spells_v2';
+    }
   }
 
-  // if entityType is spells, rename to spells_v2
+  if (isMonster(entityToSave)) {
+    // remove spells and equipment since they are reliant on spell_ids and equipments_ids
+    entityToSave.spells = undefined;
+    entityToSave.equipment = undefined;
+  }
+
+  let table: string = entityType;
   if (entityType === 'spells') {
-    entityType = 'spells_v2';
+    table = 'spells_v2';
   }
-
-  // remove spells and equipment
-  entityToSave.spells = undefined;
-  entityToSave.equipment = undefined;
 
   const { error } = await supabaseClient
-    .from(entityType)
+    .from(table)
     .update(entityToSave)
     .eq('id', entityToSave.id);
   if (!error) {
@@ -44,7 +64,7 @@ export const saveEntity = async (entityType: string, entity) => {
 };
 
 
-export const exportEntity = (entityType, entity) => {
+export const exportEntity = (entityType: EntityType, entity: Entity) => {
 
   const removeFields = (obj, fieldsToRemove) => {
     if (!obj || typeof obj !== 'object') {
@@ -72,7 +92,7 @@ export const exportEntity = (entityType, entity) => {
   saveAs(blob, `${entity.name || 'entity'}.json`);
 }
 
-export const copyEntity = async (entityType, entity) => {
+export const copyEntity = async (entityType: EntityType, entity) => {
   const { data: userData } = await supabaseClient.auth.getUser();
   const entityData = { ...entity };
   delete entityData.id;
@@ -86,11 +106,13 @@ export const copyEntity = async (entityType, entity) => {
   delete entityData.spells;
   delete entityData.equipment;
 
+  let table: string = entityType;
+  // if entityType is spells, rename to spells_v2
   if (entityType === 'spells') {
-    entityType = 'spells_v2';
+    table = 'spells_v2';
   }
 
-  const { data, error } = await supabaseClient.from(entityType).insert([entityData]).select();
+  const { data, error } = await supabaseClient.from(table).insert([entityData]).select();
 
   let location = "/"
   if (entityType === 'npcs') {
@@ -112,7 +134,7 @@ export const copyEntity = async (entityType, entity) => {
   window.location.href = location
 }
 
-export const deleteEntity = async (entityType: EntityType, entity: Spell | any) => {
+export const deleteEntity = async (entityType: EntityType, entity: Entity) => {
 
   // alert window to confirm
   const confirmed = confirm(`Are you sure you want to delete ${entity.name}?`);
@@ -149,7 +171,7 @@ export const deleteEntity = async (entityType: EntityType, entity: Spell | any) 
   window.location.href = location;
 }
 
-export const createEntity = async (entityType, entity) => {
+export const createEntity = async (entityType: EntityType, , entity: Entity) => {
   const { data: userData } = await supabaseClient.auth.getUser();
   const entityData = { ...entity };
   delete entityData.id;
@@ -164,7 +186,7 @@ export const createEntity = async (entityType, entity) => {
 
   let location = "/"
   if (entityType === 'npcs') {
-    location = `/ npcs / ${data[0].id}`
+    location = `/npcs/${data[0].id}`
   }
 
   if (!error) {

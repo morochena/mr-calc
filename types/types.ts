@@ -1,9 +1,6 @@
 
 import type { Database } from "./supabase";
 
-export type Monster = Database["public"]["Tables"]["monsters"]["Row"]
-export type Equipment = Database["public"]["Tables"]["equipment"]["Row"]
-
 export type MonsterSize = "tiny" | "small" | "medium" | "large" | "huge" | "gargantuan" | "colossal";
 export type MonsterType = "aberration" | "beast" | "celestial" | "construct" | "dragon" | "elemental" | "fey" | "fiend" | "giant" | "humanoid" | "monstrosity" | "ooze" | "plant" | "undead";
 export type MonsterStat = "str" | "dex" | "emp" | "int"
@@ -68,6 +65,22 @@ export type ProcessedModifier = CombinedModifier & { domainTier: number, fromDom
 export type ProcessedEffect = CombinedEffect & { domainTier: number, fromDomain?: boolean }
 export type ProcessedModifierOrEffect = CombinedModifierOrEffect & { domainTier: number, fromDomain?: boolean }
 
+export type Equipment = {
+  id: number;
+  user_id: string;
+  created_at: string;
+  name: string;
+  type: string;
+  damage_formula: string;
+  roll_bonus: number;
+  skills: string | string[];
+  specialties: string | string[];
+  armor_piercing: number;
+  range: number;
+  structure_points: number;
+  tags: string | string[];
+  is_public: boolean;
+}
 
 
 export type Spell = {
@@ -88,4 +101,45 @@ export type Spell = {
     id: string;
     username: string;
   };
+};
+
+export type Monster = {
+  id: number;
+  user_id: string;
+  name: string;
+  inserted_at: string;
+  str: number;
+  dex: number;
+  emp: number;
+  int: number;
+  description: string;
+  smash: number;
+  launch: number;
+  athletics: number;
+  physique: number;
+  provoke: number;
+  accuracy: number;
+  mobility: number;
+  thievery: number;
+  notice: number;
+  stealth: number;
+  animal_handling: number;
+  deceive: number;
+  rapport: number;
+  willpower: number;
+  mysticism: number;
+  craft: number;
+  travel: number;
+  reasoning: number;
+  lore: number;
+  resourcefulness: number;
+  specialties: Record<string, { value: string; skill: string }> | string;
+  size: string;
+  difficulty: string;
+  is_public: boolean;
+  tags: string[] | string;
+  spell_ids: string[] | string;
+  equipment_ids: string[] | string;
+  spells: any | undefined;
+  equipment: any | undefined;
 };
