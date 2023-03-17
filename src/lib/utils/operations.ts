@@ -171,7 +171,7 @@ export const deleteEntity = async (entityType: EntityType, entity: Entity) => {
   window.location.href = location;
 }
 
-export const createEntity = async (entityType: EntityType, , entity: Entity) => {
+export const createEntity = async (entityType: EntityType, entity: Entity) => {
   const { data: userData } = await supabaseClient.auth.getUser();
   const entityData = { ...entity };
   delete entityData.id;

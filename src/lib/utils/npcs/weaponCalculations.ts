@@ -1,3 +1,4 @@
+import type { Monster } from "../../../../types/types";
 import skillPool from "../data/skills";
 import { calcRawSkillBonus, calcRawSpecialtyBonus, formattedValue } from "./statCalculations";
 
@@ -41,7 +42,7 @@ export const toHit = (monster, roll_bonus, specialties, skills) => {
   return toHit;
 };
 
-export const damageCalculation = (monster, damage_formula) => {
+export const damageCalculation = (monster: Monster, damage_formula: string) => {
   try {
     if (!damage_formula) return '';
     // eg. 3 + [str] + [dex]

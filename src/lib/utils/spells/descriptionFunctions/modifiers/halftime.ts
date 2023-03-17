@@ -1,5 +1,3 @@
-import { get } from 'svelte/store'
-import { currentSpell } from "$lib/stores/currentSpellStore"
 import type { CombinedModifier, Spell } from '../../../../../../types/types'
 import { getProcessedModifiers } from '../../getModifiersAndEffects'
 
