@@ -76,13 +76,13 @@
 			case 'stats_only':
 				data = generateMonster(data);
 				delete data.generation_type;
-				createEntity('monsters', data);
+				createEntity('npcs', data);
 				break;
 			case 'full':
 				break;
 			default:
 				delete data.generation_type;
-				createEntity('monsters', data);
+				createEntity('npcs', data);
 				break;
 		}
 	};

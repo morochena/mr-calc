@@ -136,20 +136,16 @@
 
 <ButtonGroup class="space-x-px my-4">
 	{#if !disableInputs}
-		<Button
-			on:click={() => saveEntity('monsters', monster)}
-			disabled={disableInputs}
-			color="primary">Save</Button
+		<Button on:click={() => saveEntity('npcs', monster)} disabled={disableInputs} color="primary"
+			>Save</Button
 		>
 	{/if}
 	<Button href={`/npcs/${monster.id}/public`} color="primary">Public View</Button>
-	<Button on:click={() => exportEntity('monsters', monster)} color="primary">Export</Button>
-	<Button on:click={() => copyEntity('monsters', monster)} color="primary">Make a Copy</Button>
+	<Button on:click={() => exportEntity('npcs', monster)} color="primary">Export</Button>
+	<Button on:click={() => copyEntity('npcs', monster)} color="primary">Make a Copy</Button>
 	{#if !disableInputs}
-		<Button
-			on:click={() => deleteEntity('monsters', monster)}
-			disabled={disableInputs}
-			color="primary">Delete</Button
+		<Button on:click={() => deleteEntity('npcs', monster)} disabled={disableInputs} color="primary"
+			>Delete</Button
 		>
 	{/if}
 </ButtonGroup>

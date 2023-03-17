@@ -9,7 +9,7 @@ export const load: PageLoad = async (event) => {
     throw redirect(303, '/');
   }
 
-  const { data: monster } = await supabaseClient.from('monsters').select('*').eq('id', event.params.id).single();
+  const { data: monster } = await supabaseClient.from('npcs').select('*').eq('id', event.params.id).single();
 
   if (monster.spell_ids?.length > 0) {
     const { data: spellData } = await supabaseClient.from('spells_v2').select('*').in('id', monster.spell_ids);

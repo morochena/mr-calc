@@ -10,7 +10,7 @@ export const load: PageLoad = async (event) => {
     throw redirect(303, '/');
   }
 
-  let { data: npcs } = await supabaseClient.from('monsters').select('*,profiles (id, username)').order('name', { ascending: true });
+  let { data: npcs } = await supabaseClient.from('npcs').select('*,profiles (id, username)').order('name', { ascending: true });
 
   npcs = npcs?.map(npc => (
     {
