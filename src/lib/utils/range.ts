@@ -1,6 +1,6 @@
 // NOTE: These implementations would have to be polyfilled for IE support!
 
-function* iter_range(begin, end, step) {
+function* iter_range(begin: number, end: number | undefined, step: number | undefined) {
   // Normalize our inputs
   step = step ? step : 1;
 
@@ -22,6 +22,6 @@ function* iter_range(begin, end, step) {
   }
 }
 
-export function range(begin, end, step) {
+export function range(begin: number, end: number | undefined, step: number | undefined) {
   return Array.from(iter_range(begin, end, step));
 }
