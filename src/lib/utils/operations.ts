@@ -1,6 +1,6 @@
 import { supabaseClient } from "$lib/db";
 import Toastify from 'toastify-js';
-import type { ItemType, Spell } from "../../../types/types";
+import type { EntityType, Spell } from "../../../types/types";
 import { saveAs } from 'file-saver';
 
 
@@ -112,7 +112,7 @@ export const copyEntity = async (entityType, entity) => {
   window.location.href = location
 }
 
-export const deleteEntity = async (entityType: ItemType, entity: Spell | any) => {
+export const deleteEntity = async (entityType: EntityType, entity: Spell | any) => {
 
   // alert window to confirm
   const confirmed = confirm(`Are you sure you want to delete ${entity.name}?`);

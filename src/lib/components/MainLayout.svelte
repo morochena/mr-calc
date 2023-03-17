@@ -14,10 +14,10 @@
 		TableSearch,
 		Toggle
 	} from 'flowbite-svelte';
-	import type { ItemType } from '../../../types/types';
+	import type { EntityType } from '../../../types/types';
 
 	export let items;
-	export let itemType: ItemType;
+	export let itemType: EntityType;
 	export let user;
 	let sortKey = 'name';
 	let sortDirection = 'asc';
