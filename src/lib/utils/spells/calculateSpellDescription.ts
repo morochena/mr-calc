@@ -7,13 +7,13 @@ import { getProcessedModifiersAndEffects, getProcessedEffects, getProcessedModif
 export const calculateSpellDescription = (spell: Spell) => {
   const preamble = craftedPreamble(spell);
   const description = spell.description || '';
-  const caster = casterText(spell);
-  const target = targetText(spell)
+  const caster = modifierText(spell);
+  const target = effectText(spell)
 
   return `${description} ${preamble} ${caster} ${target}`;
 }
 
-const casterText = (spell: Spell) => {
+const modifierText = (spell: Spell) => {
   const mode = modeText(spell.mode)
   const modifierText = getProcessedModifiers(spell)
     .map((modifier: ProcessedModifier) => {
@@ -29,8 +29,9 @@ const casterText = (spell: Spell) => {
   return `The caster ${mode} that ${modifierText}`;
 }
 
-const targetText = (spell: Spell) => {
+const effectText = (spell: Spell) => {
   const effectText = getProcessedEffects(spell)
+    .filter((effect) => effect.name !== "Unpredictable")
     .map((effect: ProcessedEffect) => {
       const baseText = calculateMOEDescription(spell, effect)
       // replace {meta|example text} with the meta value
@@ -70,9 +71,9 @@ const craftedPreamble = (spell: Spell) => {
 const modeText = (mode: SpellMode) => {
   switch (mode) {
     case `Unpredictable`:
-      return "casts an unstable spell by rolling a skill check and doubling the dice numbers versus the Spell Difficulty and Winds of Magic";
+      return "casts an unstable spell by rolling a skill check and doubling the dice numbers versus the Spell Difficulty and Winds of Magic. When the lowest die is a 5, add 10 instead, when the lowest die is 8 add 16, etc.";
     case "Stable":
-      return "casts a stable spell ";
+      return "casts a stable spell";
     case "Imbue":
       return "Imbues an item. The item casts a stable spell";
     case "Spell":
