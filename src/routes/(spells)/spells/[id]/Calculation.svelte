@@ -85,10 +85,10 @@
 
 	<div class="mt-2 dark:bg-gray-700 rounded-lg py-5 px-6 mb-4 text-sm dark:text-white mb-3">
 		<div>
-			<p><strong>Name:</strong> {spell.name}</p>
-			<p><strong>Description:</strong> {spell.description}</p>
-			<p><strong>Domain:</strong> {spell.domain}</p>
-			<p><strong>Mode:</strong> {spell.mode}</p>
+			<p><strong>Name:</strong> {spell.name || ''}</p>
+			<p><strong>Description:</strong> {spell.description || ''}</p>
+			<p><strong>Domain:</strong> {spell.domain || ''}</p>
+			<p><strong>Mode:</strong> {spell.mode || ''}</p>
 			<p><strong>Spell Difficulty: {calculateTotalSP(spell).cost}</strong></p>
 			<p><strong>Mental Cost:</strong> {calculateMentalCost(spell)}</p>
 		</div>

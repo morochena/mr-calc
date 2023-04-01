@@ -1,27 +1,10 @@
 <script lang="ts">
 	import { availableModifiers } from '$lib/utils/data/modifiers';
-	import { range } from '$lib/utils/range';
-	import {
-		Alert,
-		Button,
-		Select,
-		Table,
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell,
-		Textarea
-	} from 'flowbite-svelte';
-	import { XCircle } from 'svelte-heros';
+	import { Alert, Button, Select } from 'flowbite-svelte';
 
-	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
+	import { getProcessedModifiersAndEffects } from '$lib/utils/spells/getModifiersAndEffects';
+	import { calcSPValueText } from '$lib/utils/spells/SPCalculations';
 	import type { Modifier, Spell } from '../../../../../types/types';
-	import {
-		getProcessedEffects,
-		getProcessedModifiers,
-		getProcessedModifiersAndEffects
-	} from '$lib/utils/spells/getModifiersAndEffects';
 
 	export let spell: Spell;
 	export let disableInputs: boolean;
@@ -68,7 +51,11 @@
 			return true;
 		})
 		.map((modifier) => ({
-			name: modifier.name,
+			name: `${modifier.name}     (${calcSPValueText(spell, {
+				...modifier,
+				tier: 1,
+				domainTier: 0
+			})})`,
 			value: modifier
 		}));
 

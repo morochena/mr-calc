@@ -1,27 +1,10 @@
 <script lang="ts">
-	import {
-		Alert,
-		Select,
-		Button,
-		Table,
-		TableHead,
-		TableHeadCell,
-		TableBodyCell,
-		TableBody,
-		TableBodyRow,
-		Textarea
-	} from 'flowbite-svelte';
-	import { range } from '$lib/utils/range';
 	import { availableEffects } from '$lib/utils/data/effects';
-	import { XCircle } from 'svelte-heros';
+	import { Alert, Button, Select } from 'flowbite-svelte';
 
-	import { calculateMOEDescription } from '$lib/utils/spells/calculateMOEDescription';
-	import type { CombinedModifierOrEffect, Effect, Spell } from '../../../../../types/types';
-	import {
-		getProcessedEffects,
-		getProcessedModifiers,
-		getProcessedModifiersAndEffects
-	} from '$lib/utils/spells/getModifiersAndEffects';
+	import { getProcessedModifiersAndEffects } from '$lib/utils/spells/getModifiersAndEffects';
+	import { calcSPValueText } from '$lib/utils/spells/SPCalculations';
+	import type { Effect, Spell } from '../../../../../types/types';
 
 	export let spell: Spell;
 	export let disableInputs: boolean;
@@ -73,7 +56,11 @@
 			return true;
 		})
 		.map((effect) => ({
-			name: effect.name,
+			name: `${effect.name}     (${calcSPValueText(spell, {
+				...effect,
+				tier: 1,
+				domainTier: 0
+			})})`,
 			value: effect
 		}));
 
