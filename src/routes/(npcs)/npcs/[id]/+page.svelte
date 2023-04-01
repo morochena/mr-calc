@@ -36,7 +36,6 @@
 		Toggle
 	} from 'flowbite-svelte';
 	import SSelect from 'svelte-select';
-	import 'toastify-js/src/toastify.css';
 
 	import { Tooltip } from 'flowbite-svelte';
 	import { calculateTotalSP } from '$lib/utils/spells/SPCalculations';

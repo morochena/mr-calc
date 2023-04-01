@@ -3,14 +3,16 @@
 	import '../app.css';
 
 	import logo from '$lib/assets/logo.png';
-	import { Navbar, NavBrand, NavHamburger, NavLi, NavUl } from 'flowbite-svelte';
 	import {
 		Footer,
-		FooterBrand,
 		FooterCopyright,
-		FooterIcon,
 		FooterLink,
-		FooterLinkGroup
+		FooterLinkGroup,
+		Navbar,
+		NavBrand,
+		NavHamburger,
+		NavLi,
+		NavUl
 	} from 'flowbite-svelte';
 
 	import { supabaseClient } from '$lib/db';
@@ -18,6 +20,8 @@
 	import { invalidate } from '$app/navigation';
 
 	import { onMount } from 'svelte';
+
+	import 'toastify-js/src/toastify.css';
 
 	onMount(() => {
 		const {

@@ -76,7 +76,7 @@ export const availableModifiers: Modifier[] = [
     incompatible: ['Stable', 'Rune', 'Alchemy'],
     modifierType: 'reduce',
     amount: 5,
-    description: 'On a failure of the spell or a roll of a 1, the cost of the spell is increased by 6, and cannot be taken from Arcana. The cost can overflow from mind to body'
+    description: 'On a failure of the spell or a roll of a 1, the cost of the spell is tripled, and cannot be taken from Arcana. The cost can overflow from mind to body'
   },
   {
     id: 7,
@@ -112,6 +112,24 @@ export const availableModifiers: Modifier[] = [
     amount: splitModifier,
     types: ['Concentrated Power'],
     description: 'split into [tier+1] effects, each of which'
+  },
+  {
+    id: 43,
+    name: 'Concentrated Power',
+    prerequisite: ['Split'],
+    hasTiers: false,
+    modifierType: 'add',
+    amount: 0,
+    description: 'each of the targets of the spell have to be at most 5m away each other.'
+  },
+  {
+    id: 44,
+    name: 'Chain',
+    prerequisite: ['Split'],
+    hasTiers: false,
+    modifierType: 'add',
+    amount: 0,
+    description: 'the split effects cannot target the same object or creature'
   },
   {
     id: 11,

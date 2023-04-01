@@ -1,7 +1,6 @@
 <script>
 	import { supabaseClient } from '$lib/db';
 	import Toastify from 'toastify-js';
-	import 'toastify-js/src/toastify.css';
 
 	export let data;
 	let { profile } = data;

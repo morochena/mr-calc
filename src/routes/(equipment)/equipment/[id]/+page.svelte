@@ -3,7 +3,6 @@
 	import { copyEntity, saveEntity } from '$lib/utils/operations';
 	import { Button, ButtonGroup, Input, Label, Toggle } from 'flowbite-svelte';
 
-	import 'toastify-js/src/toastify.css';
 	export let data;
 	$: ({ disableInputs, equipment } = data);
 

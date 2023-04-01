@@ -53,7 +53,7 @@ export const saveEntity = async (entityType: EntityType, entity: Entity) => {
   if (!error) {
     Toastify({
       text: 'Saved!',
-      duration: 3000
+      duration: 3000,
     }).showToast();
   } else {
     Toastify({

@@ -6,7 +6,6 @@
 	import Effects from './Effects.svelte';
 	import Meta from './Meta.svelte';
 	import Modifiers from './Modifiers.svelte';
-	import 'toastify-js/src/toastify.css';
 
 	export let data;
 
