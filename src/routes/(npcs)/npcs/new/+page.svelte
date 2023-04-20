@@ -1,17 +1,19 @@
-<script>
+<script lang="ts">
 	import {
 		Input,
 		Select,
 		Label,
 		Helper,
 		Checkbox,
-		Textarea,
 		Button,
-		Toggle
+		Toggle,
+		Textarea
 	} from 'flowbite-svelte';
 	import { createEntity } from '$lib/utils/operations';
 	import { sizes } from '$lib/utils/data/sizes';
 	import { generateMonster } from '$lib/utils/npcs/generateNPC';
+	import { supabaseClient } from '$lib/db';
+	import { parseTemplate } from '$lib/utils/npcs/importNPCUtils';
 
 	let name = '';
 
@@ -19,7 +21,8 @@
 	let generationTypes = [
 		{ value: 'none', name: 'None' },
 		{ value: 'stats_only', name: 'Stats Only' },
-		{ value: 'full', name: 'Full' }
+		{ value: 'full', name: 'Full' },
+		{ value: 'import', name: 'Import' }
 	];
 
 	let selectedSize = 'medium';
@@ -86,6 +89,84 @@
 				break;
 		}
 	};
+
+	const importNPC = async (event) => {
+		try {
+			event.preventDefault();
+			const formData = new FormData(event.target);
+			let data = Object.fromEntries(formData);
+			const template = data['template'];
+
+			const parsedData = parseTemplate(template);
+			const { data: userData } = await supabaseClient.auth.getUser();
+
+			const { data: ret, error } = await supabaseClient
+				.from('npcs')
+				.insert([
+					{
+						...parsedData,
+						user_id: userData?.user?.id,
+						is_public: false,
+						size: 'medium',
+						difficulty: 'average'
+					}
+				])
+				.select();
+
+			const location = `/npcs/${ret[0].id}`;
+			window.location.href = location;
+		} catch (error) {
+			console.error('Error importing NPC:', error);
+			// Show an error message to the user, e.g., using a toast notification or an alert.
+			alert('Failed to import NPC. Please try again.');
+		}
+	};
+
+	const npcTemplatePlaceholder = `name: 
+description: 
+
+Base Stats:
+---
+str:
+dex:
+emp:
+int:
+
+Skills:
+---
+smash:
+launch:
+athletics:
+physique:
+provoke:
+accuracy:
+mobility:
+thievery:
+notice:
+stealth:
+animal_handling:
+deceive:
+rapport:
+willpower:
+mysticism:
+craft:
+travel:
+reasoning:
+lore:
+resourcefulness:
+
+Specialties:
+---
+skill: specialty value
+stealth: dodge 2
+
+Spells: 
+---
+
+Equipment:
+---
+
+`;
 </script>
 
 <h1 class="text-4xl dark:text-white pb-8">Generate a new NPC</h1>
@@ -94,6 +175,14 @@
 	>Generation Type
 	<Select class="mt-2" items={generationTypes} bind:value={selectedGenerationType} />
 </Label>
+
+{#if selectedGenerationType === 'import'}
+	<form class="mt-8" on:submit={importNPC}>
+		<Label for="textarea-id" class="mb-2">Import from the Discord bot or elsewhere.</Label>
+		<Textarea rows="40" id="textarea-id" placeholder={npcTemplatePlaceholder} name="template" />
+		<Button class="mt-2" type="submit">Import</Button>
+	</form>
+{/if}
 
 {#if selectedGenerationType === 'none'}
 	<form class="mt-16" on:submit={createNPC}>
