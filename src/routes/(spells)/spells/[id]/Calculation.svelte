@@ -207,6 +207,25 @@
 				</Card>
 			{/each}
 		{/if}
+
+		<Card>
+			<h4 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
+				<div class="flex items-center">Total</div>
+			</h4>
+
+			<div class="text-sm text-gray-700 dark:text-gray-400">
+				<p class="mb-1">
+					<strong>SP Cost:</strong>
+					{calculateTotalSP(spell).adds} x {calculateTotalSP(spell).mults.toFixed(2)} =
+					<strong>{calculateTotalSP(spell).cost}</strong>
+				</p>
+
+				<p class="mb-1">
+					<strong># Powers</strong>
+					{calcNumberOfPowers(spell)}
+				</p>
+			</div>
+		</Card>
 	</MediaQuery>
 
 	<MediaQuery query="(min-width: 481px)" let:matches>
