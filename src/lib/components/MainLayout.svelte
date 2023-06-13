@@ -66,7 +66,7 @@
 
 <MediaQuery query="(max-width: 480px)" let:matches>
 	{#if matches}
-		<div class="w-full dark:bg-gray-900">
+		<div class="w-full dark:bg-gray-900 dark:text-white">
 			<div class="flex justify-end">
 				<ButtonGroup class="space-x-px my-4">
 					<Button on:click={() => gotoItem(`/${itemType}/new`)} color="primary">Create</Button>
@@ -93,48 +93,50 @@
 							href={`/${itemType}/${item.id}`}
 							class="text-lg font-bold text-primary-600 hover:text-primary-400">{item.name}</a
 						>
-						<div class="mt-2">
-							{#if itemType == 'npcs'}
-								<p><strong>~XP:</strong> {calcLevel(item)}</p>
-							{/if}
-							{#if itemType == 'spells'}
-								<p><strong>Domain:</strong> {item.domain}</p>
-								<p><strong>Mode:</strong> {item.mode}</p>
-								<p><strong>SP:</strong> {item.sp}</p>
-							{/if}
-							{#if itemType == 'equipment'}
-								<p><strong>Type:</strong> {item.type || ''}</p>
+						<div class="mt-2 flex">
+							<div class="flex flex-col">
+								{#if itemType == 'npcs'}
+									<p><strong>~XP:</strong> {calcLevel(item)}</p>
+								{/if}
+								{#if itemType == 'spells'}
+									<p><strong>Domain:</strong> {item.domain}</p>
+									<p><strong>Mode:</strong> {item.mode}</p>
+									<p><strong>SP:</strong> {item.sp}</p>
+								{/if}
+								{#if itemType == 'equipment'}
+									<p><strong>Type:</strong> {item.type || ''}</p>
+									<p>
+										<strong>Skills:</strong>
+										{#each item.skills || [] as skill}<span
+												class="inline-block bg-blue-200 text-primary-800 m-1 p-1 rounded"
+												>{skill}</span
+											>{/each}
+									</p>
+									<p>
+										<strong>Specialties:</strong>
+										{#each item.specialties || [] as specialty}<span
+												class="inline-block bg-green-200 text-green-800 m-1 p-1 rounded"
+												>{specialty}</span
+											>{/each}
+									</p>
+								{/if}
 								<p>
-									<strong>Skills:</strong>
-									{#each item.skills || [] as skill}<span
-											class="inline-block bg-blue-200 text-primary-800 m-1 p-1 rounded"
-											>{skill}</span
-										>{/each}
+									<strong>Owner:</strong>
+									<span class="inline-block bg-red-200 text-red-800 m-1 p-1 rounded"
+										>{item.profiles.username}</span
+									>
 								</p>
-								<p>
-									<strong>Specialties:</strong>
-									{#each item.specialties || [] as specialty}<span
-											class="inline-block bg-green-200 text-green-800 m-1 p-1 rounded"
-											>{specialty}</span
-										>{/each}
-								</p>
-							{/if}
-						</div>
-						<div class="mt-2">
-							<p>
-								<strong>Owner:</strong>
-								<span class="inline-block bg-red-200 text-red-800 m-1 p-1 rounded"
-									>{item.profiles.username}</span
-								>
-							</p>
-							{#if item.is_public}
-								<span class="inline-block bg-yellow-200 text-yellow-800 m-1 p-1 rounded"
-									>public</span
-								>
-							{/if}
-							{#each item.tags || [] as tag}<span
-									class="inline-block bg-purple-200 text-purple-800 m-1 p-1 rounded">{tag}</span
-								>{/each}
+							</div>
+							<div class="flex flex-1 flex-col items-end">
+								{#if item.is_public}
+									<span class="inline-block bg-yellow-200 text-yellow-800 m-1 p-1 rounded"
+										>public</span
+									>
+								{/if}
+								{#each item.tags || [] as tag}<span
+										class="inline-block bg-purple-200 text-purple-800 m-1 p-1 rounded">{tag}</span
+									>{/each}
+							</div>
 						</div>
 					</div>
 				</div>
