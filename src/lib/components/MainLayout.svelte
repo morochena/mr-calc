@@ -47,7 +47,7 @@
 	$: ownedItems = ownedOnlyToggle ? items.filter((item) => item.user_id == user.id) : items;
 	$: filteredItems = ownedItems.filter(
 		(item) =>
-			item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			(item.name != null && item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
 			item.tags?.filter((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())).length > 0
 	);
 	$: sortedItems = filteredItems.sort((a, b) => {
