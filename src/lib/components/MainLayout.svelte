@@ -128,11 +128,6 @@
 								</p>
 							</div>
 							<div class="flex flex-1 flex-col items-end">
-								{#if item.is_public}
-									<span class="inline-block bg-yellow-200 text-yellow-800 m-1 p-1 rounded"
-										>public</span
-									>
-								{/if}
 								{#each item.tags || [] as tag}<span
 										class="inline-block bg-purple-200 text-purple-800 m-1 p-1 rounded">{tag}</span
 									>{/each}
