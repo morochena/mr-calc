@@ -304,9 +304,6 @@ function calcIllusionDiscount(spell: Spell, effect: CombinedEffect, trueTier?: n
 	unhelpEffects.forEach((effect) => {
 		unhelpSP += calcSPValue(spell, effect);
 	});
-	console.log(helpSP);
-	console.log(unhelpSP);
-	console.log(unhelpEffects);
 	let illusionDiscount = Math.min(helpSP, unhelpSP);
 	if (spell.mode === 'Unpredictable') illusionDiscount -= 4;
 

@@ -12,7 +12,6 @@ export const calculateTotalSP = (spell: Spell) => {
 
 	if (spell.domain === 'Illusion') {
 		const rawa = calcIllusionDiscount(spell, modifierCost, effectsAndModifiers);
-		console.log(rawa);
 		modifierCost -= rawa;
 	}
 

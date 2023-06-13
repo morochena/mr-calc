@@ -60,7 +60,7 @@
 	</NavUl>
 </Navbar>
 
-<main class="min-h-screen bg-gray-100 dark:bg-gray-900 py-8 pb-20">
+<main class="min-h-screen bg-gray-100 dark:bg-gray-900 py-8 pb-48">
 	<div class="container mx-auto px-4">
 		<slot />
 	</div>

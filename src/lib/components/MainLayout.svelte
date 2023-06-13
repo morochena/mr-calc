@@ -15,6 +15,7 @@
 		Toggle
 	} from 'flowbite-svelte';
 	import type { EntityType } from '../../../types/types';
+	import MediaQuery from '$lib/components/MediaQuery.svelte';
 
 	export let items;
 	export let itemType: EntityType;
@@ -63,80 +64,164 @@
 	});
 </script>
 
-<div class="w-full dark:bg-gray-900">
-	<div class="flex justify-end">
-		<ButtonGroup class="space-x-px my-4">
-			<Button on:click={() => gotoItem(`/${itemType}/new`)} color="primary">Create</Button>
-		</ButtonGroup>
-	</div>
+<MediaQuery query="(max-width: 480px)" let:matches>
+	{#if matches}
+		<div class="w-full dark:bg-gray-900">
+			<div class="flex justify-end">
+				<ButtonGroup class="space-x-px my-4">
+					<Button on:click={() => gotoItem(`/${itemType}/new`)} color="primary">Create</Button>
+				</ButtonGroup>
+			</div>
 
-	<div class="my-4">
-		<Toggle bind:checked={ownedOnlyToggle}>Owned Only</Toggle>
-	</div>
+			<div class="my-4">
+				<Toggle bind:checked={ownedOnlyToggle}>Owned Only</Toggle>
+			</div>
 
-	<TableSearch placeholder={`Search ${itemType}`} hoverable={true} bind:inputValue={searchTerm}>
-		<TableHead>
-			<TableHeadCell><span on:click={() => updateSortKey('name')}>Name</span></TableHeadCell>
-			{#if itemType == 'npcs'}
-				<TableHeadCell><span on:click={() => updateSortKey('level')}>~XP</span></TableHeadCell>
-			{/if}
-			{#if itemType == 'spells'}
-				<TableHeadCell><span on:click={() => updateSortKey('domain')}>Domain</span></TableHeadCell>
-				<TableHeadCell><span on:click={() => updateSortKey('mode')}>Mode</span></TableHeadCell>
-				<TableHeadCell><span on:click={() => updateSortKey('sp')}>SP</span></TableHeadCell>
-			{/if}
-			{#if itemType == 'equipment'}
-				<TableHeadCell><span on:click={() => updateSortKey('type')}>Type</span></TableHeadCell>
-				<TableHeadCell><span on:click={() => updateSortKey('skills')}>Skills</span></TableHeadCell>
-				<TableBodyCell
-					><span on:click={() => updateSortKey('specialties')}>Specialties</span></TableBodyCell
-				>
-			{/if}
-			<TableHeadCell>Tags</TableHeadCell>
-			<TableHeadCell><span on:click={() => updateSortKey('owner')}>Owner</span></TableHeadCell>
-		</TableHead>
-		<TableBody tableBodyClass="divide-y">
-			{#each sortedItems as item}
-				<TableBodyRow>
-					<a href={`/${itemType}/${item.id}`}>
-						<TableBodyCell>{item.name}</TableBodyCell>
-					</a>
+			<div class="my-4">
+				<input
+					bind:value={searchTerm}
+					type="text"
+					class="w-full px-3 py-2 border border-gray-300 rounded-lg"
+					placeholder={`Search ${itemType}`}
+				/>
+			</div>
+
+			{#each sortedItems as item (item.id)}
+				<div class="my-2 rounded-lg shadow-md overflow-hidden">
+					<div class="p-4">
+						<a
+							href={`/${itemType}/${item.id}`}
+							class="text-lg font-bold text-primary-600 hover:text-primary-400">{item.name}</a
+						>
+						<div class="mt-2">
+							{#if itemType == 'npcs'}
+								<p><strong>~XP:</strong> {calcLevel(item)}</p>
+							{/if}
+							{#if itemType == 'spells'}
+								<p><strong>Domain:</strong> {item.domain}</p>
+								<p><strong>Mode:</strong> {item.mode}</p>
+								<p><strong>SP:</strong> {item.sp}</p>
+							{/if}
+							{#if itemType == 'equipment'}
+								<p><strong>Type:</strong> {item.type || ''}</p>
+								<p>
+									<strong>Skills:</strong>
+									{#each item.skills || [] as skill}<span
+											class="inline-block bg-blue-200 text-primary-800 m-1 p-1 rounded"
+											>{skill}</span
+										>{/each}
+								</p>
+								<p>
+									<strong>Specialties:</strong>
+									{#each item.specialties || [] as specialty}<span
+											class="inline-block bg-green-200 text-green-800 m-1 p-1 rounded"
+											>{specialty}</span
+										>{/each}
+								</p>
+							{/if}
+						</div>
+						<div class="mt-2">
+							<p>
+								<strong>Owner:</strong>
+								<span class="inline-block bg-red-200 text-red-800 m-1 p-1 rounded"
+									>{item.profiles.username}</span
+								>
+							</p>
+							{#if item.is_public}
+								<span class="inline-block bg-yellow-200 text-yellow-800 m-1 p-1 rounded"
+									>public</span
+								>
+							{/if}
+							{#each item.tags || [] as tag}<span
+									class="inline-block bg-purple-200 text-purple-800 m-1 p-1 rounded">{tag}</span
+								>{/each}
+						</div>
+					</div>
+				</div>
+			{/each}
+		</div>
+	{:else}
+		<div class="w-full dark:bg-gray-900">
+			<div class="flex justify-end">
+				<ButtonGroup class="space-x-px my-4">
+					<Button on:click={() => gotoItem(`/${itemType}/new`)} color="primary">Create</Button>
+				</ButtonGroup>
+			</div>
+
+			<div class="my-4">
+				<Toggle bind:checked={ownedOnlyToggle}>Owned Only</Toggle>
+			</div>
+
+			<TableSearch placeholder={`Search ${itemType}`} hoverable={true} bind:inputValue={searchTerm}>
+				<TableHead>
+					<TableHeadCell><span on:click={() => updateSortKey('name')}>Name</span></TableHeadCell>
 					{#if itemType == 'npcs'}
-						<TableBodyCell>{calcLevel(item)}</TableBodyCell>
+						<TableHeadCell><span on:click={() => updateSortKey('level')}>~XP</span></TableHeadCell>
 					{/if}
 					{#if itemType == 'spells'}
-						<TableBodyCell>{item.domain}</TableBodyCell>
-						<TableBodyCell>{item.mode}</TableBodyCell>
-						<TableBodyCell>{item.sp}</TableBodyCell>
+						<TableHeadCell
+							><span on:click={() => updateSortKey('domain')}>Domain</span></TableHeadCell
+						>
+						<TableHeadCell><span on:click={() => updateSortKey('mode')}>Mode</span></TableHeadCell>
+						<TableHeadCell><span on:click={() => updateSortKey('sp')}>SP</span></TableHeadCell>
 					{/if}
 					{#if itemType == 'equipment'}
-						<TableBodyCell>{item.type || ''}</TableBodyCell>
-						<TableBodyCell>
-							{#each item.skills || [] as skill}<Badge class="mx-1">{skill}</Badge>{/each}
-						</TableBodyCell>
-						<TableBodyCell>
-							{#each item.specialties || [] as specialty}<Badge class="mx-1">{specialty}</Badge
-								>{/each}
-						</TableBodyCell>
-					{/if}
-					<TableBodyCell>
-						{#if item.is_public}
-							<Badge class="mx-1" style="background-color: {colorHash('publicz')}; color: black;"
-								>public</Badge
-							>
-						{/if}
-						{#each item.tags || [] as tag}<Badge
-								class="mx-1"
-								style="background-color: {colorHash(tag)}; color: black;">{tag}</Badge
-							>{/each}
-					</TableBodyCell>
-					<TableBodyCell
-						><Badge style="background-color: {colorHash(item.profiles.username)}; color: black;"
-							>{item.profiles.username}</Badge
+						<TableHeadCell><span on:click={() => updateSortKey('type')}>Type</span></TableHeadCell>
+						<TableHeadCell
+							><span on:click={() => updateSortKey('skills')}>Skills</span></TableHeadCell
 						>
-					</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</TableSearch>
-</div>
+						<TableBodyCell
+							><span on:click={() => updateSortKey('specialties')}>Specialties</span></TableBodyCell
+						>
+					{/if}
+					<TableHeadCell>Tags</TableHeadCell>
+					<TableHeadCell><span on:click={() => updateSortKey('owner')}>Owner</span></TableHeadCell>
+				</TableHead>
+				<TableBody tableBodyClass="divide-y">
+					{#each sortedItems as item}
+						<TableBodyRow>
+							<a href={`/${itemType}/${item.id}`}>
+								<TableBodyCell>{item.name}</TableBodyCell>
+							</a>
+							{#if itemType == 'npcs'}
+								<TableBodyCell>{calcLevel(item)}</TableBodyCell>
+							{/if}
+							{#if itemType == 'spells'}
+								<TableBodyCell>{item.domain}</TableBodyCell>
+								<TableBodyCell>{item.mode}</TableBodyCell>
+								<TableBodyCell>{item.sp}</TableBodyCell>
+							{/if}
+							{#if itemType == 'equipment'}
+								<TableBodyCell>{item.type || ''}</TableBodyCell>
+								<TableBodyCell>
+									{#each item.skills || [] as skill}<Badge class="mx-1">{skill}</Badge>{/each}
+								</TableBodyCell>
+								<TableBodyCell>
+									{#each item.specialties || [] as specialty}<Badge class="mx-1">{specialty}</Badge
+										>{/each}
+								</TableBodyCell>
+							{/if}
+							<TableBodyCell>
+								{#if item.is_public}
+									<Badge
+										class="mx-1"
+										style="background-color: {colorHash('publicz')}; color: black;">public</Badge
+									>
+								{/if}
+								{#each item.tags || [] as tag}<Badge
+										class="mx-1"
+										style="background-color: {colorHash(tag)}; color: black;">{tag}</Badge
+									>{/each}
+							</TableBodyCell>
+							<TableBodyCell
+								><Badge style="background-color: {colorHash(item.profiles.username)}; color: black;"
+									>{item.profiles.username}</Badge
+								>
+							</TableBodyCell>
+						</TableBodyRow>
+					{/each}
+				</TableBody>
+			</TableSearch>
+		</div>
+	{/if}
+</MediaQuery>
