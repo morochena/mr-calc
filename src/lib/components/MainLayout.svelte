@@ -87,7 +87,7 @@
 			</div>
 
 			{#each sortedItems as item (item.id)}
-				<div class="my-2 rounded-lg shadow-md overflow-hidden">
+				<div class="my-2 rounded-lg shadow-md overflow-hidden dark:bg-gray-800">
 					<div class="p-4">
 						<a
 							href={`/${itemType}/${item.id}`}
