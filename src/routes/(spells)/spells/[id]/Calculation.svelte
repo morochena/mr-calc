@@ -114,7 +114,7 @@
 						{#if !disableInputs && !modifier.fromDomain}
 							<MenuButton />
 							<Dropdown class="w-36">
-								<DropdownItem on:click={() => removeEffect(modifier.id)}>Delete</DropdownItem>
+								<DropdownItem on:click={() => removeModifier(modifier.id)}>Delete</DropdownItem>
 							</Dropdown>
 						{/if}
 					</div>
